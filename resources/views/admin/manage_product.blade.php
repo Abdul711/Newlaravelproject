@@ -46,9 +46,35 @@
                                                 
                                                 <label for="cc-payment" class="control-label mb-1">Sub Category Name</label>
                                                    
-                                                     <select name="category_id">
-                                                     @foreach($sub as $c_data)
-                                                     <option value="{{$c_data['id']}}">{{$c_data['sub_category_name']}}</option>
+                                                     <select name="sub_category_id">
+                                                     @foreach($sub as $sub_data)
+                                                     <option value="{{$sub_data['id']}}">{{$sub_data['sub_category_name']}}</option>
+                                                     @endforeach
+                                                     </select>
+     
+
+                                                </div>
+                                            <div>
+                                            <div class="form-group">
+                                                
+                                                <label for="cc-payment" class="control-label mb-1">Select Size</label>
+                                                   
+                                                     <select name="size_id">
+                                                     @foreach($sizes as $size)
+                                                     <option value="{{$size['id']}}">{{$size['size_name']}}</option>
+                                                     @endforeach
+                                                     </select>
+     
+
+                                                </div>
+                                            <div>
+                                            <div class="form-group">
+                                                
+                                                <label for="cc-payment" class="control-label mb-1">Select Color</label>
+                                                   
+                                                     <select name="color_id">
+                                                     @foreach($colors as $color)
+                                                     <option value="{{$color['id']}}">{{$color['color_name']}}</option>
                                                      @endforeach
                                                      </select>
      
