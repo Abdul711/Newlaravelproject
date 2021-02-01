@@ -20,7 +20,7 @@
                                         </div>
                               
                          
-                                        <form enctype= "multipart/form-data" action="{{route('product.store')}}" method="post" novalidate="novalidate">
+                                        <form enctype="multipart/form-data" action="{{route('product.store')}}" method="post" novalidate="novalidate">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1"> Product Name</label>
@@ -81,6 +81,7 @@
 
                                                 </div>
                                             <div>
+                                            <input type="file" name="image" >
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
                                                
                                                     <span id="payment-button-amount">{{$product_btn}}</span>
