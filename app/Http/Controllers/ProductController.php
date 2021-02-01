@@ -37,7 +37,8 @@ class ProductController extends Controller
         
     }
     $data=Category::all();
-    return view('admin/manage_product',$result,['c'=>$data]);
+    $data_color=Color::all();
+    return view('admin/manage_product',$result,['c'=>$data],['color'=>$data_color]);
    }
   
 }
