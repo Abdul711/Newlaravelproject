@@ -25,18 +25,19 @@ class ProductController extends Controller
     if($id>0){
         $arr=Product::where(['id'=>$id])->get(); 
 
-        $result['category_name']=$arr['0']->category_name;
-         $result['category_btn']="Update Category";
-         $result['category_title']="Update Category";
-        $result['category_id']=$arr['0']->id;
+        $result['product_name']=$arr['0']->product_name;
+         $result['product_btn']="Update Product";
+         $result['product_title']="Update Product";
+        $result['product_id']=$arr['0']->id;
     }else{
-        $result['category_name']='';
-        $result['category_btn']="Add Category";
-        $result['category_title']="Add Category";
-        $result['category_id']='';
+        $result['product_name']='';
+        $result['product_btn']="Add Product";
+        $result['product_title']="Add Product";
+        $result['product_id']='';
         
     }
-    return view('admin/manage_category',$result);
+    $data=Category::all();
+    return view('admin/manage_product',$result,['c'=>$data]);
    }
   
 }
