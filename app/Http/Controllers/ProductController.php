@@ -43,10 +43,14 @@ class ProductController extends Controller
     return view('admin/manage_product',$result,['c'=>$data,'sub'=>$data_s,'sizes'=>$data_size,'colors'=>$data_color]);
    }
    public function manage_product_process(Request $request){
-   $image= $request->file('image');
+     if($request->hasFile('image')){
+    $image= $request->file('image');
     $ext=$image->extension();
     $image_name = time().'.'.$ext;
     $image->storeAs('/public/media',$image_name);
+     }
+    $model=new Product();
+
     return $request->post();
    }  
 }
