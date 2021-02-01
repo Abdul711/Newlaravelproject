@@ -40,7 +40,9 @@ class ProductController extends Controller
     $data_s=SubCategory::all();
     $data_color=Color::all();
     $data_size=Size::all();
-    return view('admin/manage_product',$result,['c'=>$data],['color'=>$data_color],['size'=>$data_size],['sub'=>$data_s]);
+    return view('admin/manage_product',$result,['c'=>$data,'sub'=>$data_s]);
    }
-  
+   public function manage_product_process(Request $request){
+       return $request->post();
+   }  
 }

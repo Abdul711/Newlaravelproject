@@ -24,8 +24,8 @@
                                             @csrf
                                             <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1"> Product Name</label>
-                                                <input id="cc-pament" name="sub_category_name" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{old('category_name')}}{{$product_name}}">
-                                                <input id="cc-pament" name="sub_category_id" hidden type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{old('category_name')}}{{$product_id}}">
+                                                <input id="cc-pament" name="product_name" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{old('category_name')}}{{$product_name}}">
+                                                <input id="cc-pament" name="product_id" hidden type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{old('category_name')}}{{$product_id}}">
 
                                             </div>
                                            <div> 
@@ -41,13 +41,14 @@
 
 
                                            </div>
+                             
                                            <div class="form-group">
                                                 
                                                 <label for="cc-payment" class="control-label mb-1">Sub Category Name</label>
                                                    
                                                      <select name="category_id">
-                                                     @foreach($c as $c_data)
-                                                     <option value="{{$c_data['id']}}">{{$c_data['category_name']}}</option>
+                                                     @foreach($sub as $c_data)
+                                                     <option value="{{$c_data['id']}}">{{$c_data['sub_category_name']}}</option>
                                                      @endforeach
                                                      </select>
      
