@@ -46,7 +46,7 @@ class ProductController extends Controller
    $image= $request->file('image');
     $ext=$image->extension();
     $image_name = time().'.'.$ext;
-    $image->storeAs('/public/media',$image_name);g
+    $image->storeAs('/public/media',$image_name);
     return $request->post();
    }  
 }
