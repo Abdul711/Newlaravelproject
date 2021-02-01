@@ -56,5 +56,4 @@
             <!-- END DATA TABLE-->
         </div>
     </div>
-                        
-@endsection
+    @endsection

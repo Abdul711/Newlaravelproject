@@ -20,7 +20,7 @@
                                         </div>
                               
                          
-                                        <form action="{{route('sub_category.store')}}" method="post" novalidate="novalidate">
+                                        <form enctype= "multipart/form-data" action="{{route('product.store')}}" method="post" novalidate="novalidate">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1"> Sub Category Name</label>

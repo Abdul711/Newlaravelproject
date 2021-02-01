@@ -43,13 +43,13 @@ Route::group(['middleware'=>'admin_auth'],function(){
     Route::get('admin/sub_category/manage_sub_category/{id}',[SubCategoryController::class,'manage']);
     Route::post('admin/sub_category/manage_sub_category',[SubCategoryController::class,'manage_sub_category_process'])->name('sub_category.store');
       /* Crud Operation Route For Product */
-    Route::get('admin/product',[ProductController::class,'show']);
+    Route::get('admin/products',[ProductController::class,'show']);
     Route::get('admin/products/delete/{id}',[ProductController::class,'destroy']);
     Route::get('admin/products/view_detail/{id}',[ProductController::class,'view_detail']);
-    Route::get('admin/products/manage_product',[ProductController::class,'manage']);
+    Route::get('admin/products/manage_products',[ProductController::class,'manage']);
     Route::get('admin/products/status/{id}/{status}',[ProductController::class,'update_status']);
-    Route::get('admin/products/manage_product/{id}',[ProductController::class,'manage']);
-    Route::post('admin/products/manage_product',[ProductController::class,'manage_sub_category_process'])->name('product.store');
+    Route::get('admin/products/manage_products/{id}',[ProductController::class,'manage']);
+    Route::post('admin/products/manage_products',[ProductController::class,'manage_product_process'])->name('product.store');
     /* Crud Operation Route For Coupon */
 Route::get('admin/coupon',[CouponController::class,'show']);
 Route::get('admin/coupon/delete/{id}',[CouponController::class,'destroy']);
