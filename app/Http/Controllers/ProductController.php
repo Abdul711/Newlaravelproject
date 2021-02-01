@@ -37,7 +37,7 @@ class ProductController extends Controller
         
     }
     $data=Category::all();
-    $data_s=Category::all();
+    $data_s=SubCategory::all();
     $data_color=Color::all();
     $data_size=Size::all();
     return view('admin/manage_product',$result,['c'=>$data],['color'=>$data_color],['size'=>$data_size],['sub'=>$data_s]);
