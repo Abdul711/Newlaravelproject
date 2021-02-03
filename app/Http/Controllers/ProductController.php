@@ -83,4 +83,19 @@ $data=json_decode($data,true);
         $sub_categories_data,'categories'=>$categories_data,'sizes'=>$size_data,
         'colors'=>$color_data]);
       }
+       public function  manage_product_process(Request $request)
+      { 
+        $price= $request->post('price');
+         echo "Price Array";
+        echo "<pre>";
+        print_r($price);
+        echo "</pre>";
+        $images=$request->file('image');
+            foreach($images as $key => $image){
+        $ext=$image->extension();
+        $time_s=time();
+       echo $file_name=$time_s.$key.'.'.$ext;
+            }
+
+      }
 }
