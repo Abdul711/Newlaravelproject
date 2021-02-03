@@ -93,7 +93,7 @@
                         </li>
                         <li>
                             <a href="{{url('admin/products')}}"">
-                                <i class="fas fa-tachometer-alt"></i>Product1</a>
+                                <i class="fas fa-tachometer-alt"></i>Product</a>
 
                         </li>
                         <li>

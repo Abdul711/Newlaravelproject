@@ -2,55 +2,85 @@
 
 namespace App\Http\Controllers;
 use App\Models\Category;
-use App\Models\Product;
 use App\Models\SubCategory;
-use App\Models\Size;
-use App\Models\Color;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Color;
+use App\Models\Size;
+use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
-    public function show(){
-        $data=DB::table('sub_categories')->
-        join('categories','categories.id','=','sub_categories.category_id')->
-        select('categories.category_name','sub_categories.status','sub_categories.sub_category_name','sub_categories.id','sub_categories.created_at')->get();
-     
-    return  $data=json_decode($data,true);
-     
-    }
-    public function manage($id='')
-    {
+      public function show(){
+       
+      
    
-    if($id>0){
-        $arr=Product::where(['id'=>$id])->get(); 
+        $data=DB::table('products')->
+   join('categories','categories.id','=','products.categories_id')->
+   join('sub_categories','sub_categories.id','=','products.sub_categories_id')->
+   select('categories.category_name','sub_categories.sub_category_name',
+   'products.id','products.status','products.product_name','products.created_at')->get();
 
-        $result['product_name']=$arr['0']->product_name;
-         $result['product_btn']="Update Product";
-         $result['product_title']="Update Product";
-        $result['product_id']=$arr['0']->id;
-    }else{
-        $result['product_name']='';
-        $result['product_btn']="Add Product";
-        $result['product_title']="Add Product";
-        $result['product_id']='';
-        
-    }
-    $data=Category::all();
-    $data_s=SubCategory::all();
-    $data_color=Color::all();
-    $data_size=Size::all();
-    return view('admin/manage_product',$result,['c'=>$data,'sub'=>$data_s,'sizes'=>$data_size,'colors'=>$data_color]);
-   }
-   public function manage_product_process(Request $request){
-     if($request->hasFile('image')){
-    $image= $request->file('image');
-    $ext=$image->extension();
-    $image_name = time().'.'.$ext;
-    $image->storeAs('/public/media',$image_name);
-     }
-    $model=new Product();
+$data=json_decode($data,true);
 
-    return $request->post();
-   }  
+
+
+     return view('admin.product',["subcategories"=>$data]); 
+   
+   
+   
+    
+
+      }
+      public function view_detail($id){
+        $data=DB::table('products')->
+        join('categories','categories.id','=','products.categories_id')->
+        join('sub_categories','sub_categories.id','=','products.sub_categories_id')->
+        select('categories.category_name','sub_categories.sub_category_name',
+        'products.id','products.status','products.product_name','products.created_at')->where(['products.id'=>$id])->
+        get();
+       $category_name= $data['0']->category_name;
+       $sub_category_name= $data['0']->sub_category_name;
+       $product_name= $data['0']->product_name;
+       $status= $data['0']->status;
+       if($status==1){
+           $new_status="Active";
+       }else {
+         $new_status="Deactive";
+       }
+
+         $data=['category'=>$category_name,'status'=>$new_status,'sub_category'=>$sub_category_name,'product'=>$product_name];
+
+
+
+
+         return view('admin.product_detail',$data);
+    
+      }
+      public function manage($id=''){
+        if($id>0){
+            $arr=Product::where(['id'=>$id])->get(); 
+    
+            $result['product_name']=$arr['0']->product_name;
+             $result['product_btn']="Update Product";
+             $result['product_title']="Update Product";
+            $result['product_id']=$arr['0']->id;
+            $result['category_id']=$arr['0']->categories_id;
+            $result['sub_category_id']=$arr['0']->sub_categories_id;
+        }else{
+            $result['product_name']='';
+            $result['product_btn']="Add Product";
+            $result['product_title']="Add Product";
+            $result['product_id']='';
+            $result['category_id']='';
+            
+        }
+        $categories_data=Category::all();
+        $sub_categories_data=SubCategory::all();
+        $color_data=Color::all();
+        $size_data=Size::all();
+        return view('admin.manage_product',$result,['sub_categories'=>
+        $sub_categories_data,'categories'=>$categories_data,'sizes'=>$size_data,
+        'colors'=>$color_data]);
+      }
 }
