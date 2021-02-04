@@ -10,12 +10,12 @@
     <div class="row m-t-30">
         <div class="col-md-12">
             <!-- DATA TABLE-->
-            @if(session()->has('message'))
+            @if(session()->has('success_message'))
 
 <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
     <span class="badge badge-pill badge-success">Congratulations</span>
 
-    {{session('message')}}	
+    {{session('success_message')}}	
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
     </button>
@@ -33,19 +33,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($brands as $keys => $category)
+                    @foreach($brands as $keys => $brand)
                         
                         <tr>
                         <td>{{$keys+1}}</td>
-                            <td>{{$category['brands']}}</td>
-                            <td>{{ date("d-M-Y H:i:s",strtotime($category['created_at']))}}</td>
-                              @if($category['status']==0)
-                             <td><a class="btn btn-warning" href="{{url('admin/category/status')}}/{{$category['id']}}/{{$category['status']}}">Deactive</a></td> 
-                             @elseif($category['status']==1)
-                             <td><a class="btn btn-success" href="{{url('admin/category/status')}}/{{$category['id']}}/{{$category['status']}}">Active</a></td> 
+                            <td>{{$brand['brands']}}</td>
+                            <td>{{ date("d-M-Y H:i:s",strtotime($brand['created_at']))}}</td>
+                              @if($brand['status']==0)
+                             <td><a class="btn btn-warning" href="{{url('admin/brand/status')}}/{{$brand['id']}}/{{$brand['status']}}">Deactive</a></td> 
+                             @elseif($brand['status']==1)
+                             <td><a class="btn btn-success" href="{{url('admin/brand/status')}}/{{$brand['id']}}/{{$brand['status']}}">Active</a></td> 
                              @endif                         
-                            <td><a class="btn btn-outline-secondary" href="{{url('admin/category/manage_category')}}/{{$category['id']}}">Edit</a></td> 
-                            <td><a class="btn btn-outline-danger" href="{{url('admin/category/delete')}}/{{$category['id']}}">Delete</a></td>
+                            <td><a class="btn btn-outline-secondary" href="{{url('admin/brand/manage_brand')}}/{{$brand['id']}}">Edit</a></td> 
+                            <td><a class="btn btn-outline-danger" href="{{url('admin/brand/delete')}}/{{$brand['id']}}">Delete</a></td>
                         </tr>
                   
                         @endforeach

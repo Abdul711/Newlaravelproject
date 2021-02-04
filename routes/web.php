@@ -26,9 +26,7 @@ Route::get('/', function () {
 Route::get('admin',[AdminController::class,'index']);
 
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
-Route::get('admin/brand',[BrandController::class,'show']);
-Route::get('admin/brand/manage_brand',[BrandController::class,'create']);
-Route::post('admin/brand/manage_brand',[BrandController::class,'store'])->name('brand.store');
+
 Route::group(['middleware'=>'admin_auth'],function(){
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
 /* Crud Operation Route For Category */
@@ -76,8 +74,13 @@ Route::get('admin/size/manage_size',[SizeController::class,'manage']);
 Route::get('admin/size/manage_size/{id}',[SizeController::class,'manage']);
 Route::post('admin/size/manage_size',[SizeController::class,'manage_size_process'])->name('size.store');
 Route::get('admin/size/status/{id}/{status}',[SizeController::class,'update_status']);
-
-
+/* Crud Operation Route For Brand */
+Route::get('admin/brand',[BrandController::class,'show']);
+Route::get('admin/brand/manage_brand',[BrandController::class,'create']);
+Route::get('admin/brand/manage_brand/{id}',[BrandController::class,'create']);
+Route::post('admin/brand/manage_brand',[BrandController::class,'store'])->name('brand.store');
+Route::get('admin/brand/delete/{id}',[BrandController::class,'destroy']);
+Route::get('admin/brand/status/{id}/{status}',[BrandController::class,'update_status']);
     Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');

@@ -1,5 +1,5 @@
 @extends('admin/layout')
-@section('page_title','Display Sub Category')
+@section('page_title','Display Product')
 @section('container')
     <h1 class="mb10">Product</h1>
     <a href="{{url('admin/products/manage_products')}}">

@@ -40,6 +40,26 @@
                            @endforeach
                            </select>
                           </div> 
+                          <div class="col-md-4">
+                          <label for="name" class="control-label mb-1">Brand</label>
+                           <select class="form-control" name="brand">
+                           @php
+                           $total=count($brands);
+                           @endphp
+                           @if($total >0)
+                           @foreach($brands as $keys => $brand)
+                          
+                  
+
+                          <option value="{{$brand['id']}}"> {{$brand['brands']}}</option>
+                       
+                          @endforeach
+                          @elseif($total == 0)
+                          <option> No Brand Available</option>
+                          @endif
+                      
+                           </select>
+                          </div> 
                       </div>
                
                      </div>

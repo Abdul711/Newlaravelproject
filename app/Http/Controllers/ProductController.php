@@ -8,6 +8,7 @@ use App\Models\SubCategory;
 use App\Models\Color;
 use App\Models\Size;
 use App\Models\Product;
+use App\Models\Brand;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
@@ -23,9 +24,10 @@ class ProductController extends Controller
         $sub_category=SubCategory::all();
         $color_data=Color::all();
         $size_data=Size::all();
+        $brand_data=Brand::where(['status'=>'1'])->get();
         return view('admin.manage_product',['categories'=>$category_data,
         'colors'=>$color_data,'subcategories'=>$sub_category,
-        'sizes'=>$size_data]);
+        'sizes'=>$size_data,'brands'=>$brand_data]);
     }
     public function manage_product_process(Request $request){
              

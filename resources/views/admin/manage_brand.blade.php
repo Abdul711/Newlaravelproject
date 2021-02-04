@@ -19,12 +19,20 @@
                                    
                                         </div>
                       
-                         
-                                        <form action="{{route('brand.store')}}" method="post" novalidate="novalidate">
+                         @if(session()->has('error_message'))
+<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+    <span class="badge badge-pill badge-danger">Some Thing Went Wrong</span>
+ {{session('error_message')}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+@endif                                        
+<form action="{{route('brand.store')}}" method="post" novalidate="novalidate">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1">Brand Name</label>
-                                                <input id="cc-pament" name="brand_name" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{old('category_name')}}{{$brand_name}}">
+                                                <input id="cc-pament" name="brand_name" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{old('brand_name')}}{{$brand_name}}">
                                                 <input id="cc-pament" name="brand_id" type="text" class="form-control" aria-required="true" aria-invalid="false" hidden="hidden" value="{{$brand_id}}">
                                             </div>
                                   
