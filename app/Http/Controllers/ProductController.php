@@ -27,7 +27,7 @@ class ProductController extends Controller
           $color_array= $request->post('color_id');
           $size_array=$request->post('size_id');
           $mrp_array=$request->post('mrp');
-          
+          $sku_array=$request->post('sku');
            return $request->post();
          foreach($price_array as $key => $value){
        
