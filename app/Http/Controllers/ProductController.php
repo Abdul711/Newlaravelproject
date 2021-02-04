@@ -26,43 +26,36 @@ class ProductController extends Controller
           $qty_array=$request->post('qty');
           $color_array= $request->post('color_id');
           $size_array=$request->post('size_id');
-          $image_array=$request->file('attr_image');
-       
+          $mrp_array=$request->post('mrp');
+          
+           return $request->post();
          foreach($price_array as $key => $value){
        
          
-              if($color_array[$key]==''){
+              if($color_array[$key]=='' && $color_array[$key]=null ){
                   $color_id=0;
               }else{
                   $color_id= $color_array[$key];
               }
-              if($size_array[$key]==''){
+              if($size_array[$key]=='' && $size__array[$key]=null){
                 $size_id=0;
             }else{
                 $size_id= $size_array[$key];
             }
 
        
-              " qty is". $qty=$qty_array[$key];
-                " price is". $qty=$price_array[$key];
-               " color is". $color=$color_id;
-                " size is". $size=$size_id;
+     echo         " qty is". $qty=$qty_array[$key];
+        echo        " price is". $qty=$price_array[$key];
+           echo     " color is". $color=$color_id;
+              echo  " size is". $size=$size_id;
 
 
          }
-
+     
 
      
-           $total_image=count($image_array);
-
-           if($total_image>=1){
-         for($i=0; $i< $total_image; $i++){
-       $ext=$image_array[$i]->extension();
-       $ti=floor( (time()/100)+rand()+ $i);
-     $name=$key.$ti.'.'.$ext;
-         }
-        }
-
+ 
+        
         
     }
     

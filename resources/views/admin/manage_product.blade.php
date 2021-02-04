@@ -62,6 +62,10 @@ Back
                               <input id="price" name="price[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
                            </div>
                            <div class="col-md-2">
+                              <label for="price" class="control-label mb-1"> MRP</label>
+                              <input id="price" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
+                           </div>
+                           <div class="col-md-2">
                               <label for="price" class="control-label mb-1"> SKU</label>
                               <input id="price" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
                            </div>
@@ -93,10 +97,7 @@ Back
                               <label for="qty" class="control-label mb-1"> Qty</label>
                               <input id="qty" name="qty[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" >
                            </div>
-                           <div class="col-md-4">
-                              <label for="attr_image" class="control-label mb-1"> Image</label>
-                              <input id="attr_image" name="attr_image[]" type="file" class="form-control" aria-required="true" aria-invalid="false" >
-                           </div>
+                     
                            <div class="col-md-2">
                               <label for="attr_image" class="control-label mb-1"> 
                               &nbsp;&nbsp;&nbsp;</label>
@@ -140,6 +141,7 @@ Back
         required='required';
       }
        html+='<div class="col-md-2">'+loop_count+'<label for="price" class="control-label mb-1"> Price</label><input id="price" name="price[]" type="text" class="form-control" aria-required="true" aria-invalid="false" '+required+'></div>';
+       html+='<div class="col-md-2">'+loop_count+'<label for="price" class="control-label mb-1"> MRP</label><input id="price" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" '+required+'></div>';
        html+='<div class="col-md-2">'+loop_count+'<label for="price" class="control-label mb-1"> SKU</label><input id="price" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" '+required+'></div>';
        var size_id_html=jQuery('#size_id').html(); 
        html+='<div class="col-md-3"><label for="size_id" class="control-label mb-1"> Size</label><select id="size_id" name="size_id[]" class="form-control">'+size_id_html+'</select></div>';
@@ -149,7 +151,7 @@ Back
 
        html+='<div class="col-md-2"><label for="qty" class="control-label mb-1"> Qty</label><input id="qty" name="qty[]" type="text" class="form-control" aria-required="true" aria-invalid="false" '+required+'></div>';
 
-       html+='<div class="col-md-4"><label for="attr_image" class="control-label mb-1"> Image</label><input id="attr_image" name="attr_image[]" type="file" class="form-control" aria-required="true" aria-invalid="false" '+required+'></div>';
+     
 
        html+='<div class="col-md-2"><label for="attr_image" class="control-label mb-1"> &nbsp;&nbsp;&nbsp;</label><button type="button" class="btn mt-4 btn-danger btn-lg" onclick=remove_more("'+loop_count+'")><i class="fa fa-minus"></i>&nbsp; Remove</button></div>'; 
 
