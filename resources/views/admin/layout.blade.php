@@ -106,7 +106,11 @@
                         </li>
                         <li>
                             <a href="{{url('admin/coupon')}}">
-                                <i class="fas fa-tachometer-alt"></i>Coupon</a>
+                                <i class="fas fa-tachometer-alt"></i>Coupon </a>
+                        </li>
+                        <li>
+                            <a href="{{url('admin/brand')}}">
+                                <i class="fas fa-tachometer-alt"></i>Brand Management</a>
                         </li>
                     </ul>
                 </nav>

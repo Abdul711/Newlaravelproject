@@ -8,6 +8,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\BrandController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +26,9 @@ Route::get('/', function () {
 Route::get('admin',[AdminController::class,'index']);
 
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
+Route::get('admin/brand',[BrandController::class,'show']);
+Route::get('admin/brand/manage_brand',[BrandController::class,'create']);
+Route::post('admin/brand/manage_brand',[BrandController::class,'store'])->name('brand.store');
 Route::group(['middleware'=>'admin_auth'],function(){
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
 /* Crud Operation Route For Category */

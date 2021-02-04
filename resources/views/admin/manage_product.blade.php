@@ -4,11 +4,7 @@
 @section('container')
 
 <h1 class="mb10">Manage Product</h1>
-<a href="{{url('admin/product')}}">
-<button type="button" class="btn btn-success">
-Back
-</button>
-</a>
+
 <div class="row m-t-30">
    <div class="col-md-12">
       <form action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
@@ -26,7 +22,27 @@ Back
                         </div>
                         @enderror
                      </div>
-                  
+                     <div class="form-group">
+                      <div class ="row">
+                          <div class="col-md-4">
+                          <label for="name" class="control-label mb-1"> Category</label>
+                           <select class="form-control" name="category">
+                           @foreach($categories as $keys => $category)
+                          <option value="{{$category['id']}}"> {{$category['category_name']}}</option>
+                           @endforeach
+                           </select>
+                          </div> 
+                          <div class="col-md-4">
+                          <label for="name" class="control-label mb-1"> Sub Category</label>
+                           <select class="form-control" name="subcategory">
+                           @foreach($subcategories as $keys => $subcategory)
+                          <option value="{{$subcategory['id']}}"> {{$subcategory['sub_category_name']}}</option>
+                           @endforeach
+                           </select>
+                          </div> 
+                      </div>
+               
+                     </div>
                      <div class="form-group">
                         <label for="image" class="control-label mb-1"> Image</label>
                         <input id="image" name="image" type="file" class="form-control" aria-required="true" aria-invalid="false" >
