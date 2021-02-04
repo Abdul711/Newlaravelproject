@@ -48,7 +48,7 @@ class ProductController extends Controller
         echo        " price is". $qty=$price_array[$key];
            echo     " color is". $color=$color_id;
               echo  " size is". $size=$size_id;
-
+            echo "sku is".$sku=$sku_array[$key];
 
          }
      
