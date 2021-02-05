@@ -36,7 +36,10 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                    @php 
+                 $total_record=   count($categories);
+                    @endphp 
+                    @if($total_record>0)
                     @foreach($categories as $keys => $category)
                  
                             
@@ -63,7 +66,11 @@
                    
                       
                         @endforeach
-                        
+                        @elseif($total_record<=0)
+                        <tr>
+                        <td colspan='7' class="text-center text-danger">No Coupon Code Found In store</td>
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

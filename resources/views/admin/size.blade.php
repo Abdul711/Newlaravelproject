@@ -34,7 +34,10 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                    @php 
+                 $total_record=   count($categories);
+                    @endphp 
+                    @if($total_record>0)
                     @foreach($categories as $keys => $category)
                         
                         <tr>
@@ -50,6 +53,11 @@
                             <td><a class="btn btn-outline-danger" href="{{url('admin/size/delete')}}/{{$category['id']}}">Delete</a></td>
                         </tr>
                         @endforeach
+                        @elseif($total_record<=0)
+                        <tr>
+                        <td colspan='5' class="text-center text-danger">No Size Found In store</td>
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

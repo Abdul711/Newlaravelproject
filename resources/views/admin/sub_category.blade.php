@@ -44,8 +44,12 @@
              
 @php
 $i=2;
+$total_record=   count($subcategories);
+        
 @endphp     
 
+               
+                    @if($total_record>0)
 @foreach($subcategories as $key => $sub)
 
 <tr>
@@ -64,9 +68,13 @@ $i=2;
 <td><a class="btn btn-outline-danger" href="{{url('admin/sub_category/delete')}}/{{$sub['id']}}">Delete</a></td>
 </tr>
 @endforeach
+@elseif($total_record<=0)
+                        <tr>
+                        <td colspan='5' class="text-center text-danger">No Sub Category Found In store</td>
+                        </tr>
+                        @endif
 
-
-                 </tr>
+            
                  </tbody>
                 </table>
             </div>

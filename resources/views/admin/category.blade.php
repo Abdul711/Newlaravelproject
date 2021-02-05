@@ -33,7 +33,10 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                    @php 
+                 $total_record=   count($categories);
+                    @endphp 
+                    @if($total_record>0)
                     @foreach($categories as $keys => $category)
                         
                         <tr>
@@ -50,6 +53,12 @@
                         </tr>
                   
                         @endforeach
+                        @elseif($total_record<=0)
+                        <tr>
+                        <td colspan='5' class="text-center text-danger">No Category Found In store</td>
+                        </tr>
+                        @endif
+
                     </tbody>
                 </table>
             </div>

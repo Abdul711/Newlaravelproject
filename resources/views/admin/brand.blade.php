@@ -33,8 +33,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                    @php 
+                 $total_record=   count($brands);
+                    @endphp 
+                    @if($total_record>0)
                     @foreach($brands as $keys => $brand)
-                        
+                
                         <tr>
                         <td>{{$keys+1}}</td>
                             <td>{{$brand['brands']}}</td>
@@ -49,6 +53,11 @@
                         </tr>
                   
                         @endforeach
+                        @elseif($total_record<=0)
+                        <tr>
+                        <td colspan='5' class="text-center text-danger">No Brand Found In store</td>
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

@@ -40,12 +40,13 @@
       
            
              
-@php
-$i=2;
-@endphp     
+  
         
 
-
+                    @php 
+                 $total_record=   count($categories);
+                    @endphp 
+                    @if($total_record>0)
 @foreach($categories as $keys => $value)
 
              <tr>
@@ -61,6 +62,11 @@ $i=2;
                             <td><a class="btn btn-outline-danger" href="{{url('admin/color/delete')}}/{{$value['id']}}">Delete</a></td>
                  </tr>
                  @endforeach
+                 @elseif($total_record<=0)
+                        <tr>
+                        <td colspan='5' class="text-center text-danger">No Color Found In store</td>
+                        </tr>
+                        @endif
                  </tbody>
                 </table>
             </div>
