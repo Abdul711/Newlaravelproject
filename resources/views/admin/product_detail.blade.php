@@ -15,26 +15,38 @@
                                     <table class="table table-borderless table-striped ">
                          
                                         <tbody>
-                                        <td colspan="2" class="text-center"> {{$product_name}}</td>
+                                        <td colspan="3" class="text-center"> {{$product_name}}</td>
                                             <tr>
                                                  <td> Category </td>
-                                                <td>{{$category}} </td>
+                                                <td colspan='2'>{{$category}} </td>
                                                 </tr>
                                                 <tr>
                                                 <td>Sub Category</td>
-                                                <td>{{$sub_category}}</td>
+                                                <td colspan='2'>{{$sub_category}}</td>
                                                 </tr>
                                                 <tr>
                                                 <td>Brand</td>
-                                                <td>{{$brand}}</td>
+                                                <td colspan='2'>{{$brand}}</td>
                                                 </tr>
                                                 <tr>
-                                                <td>Current Status</td>
-                                                <td>{{$status}}</td>
+                                                <td >Current Status</td>
+                                                <td colspan='2'>{{$status}}</td>
                                                 </tr>
-                                             
-                                            
-                                    
+                                          
+                                                @foreach($product_attributes  as $keys => $product_attribute)                              
+                                                @php
+                                             $product_attribute=(array)$product_attribute;
+                                             print_r($product_attribute);
+                                                @endphp
+                                                <tr>
+                                                <td> Size {{ $product_attribute['p_att_size_name']}}</td>
+                                                <td> Price :{{$product_attribute['attribute_price']}} Rs</td>
+                                                <td>  Color {{ $product_attribute['p_att_c_name']}} </td>   
+                                                </tr>
+                                                <tr>
+                                                             
+                                                </tr>
+                                                @endforeach
                                         </tbody>
                                     </table>
                                 </div>

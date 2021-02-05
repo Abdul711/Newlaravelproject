@@ -15,7 +15,7 @@
                      @csrf
                      <div class="form-group">
                         <label for="name" class="control-label mb-1"> Name</label>
-                        <input id="name" value="" name="name" type="text" class="form-control" aria-required="true" aria-invalid="false" >
+                        <input id="name" value="{{$product_data[0]['product_name']}}" name="name" type="text" class="form-control" aria-required="true" aria-invalid="false" >
                         @error('name')
                         <div class="alert alert-danger" role="alert">
                            {{$message}}		
@@ -27,32 +27,46 @@
                           <div class="col-md-4">
                           <label for="name" class="control-label mb-1"> Category</label>
                            <select class="form-control" name="category">
+                           <option>Select Category</option>
                            @foreach($categories as $keys => $category)
-                          <option value="{{$category['id']}}"> {{$category['category_name']}}</option>
+
+                               @if($product_data[0]['category_id']==$category['id'])
+                          <option value="{{$category['id']}}" selected> {{$category['category_name']}}</option>
+                              @else
+                              <option value="{{$category['id']}}"> {{$category['category_name']}}</option>
+                             @endif
                            @endforeach
                            </select>
                           </div> 
                           <div class="col-md-4">
                           <label for="name" class="control-label mb-1"> Sub Category</label>
                            <select class="form-control" name="subcategory">
+                           <option>Select Sub Category</option>
                            @foreach($subcategories as $keys => $subcategory)
+                           @if($product_data[0]['sub_category_id']==$subcategory['id'])
+                          <option value="{{$subcategory['id']}}"selected> {{$subcategory['sub_category_name']}}</option>
+                          @else
                           <option value="{{$subcategory['id']}}"> {{$subcategory['sub_category_name']}}</option>
+                          @endif
                            @endforeach
                            </select>
                           </div> 
                           <div class="col-md-4">
                           <label for="name" class="control-label mb-1">Brand</label>
                            <select class="form-control" name="brand">
+                           <option>Select Brand</option>
                            @php
                            $total=count($brands);
                            @endphp
                            @if($total >0)
                            @foreach($brands as $keys => $brand)
-                          
+                           @if($product_data[0]['brands_id']==$brand['id'])
                   
 
-                          <option value="{{$brand['id']}}"> {{$brand['brands']}}</option>
-                       
+                          <option value="{{$brand['id']}}"selected> {{$brand['brands']}}</option>
+                            @else
+                            <option value="{{$brand['id']}}"> {{$brand['brands']}}</option>
+                             @endif
                           @endforeach
                           @elseif($total == 0)
                           <option> No Brand Available</option>
@@ -74,7 +88,7 @@
                      </div>
                   
                      <div class="form-group">
-                      
+                 
                      </div>
                   
                  
@@ -87,7 +101,7 @@
             <h2 class="mb10">Product Attributes</h2>
             <div class="col-lg-12" id="product_attr_box">
              
-               <input id="paid" type="hidden" name="paid[]" value="">
+               <input id="paid" type="text" name="paid[]" value="">
                <div class="card" id="product_attr_">
                   <div class="card-body">
                      <div class="form-group">

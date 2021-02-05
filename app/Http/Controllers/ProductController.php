@@ -11,6 +11,8 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 class ProductController extends Controller
 {
     public function show(){
@@ -18,8 +20,61 @@ class ProductController extends Controller
         return view('admin.product',["subcategories"=>$product]);
     }
     public function manage($id=''){
-    
-    
+                    if($id!=''){
+                        $product_data=DB::table('products')->
+                        join('categories','categories.id','=','products.categories_id')->
+                        join('sub_categories','sub_categories.id','=',
+            'products.sub_categories_id')->
+                        join('brands','brands.id','=','products.brand')->
+                        select('sub_categories.id as sub_category_id',
+                        'categories.id as category_id',
+                        'brands.id as brands_id',
+                        'products.product_name',
+                        'products.image',
+                        'products.id as product_id',
+                        'products.status',
+                        )->
+                        where(['products.id'=>$id])->get();
+                        $product_data=json_decode($product_data,true);
+                        $product_attributes=DB::table('products')->
+                        join('product_attributes','product_attributes.product_id','=','products.id')->
+               
+                 
+                        select(
+                        'product_attributes.id as attr_id',
+                        'product_attributes.product_id','product_attributes.color_id','product_attributes.size_id')->
+                        where(['products.id'=>$id])->get();
+                        $product_attributes=json_decode($product_attributes,true);
+
+                    
+                
+                     $heading="Update Product";
+                  
+                     }else{
+                        $product_attributes[0]['attr_id']='';
+                        $product_attributes[0]['product_id']='';
+                        $product_attributes[0]['color_id']='';
+                        $product_attributes[0]['size_id']='';
+                        $product_data[0]['product_name']='';
+                        $product_data[0]['sub_category_id']=''; 
+                        $product_data[0]['category_id']=''; 
+                        $product_data[0]['brands_id']='';
+                        $product_data[0]['product_id']='';
+                        $product_data[0]['status']='';
+                        $product_data[0]['image']='';
+                        $heading="Add Product";
+                     }
+                     echo "<br> $heading";
+                     echo"<pre>";
+                    print_r($product_attributes);
+                    echo"</pre>";
+                die();
+                    /* echo "<pre>";
+                     print_r($product_attributes);
+                     echo "</pre>";
+                     echo "<pre>";
+                     print_r($product_data);
+                     echo "</pre>";*/
         $category_data=Category::all();
         $sub_category=SubCategory::all();
         $color_data=Color::all();
@@ -27,7 +82,8 @@ class ProductController extends Controller
         $brand_data=Brand::where(['status'=>'1'])->get();
         return view('admin.manage_product',['categories'=>$category_data,
         'colors'=>$color_data,'subcategories'=>$sub_category,
-        'sizes'=>$size_data,'brands'=>$brand_data]);
+        'sizes'=>$size_data,'brands'=>$brand_data,
+        'product_data'=>$product_data]);
     }
     public function manage_product_process(Request $request){
              
@@ -47,11 +103,17 @@ class ProductController extends Controller
             if($request->hasfile('image')){
                 $product_image=$request->file('image');
                 $ext=$product_image->extension();
-                $product_image=rand()+time().'.'.$ext;
-              
+                $product_image_name=rand()+time().'.'.$ext;
+                $product_image->storeAs('public/media',$product_image_name);
+                       /* $fileloc="app/public/media/"."/"."2352295053.jpg";
+                         $filename = storage_path($fileloc);
+                         
+                        if(File::exists($filename)) {
+                            File::delete($filename);
+                        }*/
             }
             else{
-                $product_image='';
+                $product_image_name='';
             }
 
 
@@ -62,7 +124,7 @@ class ProductController extends Controller
          $product_model->sub_categories_id=$product_subcategory;
          $product_model->brand=$product_brand;
          $product_model->status=$product_status;
-         $product_model->image=$product_image;
+         $product_model->image=$product_image_name;
  
         $product_model->save();
        $product_id=$product_model->id;
@@ -88,10 +150,6 @@ class ProductController extends Controller
        $size=$size_id;
        $sku=$sku_array[$key];
        $mrp=$mrp_array[$key];
-            
-                
-$total_record= DB::table('product_attributes')->where(['sku'=>$sku])->count();
-
 $model->price=$price;
 $model->mrp=$mrp;
 $model->sku=$sku;
@@ -102,9 +160,10 @@ $model->qty=$qty;
 $model->product_id=$product_id;
 $model->save();    
   
-return redirect('admin/products');       
+     
 
         }
+        return redirect('admin/products');  
     }
 
      public function view_detail($id)
@@ -119,7 +178,7 @@ return redirect('admin/products');
         'products.product_name',
         'products.image',
         'products.id as Product_id',
-        'products.status',
+        'products.status'
         )->
         where(['products.id'=>$id])->get();
     
@@ -145,14 +204,15 @@ return redirect('admin/products');
         join('colors','product_attributes.color_id','=','colors.id')->
         select('product_attributes.id as p_attr_id',
         'product_attributes.product_id as p_id',
+        'product_attributes.price as attribute_price',
         'colors.color_name as p_att_c_name',
         'sizes.size_name as p_att_size_name'
         )->
         where(['products.id'=>$id])->get();
  
-        $data2=json_decode($data2,true);
+
   
-       return view('admin.product_detail',$product_detail_array);
+       return view('admin.product_detail',$product_detail_array,['product_attributes'=>$data2]);
     }
 
 }
