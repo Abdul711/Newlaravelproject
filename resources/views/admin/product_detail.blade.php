@@ -15,16 +15,19 @@
                                     <table class="table table-borderless table-striped ">
                          
                                         <tbody>
-                                        <td colspan="2" class="text-center"> {{$product}}</td>
+                                        <td colspan="2" class="text-center"> {{$product_name}}</td>
                                             <tr>
-                                                 <td> Category Name </td>
+                                                 <td> Category </td>
                                                 <td>{{$category}} </td>
                                                 </tr>
                                                 <tr>
                                                 <td>Sub Category</td>
                                                 <td>{{$sub_category}}</td>
                                                 </tr>
-                                               
+                                                <tr>
+                                                <td>Brand</td>
+                                                <td>{{$brand}}</td>
+                                                </tr>
                                                 <tr>
                                                 <td>Current Status</td>
                                                 <td>{{$status}}</td>

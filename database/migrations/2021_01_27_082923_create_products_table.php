@@ -21,8 +21,8 @@ class CreateProductsTable extends Migration
             $table->string('image');
             $table->string('categories_id');
             $table->string('sub_categories_id');
+            $table->string('brand');
        
-            $table->string('added_by');
             $table->timestamps();
         });
     }
