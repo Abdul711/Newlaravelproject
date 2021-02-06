@@ -4,7 +4,17 @@
 @section('container')
 
 <h1 class="mb10">{{$page_title}}</h1>
+@if(session()->has('error_message'))
 
+<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+    <span class="badge badge-pill badge-danger">Attention Please</span>
+
+    {{session('error_message')}}	
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+@endif 
 <div class="row m-t-30">
    <div class="col-md-12">
       <form action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
@@ -107,7 +117,7 @@
                echo "</pre>";
                @endphp
                @foreach($product_attr as $key => $product_att)
-                  
+                    
                    @php
                    $new_key=$key+1;
                    @endphp
@@ -136,12 +146,14 @@
                            <div class="col-md-3">
                               <label for="size_id" class="control-label mb-1"> Size</label>
                               <select id="size_id" name="size_id[]" class="form-control">
-                                 <option value="">Select</option>
+                                 <option value="">Select Size</option>
                              
                                  @foreach ($sizes as $size)
-                                    <option value="{{$size['id']}}" selected>{{$size['size_name']}}</option>
-                      
-                            
+                                
+                                    <option value="{{$size['id']}}" >{{$product_att['sku']}} {{$size['id']}}{{$size['size_name']}}</option>
+                                                  
+                                   <option value="{{$size['id']}}">{{$size['size_name']}}</option>
+                                
                                 @endforeach
                               </select>
                            </div>

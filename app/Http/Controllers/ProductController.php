@@ -146,9 +146,23 @@ class ProductController extends Controller
  
        
     
- 
-    /* $model->save()*/;
-    $model->product_name=$product_name;
+          if(!$request->hasFile("image")){
+            $message="Image Required";
+
+            $request->session()->flash("error_message",$message);
+            
+            return redirect($request->headers->get('referer'));
+          }
+          if($product_name==null ){
+            $message="Product Name Required";
+
+            $request->session()->flash("error_message",$message);
+            
+            return redirect($request->headers->get('referer'));
+          }else{
+          $valid_name="/[A-Za-z]{3,14}/i";
+           if(preg_match_all($valid_name,$product_name)){
+            $model->product_name=$product_name;
     $model->sub_categories_id=$product_subcategory;
     $model->categories_id=$product_category;
     $model->brand=$product_brand;
@@ -157,15 +171,50 @@ class ProductController extends Controller
     $model->save();
   $product_id=$model->id;
 
-    if(!$request->hasFile("image")){
-      
-    }
+ 
    
                 
          foreach($price_array as $key => $value){
+    
+          $qty=$qty_array[$key];
+          $price=$price_array[$key];
+        
+          $sku=$sku_array[$key];
+          $mrp=$mrp_array[$key];
+    
+          if($price==null && $price==""){
+            $new_model_product=Product:: find($product_id);
+            $new_model_product->delete();
+            $message="Price Of attribute Must Be Filled Out";
+            $request->session()->flash("error_message",$message);
+            return redirect($request->headers->get('referer'));
+          }     
+          if($mrp==null && $mrp==""){
+            $new_model_product=Product:: find($product_id);
+            $new_model_product->delete();
+            $message="Mrp Of attribute Must Be Filled Out";
+            $request->session()->flash("error_message",$message);
+            return redirect($request->headers->get('referer'));
+          }
+          if($qty==null && $qty==""){
+            $new_model_product=Product:: find($product_id);
+            $new_model_product->delete();
+            $message="Qty Of attribute Must Be Filled Out";
+            $request->session()->flash("error_message",$message);
+            return redirect($request->headers->get('referer'));
+          }    
+          if($sku==null && $sku==""){
+            $new_model_product=Product:: find($product_id);
+            $new_model_product->delete();
+            $message="Sku Of attribute Must Be Filled Out";
+            $request->session()->flash("error_message",$message);
+            return redirect($request->headers->get('referer'));
+          }    
          
+          
+
          
-              if($color_array[$key]=='' && $color_array[$key]=null ){
+         if($color_array[$key]=='' && $color_array[$key]=null ){
                   $color_id=0;
               }else{
                   $color_id= $color_array[$key];
@@ -175,6 +224,8 @@ class ProductController extends Controller
             }else{
                 $size_id= $size_array[$key];
             }
+            $color=$color_id;
+            $size=$size_id;
             if($product_attr_id_array[$key]==null){
                  "Atttribute id Not Found";
                 $model=new ProductAttribute();                   
@@ -185,12 +236,7 @@ class ProductController extends Controller
             }
 
             
-       $qty=$qty_array[$key];
-       $price=$price_array[$key];
-       $color=$color_id;
-       $size=$size_id;
-       $sku=$sku_array[$key];
-       $mrp=$mrp_array[$key];
+    
        
      
 $model->price=$price;
@@ -206,7 +252,19 @@ $model->save();
      
 
         }
-      return redirect('admin/products');  
+      return redirect('admin/products');             
+           }else{
+            $message="You Have Entered Invalid Product Name";
+
+            $request->session()->flash("error_message",$message);
+            
+            return redirect($request->headers->get('referer'));
+           }
+          }
+
+    /* $model->save()*/;
+   
+    
     }
 
      public function view_detail($id)
@@ -256,6 +314,26 @@ $model->save();
 
   
        return view('admin.product_detail',$product_detail_array,['product_attributes'=>$data2]);
+    }
+     public function destroy($id)
+    {
+      
+     $model=ProductAttribute::where(['product_id'=>$id]);
+     
+     $model->delete();
+     $product_mmodel=Product::find($id);
+     $image_name=$product_mmodel->image;
+        $fileloc="app/public/media/"."/".$image_name;
+                            $filename = storage_path($fileloc);
+                         
+                       if(File::exists($filename)) {
+                          File::delete($filename);
+                        
+                        }
+     $product_mmodel->delete();
+    $message="Product Deleted";
+    session()->flash("message",$message);
+      return redirect('admin/products');
     }
 
 }

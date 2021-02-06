@@ -63,7 +63,7 @@ $i=2;
 <td><a class="btn btn-success" href="{{url('admin/products/status')}}/{{$sub['id']}}/{{$sub['status']}}">Active</a></td> 
 @endif
 <td><a class="btn btn-outline-secondary" href="{{url('admin/products/manage_products')}}/{{$sub['id']}}">Edit</a></td> 
-<td><a class="btn btn-outline-danger" href="{{url('admin/sub_category/delete')}}/{{$sub['id']}}">Delete</a></td>
+<td><a class="btn btn-outline-danger" href="{{url('admin/products/delete')}}/{{$sub['id']}}">Delete</a></td>
 </tr>
 @endforeach
 
