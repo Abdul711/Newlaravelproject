@@ -17,7 +17,15 @@ class ProductController extends Controller
 {
     public function show(){
         $product=Product::all();
+
         return view('admin.product',["subcategories"=>$product]);
+
+    }
+    public function destroy_attr($attr_id,$product_id){
+        $model_attri=ProductAttribute::find($attr_id);
+        
+        $model_attri->delete();
+      return redirect("admin/products/manage_products/$product_id");
     }
     public function manage($id=''){
                     if($id!=''){
@@ -42,19 +50,27 @@ class ProductController extends Controller
                  
                         select(
                         'product_attributes.id as attr_id',
-                        'product_attributes.product_id','product_attributes.color_id','product_attributes.size_id')->
+                        'product_attributes.product_id','product_attributes.sku','product_attributes.qty',
+                        'product_attributes.color_id','product_attributes.size_id','product_attributes.price','product_attributes.mrp')->
                         where(['products.id'=>$id])->get();
                         $product_attributes=json_decode($product_attributes,true);
 
-                    
+                        $page_data['page_title']='Update Product';
+                        $page_data['page_btn']='Update Product';     
                 
                      $heading="Update Product";
                   
                      }else{
+                         $page_data['page_title']='Add Product';
+                         $page_data['page_btn']='Add Product';
                         $product_attributes[0]['attr_id']='';
                         $product_attributes[0]['product_id']='';
                         $product_attributes[0]['color_id']='';
                         $product_attributes[0]['size_id']='';
+                        $product_attributes[0]['sku']='';
+                        $product_attributes[0]['price']='';
+                        $product_attributes[0]['mrp']='';
+                        $product_attributes[0]['qty']='';
                         $product_data[0]['product_name']='';
                         $product_data[0]['sub_category_id']=''; 
                         $product_data[0]['category_id']=''; 
@@ -64,17 +80,18 @@ class ProductController extends Controller
                         $product_data[0]['image']='';
                         $heading="Add Product";
                      }
-                     echo "<br> $heading";
+            /*         echo "<br> $heading";
                      echo"<pre>";
                     print_r($product_attributes);
-                    echo"</pre>";
-                die();
+                    echo"</pre>";*/
+            
                     /* echo "<pre>";
                      print_r($product_attributes);
                      echo "</pre>";
                      echo "<pre>";
                      print_r($product_data);
                      echo "</pre>";*/
+                     
         $category_data=Category::all();
         $sub_category=SubCategory::all();
         $color_data=Color::all();
@@ -83,7 +100,7 @@ class ProductController extends Controller
         return view('admin.manage_product',['categories'=>$category_data,
         'colors'=>$color_data,'subcategories'=>$sub_category,
         'sizes'=>$size_data,'brands'=>$brand_data,
-        'product_data'=>$product_data]);
+        'product_data'=>$product_data,"product_attr"=>$product_attributes],$page_data);
     }
     public function manage_product_process(Request $request){
              
@@ -93,13 +110,14 @@ class ProductController extends Controller
           $size_array=$request->post('size_id');
           $mrp_array=$request->post('mrp');
           $sku_array=$request->post('sku');
+         $product_attr_id_array=$request->post('paid');
           $product_name=$request->post('name');
           $product_category=$request->post('category');
           $product_subcategory=$request->post('subcategory');
-          
+           $product_id=$request->post('id');
           $product_brand=$request->post('brand');
           $product_status=1;
-
+      
             if($request->hasfile('image')){
                 $product_image=$request->file('image');
                 $ext=$product_image->extension();
@@ -115,22 +133,37 @@ class ProductController extends Controller
             else{
                 $product_image_name='';
             }
-
-
-       
-          $product_model=new Product();
-         $product_model->product_name=$product_name;
-         $product_model->categories_id=$product_category;    
-         $product_model->sub_categories_id=$product_subcategory;
-         $product_model->brand=$product_brand;
-         $product_model->status=$product_status;
-         $product_model->image=$product_image_name;
+          if($product_id==null){
+            $product_status=1;
+            $model=new Product();
+          }else{#
+            
+    
+            $model=Product::find($product_id);
+             $product_status=$model->status;
+          }
+          
  
-        $product_model->save();
-       $product_id=$product_model->id;
+       
+    
+ 
+    /* $model->save()*/;
+    $model->product_name=$product_name;
+    $model->sub_categories_id=$product_subcategory;
+    $model->categories_id=$product_category;
+    $model->brand=$product_brand;
+    $model->image=$product_image_name;
+   $model->status=$product_status;
+    $model->save();
+  $product_id=$model->id;
+
+    if(!$request->hasFile("image")){
+      
+    }
+   
                 
          foreach($price_array as $key => $value){
-          $model=new ProductAttribute() ;  
+         
          
               if($color_array[$key]=='' && $color_array[$key]=null ){
                   $color_id=0;
@@ -142,14 +175,24 @@ class ProductController extends Controller
             }else{
                 $size_id= $size_array[$key];
             }
+            if($product_attr_id_array[$key]==null){
+                 "Atttribute id Not Found";
+                $model=new ProductAttribute();                   
+            }else{
+               $attr_f_id= $product_attr_id_array[$key];
+               "Atttribute id Found $attr_f_id";
+               $model=ProductAttribute::find($attr_f_id);
+            }
 
-       
+            
        $qty=$qty_array[$key];
        $price=$price_array[$key];
        $color=$color_id;
        $size=$size_id;
        $sku=$sku_array[$key];
        $mrp=$mrp_array[$key];
+       
+     
 $model->price=$price;
 $model->mrp=$mrp;
 $model->sku=$sku;
@@ -158,12 +201,12 @@ $model->sku=$sku;
 $model->color_id=$color;
 $model->qty=$qty;
 $model->product_id=$product_id;
-$model->save();    
+$model->save();
   
      
 
         }
-        return redirect('admin/products');  
+      return redirect('admin/products');  
     }
 
      public function view_detail($id)

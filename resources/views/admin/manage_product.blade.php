@@ -1,9 +1,9 @@
 @extends('admin/layout')
-@section('page_title','Manage Product')
+@section('page_title',"$page_title")
 @section('product_select','active')
 @section('container')
 
-<h1 class="mb10">Manage Product</h1>
+<h1 class="mb10">{{$page_title}}</h1>
 
 <div class="row m-t-30">
    <div class="col-md-12">
@@ -101,7 +101,18 @@
             <h2 class="mb10">Product Attributes</h2>
             <div class="col-lg-12" id="product_attr_box">
              
-               <input id="paid" type="text" name="paid[]" value="">
+            @php 
+               echo "<pre>";
+               print_r($product_attr);
+               echo "</pre>";
+               @endphp
+               @foreach($product_attr as $key => $product_att)
+                  
+                   @php
+                   $new_key=$key+1;
+                   @endphp
+                   {{$new_key}}
+               <input id="paid" type="text" name="paid[]" value="{{$product_att['attr_id']}}">
                <div class="card" id="product_attr_">
                   <div class="card-body">
                      <div class="form-group">
@@ -109,15 +120,18 @@
                       
                            <div class="col-md-2">
                               <label for="price" class="control-label mb-1"> Price</label>
-                              <input id="price" name="price[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
+                              <input id="price" name="price[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{$product_att['price']}}">
                            </div>
                            <div class="col-md-2">
                               <label for="price" class="control-label mb-1"> MRP</label>
-                              <input id="price" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
+                              <input id="price" name="mrp[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{$product_att['mrp']}}">
                            </div>
                            <div class="col-md-2">
                               <label for="price" class="control-label mb-1"> SKU</label>
-                              <input id="price" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
+                              <input id="price" name="sku[]" type="text" 
+                              class="form-control" aria-required="true" 
+                              aria-invalid="false" 
+                              value="{{$product_att['sku']}}">
                            </div>
                            <div class="col-md-3">
                               <label for="size_id" class="control-label mb-1"> Size</label>
@@ -145,17 +159,23 @@
                           
                            <div class="col-md-2">
                               <label for="qty" class="control-label mb-1"> Qty</label>
-                              <input id="qty" name="qty[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" >
+                              <input id="qty" name="qty[]" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{$product_att['qty']}}" >
                            </div>
                      
                            <div class="col-md-2">
                               <label for="attr_image" class="control-label mb-1"> 
                               &nbsp;&nbsp;&nbsp;</label>
                               
-                        
-                                <button type="button" class="btn btn-success mt-4 btn-lg" onclick="add_more()">
-                                <i class="fa fa-plus"></i>&nbsp; Add</button>
-            
+                        @if($new_key>=2)
+                       @php
+                     
+                       @endphp
+                       <a href="{{url('admin/products/manage_products/delete_attrs')}}/{{$product_att['attr_id']}}/{{$product_att['product_id']}}"> <button type="button" class="btn btn-danger mt-4 btn-lg" >
+                                <i class="fa fa-minus"></i>&nbsp; Remove</button></a>
+                         @else       
+                              <a>  <button type="button" class="btn btn-success mt-4 btn-lg" onclick="add_more()">
+                                <i class="fa fa-plus"></i>&nbsp; Add</button></a>
+                         @endif
                          
                      
 
@@ -164,15 +184,15 @@
                      </div>
                   </div>
                </div>
-         
+               @endforeach
             </div>
          </div>
          <div>
             <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-            Submit
+            {{$page_btn}}
             </button>
          </div>
-         <input type="hidden" name="id" value=""/>
+         <input type="text" name="id" value="{{$product_data[0]['product_id']}}"/>
       </form>
    </div>
 </div>

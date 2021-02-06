@@ -47,6 +47,7 @@ Route::group(['middleware'=>'admin_auth'],function(){
       /* Crud Operation Route For Product */
     Route::get('admin/products',[ProductController::class,'show']);
     Route::get('admin/products/delete/{id}',[ProductController::class,'destroy']);
+    Route::get('admin/products/manage_products/delete_attrs/{attr_id}/{product_id}',[ProductController::class,'destroy_attr']);
     Route::get('admin/products/view_detail/{id}',[ProductController::class,'view_detail']);
     Route::get('admin/products/manage_products',[ProductController::class,'manage']);
     Route::get('admin/products/status/{id}/{status}',[ProductController::class,'update_status']);
