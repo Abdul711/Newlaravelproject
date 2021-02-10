@@ -14649,3 +14649,6 @@ section {
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
 }
+
+.mb10{margin-bottom: 10px;}
+.ml15{margin-left: 15px;}

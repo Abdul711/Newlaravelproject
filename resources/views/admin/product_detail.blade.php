@@ -8,6 +8,9 @@
 
 @endphp
 
+{{asset($image)}}
+<img src="">
+<img src="{{asset($image)}}">
 <a href="{{url('admin/products')}}" class="btn btn-outline-primary"> Back </a>
                         <div class="row">
                             <div class="col-lg-12">
