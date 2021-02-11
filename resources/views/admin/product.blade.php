@@ -11,9 +11,9 @@
     </div> 
     @endif                     
     <h1 class="mb10">Product</h1>
-    <a href="{{url('admin/product/manage_product')}}">
+    <a href="{{url('admin/products/manage_products')}}">
         <button type="button" class="btn btn-success">
-            Add Product
+            Add Productc
         </button>
     </a>
     <div class="row m-t-30">
@@ -27,33 +27,23 @@
                             <th>Name</th>
                             <th>Slug</th>
                             <th>Image</th>
-                            <th>Action</th>
+                            <th colspan="3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                    <tr>
                         @foreach($data as $list)
-                        <tr>
-                            <td>{{$list->id}}</td>
-                            <td>{{$list->name}}</td>
-                            <td>{{$list->slug}}</td>
-                            <td>
-                            @if($list->image!='')
-                                <img width="100px" src="{{asset('storage/media/'.$list->image)}}"/>
-                            @endif
-                            </td>
-                            <td>
-                                <a href="{{url('admin/product/manage_product/')}}/{{$list->id}}"><button type="button" class="btn btn-success">Edit</button></a>
-
-                                @if($list->status==1)
-                                    <a href="{{url('admin/product/status/0')}}/{{$list->id}}"><button type="button" class="btn btn-primary">Active</button></a>
-                                 @elseif($list->status==0)
-                                    <a href="{{url('admin/product/status/1')}}/{{$list->id}}"><button type="button" class="btn btn-warning">Deactive</button></a>
-                                @endif
-
-                                <a href="{{url('admin/product/delete/')}}/{{$list->id}}"><button type="button" class="btn btn-danger">Delete</button></a>
-                            </td>
-                        </tr>
+                    
+                      <td>{{$list['product_name']}}</td>
+                      <td>{{$list['product_name']}}</td>
+                      <td>{{$list['product_name']}}</td>
+                      <td>{{$list['product_name']}}</td>
+                      <td>{{$list['product_name']}}</td>
+                      
+                      <td><a class="btn btn-outline-secondary" href="{{url('admin/products/manage_products')}}/{{$list['id']}}">Edit</a></td> 
+                            <td><a class="btn btn-outline-danger" href="{{url('admin/products/delete')}}/{{$list['id']}}">Delete</a></td>
                         @endforeach
+                        </tr>
                     </tbody>
                 </table>
             </div>
