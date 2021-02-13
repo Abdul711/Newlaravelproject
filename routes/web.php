@@ -9,6 +9,7 @@ use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\TaxController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,15 +46,16 @@ Route::group(['middleware'=>'admin_auth'],function(){
     Route::get('admin/sub_category/manage_sub_category/{id}',[SubCategoryController::class,'manage']);
     Route::post('admin/sub_category/manage_sub_category',[SubCategoryController::class,'manage_sub_category_process'])->name('sub_category.store');
       /* Crud Operation Route For Product */
-    Route::get('admin/products',[ProductController::class,'show']);
-    Route::get('admin/products/delete/{id}',[ProductController::class,'destroy']);
-    Route::get('admin/products/manage_products/delete_attrs/{attr_id}/{product_id}',[ProductController::class,'destroy_attr']);
-    Route::get('admin/products/view_detail/{id}',[ProductController::class,'view_detail']);
-    Route::get('admin/products/manage_products',[ProductController::class,'manage']);
-    Route::get('admin/products/status/{id}/{status}',[ProductController::class,'update_status']);
-    Route::get('admin/products/manage_products/{id}',[ProductController::class,'manage']);
-    Route::post('admin/products/manage_products',[ProductController::class,'manage_product_process'])->name('product.store');
-    /* Crud Operation Route For Coupon */
+      Route::get('admin/product',[ProductController::class,'show']);
+      Route::get('admin/product/manage_product',[ProductController::class,'manage_product']);
+      Route::get('admin/product/manage_product/{id}',[ProductController::class,'manage_product']);
+      Route::post('admin/product/manage_producty_process',[ProductController::class,'manage_product_process'])->name('product.manage_product_process');
+      Route::get('admin/product/delete/{id}',[ProductController::class,'delete']);
+      Route::get('admin/product/status/{status}/{id}',[ProductController::class,'status']);
+      Route::get('admin/product/product_attr_delete/{paid}/{pid}',[ProductController::class,'product_attr_delete']);
+      Route::get('admin/product/product_images_delete/{paid}/{pid}',[ProductController::class,'product_images_delete']);
+
+
 Route::get('admin/coupon',[CouponController::class,'show']);
 Route::get('admin/coupon/delete/{id}',[CouponController::class,'destroy']);
 Route::get('admin/coupon/status/{id}/{status}',[CouponController::class,'update_status']);
@@ -82,6 +84,14 @@ Route::get('admin/brand/manage_brand/{id}',[BrandController::class,'create']);
 Route::post('admin/brand/manage_brand',[BrandController::class,'store'])->name('brand.store');
 Route::get('admin/brand/delete/{id}',[BrandController::class,'destroy']);
 Route::get('admin/brand/status/{id}/{status}',[BrandController::class,'update_status']);
+Route::get('admin/tax',[TaxController::class,'index']);
+
+Route::get('admin/tax/manage_tax',[TaxController::class,'manage_tax']);
+Route::get('admin/tax/manage_tax/{id}',[TaxController::class,'manage_tax']);
+Route::post('admin/tax/manage_tax_process',[TaxController::class,'manage_tax_process'])->name('tax.manage_tax_process');
+Route::get('admin/tax/delete/{id}',[TaxController::class,'delete']);
+Route::get('admin/tax/status/{status}/{id}',[TaxController::class,'status']);
+
     Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');
@@ -92,4 +102,8 @@ Route::get('admin/brand/status/{id}/{status}',[BrandController::class,'update_st
     
     });
 });
+
+
+
+
 

@@ -1,6 +1,6 @@
 @extends('admin/layout')
-@section('page_title','Product')
-@section('product_select','active')
+@section('page_title','Tax')
+@section('tax_select','active')
 @section('container')
     @if(session()->has('message'))
     <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
@@ -9,11 +9,11 @@
             <span aria-hidden="true">×</span>
         </button>
     </div> 
-    @endif                     
-    <h1 class="mb10">Product</h1>
-    <a href="{{url('admin/product/manage_product')}}">
+    @endif                           
+    <h1 class="mb10">Tax</h1>
+    <a href="{{url('admin/tax/manage_tax')}}">
         <button type="button" class="btn btn-success">
-            Add Product
+            Add Tax
         </button>
     </a>
     <div class="row m-t-30">
@@ -24,9 +24,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Image</th>
+                            <th>Tax Value</th>
+                            <th>Tax Desc</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -34,23 +33,18 @@
                         @foreach($data as $list)
                         <tr>
                             <td>{{$list->id}}</td>
-                            <td>{{$list->name}}</td>
-                            <td>{{$list->slug}}</td>
+                            <td>{{$list->tax_desc}}</td>
+                            <td>{{$list->tax_value}}</td>
                             <td>
-                            @if($list->image!='')
-                                <img width="100px" src="{{asset('storage/media/'.$list->image)}}"/>
-                            @endif
-                            </td>
-                            <td>
-                                <a href="{{url('admin/product/manage_product/')}}/{{$list->id}}"><button type="button" class="btn btn-success">Edit</button></a>
+                                <a href="{{url('admin/tax/manage_tax/')}}/{{$list->id}}"><button type="button" class="btn btn-success">Edit</button></a>
 
                                 @if($list->status==1)
-                                    <a href="{{url('admin/product/status/0')}}/{{$list->id}}"><button type="button" class="btn btn-primary">Active</button></a>
+                                    <a href="{{url('admin/tax/status/0')}}/{{$list->id}}"><button type="button" class="btn btn-primary">Active</button></a>
                                  @elseif($list->status==0)
-                                    <a href="{{url('admin/product/status/1')}}/{{$list->id}}"><button type="button" class="btn btn-warning">Deactive</button></a>
+                                    <a href="{{url('admin/tax/status/1')}}/{{$list->id}}"><button type="button" class="btn btn-warning">Deactive</button></a>
                                 @endif
 
-                                <a href="{{url('admin/product/delete/')}}/{{$list->id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+                                <a href="{{url('admin/tax/delete/')}}/{{$list->id}}"><button type="button" class="btn btn-danger">Delete</button></a>
                             </td>
                         </tr>
                         @endforeach

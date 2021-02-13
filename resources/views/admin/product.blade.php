@@ -11,9 +11,9 @@
     </div> 
     @endif                     
     <h1 class="mb10">Product</h1>
-    <a href="{{url('admin/products/manage_products')}}">
+    <a href="{{url('admin/product/manage_product')}}">
         <button type="button" class="btn btn-success">
-            Add Productc
+            Add Products
         </button>
     </a>
     <div class="row m-t-30">
@@ -25,27 +25,32 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Slug</th>
+                            
                             <th>Image</th>
-                            <th colspan="3">Action</th>
+                            <th colspan="3" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        @foreach($data as $list)
+                 
                     
-                      <td>{{$list['product_name']}}</td>
-                      <td>{{$list['product_name']}}</td>
-                      <td>{{$list['product_name']}}</td>
-                      <td>{{$list['product_name']}}</td>
-                      <td>{{$list['product_name']}}</td>
-                      
-                      <td><a class="btn btn-outline-secondary" href="{{url('admin/products/manage_products')}}/{{$list['id']}}">Edit</a></td> 
-                            <td><a class="btn btn-outline-danger" href="{{url('admin/products/delete')}}/{{$list['id']}}">Delete</a></td>
-                        @endforeach
+                                       
+                        @foreach($data as $key => $product_data)
+                        <tr>
+                        <td>{{$key+1}}</td>
+                        <td>{{$product_data->product_name}}</td>
+                       <td> <a href="{{url('storage/media/'.$product_data->image)}}"> <img src="{{asset('storage/media/'.$product_data->image)}}" width="100px"> </a>  </td>
+                       @if($product_data['status']==0)
+<td><a class="btn btn-warning" href="{{url('admin/product/status')}}/{{$product_data['id']}}/{{$product_data['status']}}">Deactive</a></td> 
+@elseif($product_data['status']==1)
+<td><a class="btn btn-success" href="{{url('admin/product/status')}}/{{$product_data['id']}}/{{$product_data['status']}}">Active</a></td> 
+@endif
+<td><a class="btn btn-outline-secondary" href="{{url('admin/product/manage_product')}}/{{$product_data['id']}}">Edit</a></td> 
+                            <td><a class="btn btn-outline-danger" href="{{url('admin/product/delete')}}/{{$product_data['id']}}">Delete</a></td>
                         </tr>
+                        @endforeach  
                     </tbody>
                 </table>
+          
             </div>
             <!-- END DATA TABLE-->
         </div>

@@ -92,9 +92,14 @@
 
                         </li>
                         <li>
-                            <a href="{{url('admin/products')}}"">
+                            <a href="{{url('admin/product')}}"">
                                 <i class="fas fa-tachometer-alt"></i>Product</a>
 
+                        </li>
+                        
+                        <li>
+                            <a href="{{url('admin/tax')}}">
+                            <i class="fa fa-tachometer-alt"></i>Tax</a>
                         </li>
                         <li>
                             <a href="{{url('admin/size')}}">
