@@ -12,7 +12,7 @@ use  App\Models\ProductAttribute;
 use  App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {

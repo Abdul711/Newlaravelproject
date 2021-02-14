@@ -130,7 +130,44 @@
                   </div>
                </div>
             </div>
-           
+            <h2 class="mb10 ml15">Product Images</h2>
+            <div class="col-lg-12">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="form-group">
+                        <div class="row" id="product_images_box">
+               <!--Loop Start-->         
+                        <input id="piid" type="hidden" name="piid[]" value="">
+                        <div class="col-md-4 product_images_"  >
+                              <label for="images" class="control-label mb-1"> Image</label>
+                              <input id="images" name="images[]" type="file" class="form-control" aria-required="true" aria-invalid="false" >
+
+                       
+                                 <a href="{{asset('storage/media/')}}" target="_blank"><img width="100px" src="{{asset('storage/media/')}}"/></a>
+                           
+                           </div>
+                           
+                           <div class="col-md-2">
+                              <label for="images" class="control-label mb-1"> 
+                              &nbsp;&nbsp;&nbsp;</label>
+                              
+                   
+                                <button type="button" class="btn btn-success btn-lg" onclick="add_image_more()">
+                                <i class="fa fa-plus"></i>&nbsp; Add</button>
+                           
+                              <a href="{{url('admin/product/product_images_delete/')}}/9/1"><button type="button" class="btn btn-danger btn-lg">
+                                <i class="fa fa-minus"></i>&nbsp; Remove</button></a>
+                   
+
+                           </div>
+                        
+                           <!---loop End-->
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
             <h2 class="mb10 ml15">Product Attributes</h2>
             <div class="col-lg-12" id="product_attr_box">
                  @foreach($product_attributes as $key => $product_attribute)
@@ -191,7 +228,7 @@
                               <label for="attr_image" class="control-label mb-1"> Image</label>
                               <input id="attr_image" name="attr_image[]" type="file" class="form-control" aria-required="true" aria-invalid="false" >
                              @if($product_attribute['attr_image']!='' && $product_attribute['attr_image']!=null)
-                             <a href="{{url('storage/media/attr_image/'.$product_attribute['attr_image'])}}"><img src="{{asset('storage/media/attr_image/'.$product_attribute['attr_image'])}}" width="100px"></a>
+                             <a target="_blank" href="{{url('storage/media/attr_image/'.$product_attribute['attr_image'])}}"><img src="{{asset('storage/media/attr_image/'.$product_attribute['attr_image'])}}" width="100px"></a>
                               @endif
                            </div>
 
