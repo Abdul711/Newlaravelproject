@@ -24,12 +24,16 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tax Value</th>
                             <th>Tax Desc</th>
-                            <th>Action</th>
+                            <th>Tax Value</th>
+                            <th class="text-center" >Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                    @php
+                    $total_tax=count($data);
+                    @endphp
+                    @if($total_tax>0)
                         @foreach($data as $list)
                         <tr>
                             <td>{{$list->id}}</td>
@@ -48,6 +52,11 @@
                             </td>
                         </tr>
                         @endforeach
+                        @else
+                        <tr>
+                            <td colspan="5" class="text-center">No Record Found</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

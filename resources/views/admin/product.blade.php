@@ -32,8 +32,10 @@
                     </thead>
                     <tbody>
                  
-                    
-                                       
+                    @php
+                    $total=count($data);
+                    @endphp
+                    @if($total>0)            
                         @foreach($data as $key => $product_data)
                         <tr>
                         <td>{{$key+1}}</td>
@@ -47,7 +49,12 @@
 <td><a class="btn btn-outline-secondary" href="{{url('admin/product/manage_product')}}/{{$product_data['id']}}">Edit</a></td> 
                             <td><a class="btn btn-outline-danger" href="{{url('admin/product/delete')}}/{{$product_data['id']}}">Delete</a></td>
                         </tr>
-                        @endforeach  
+                        @endforeach 
+                        @else
+                        <tr>
+                        <td colspan="5" class="text-center">No Record Found</td>
+                        <tr>
+                        @endif 
                     </tbody>
                 </table>
           

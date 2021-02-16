@@ -23,6 +23,10 @@ class CreateProductsTable extends Migration
             $table->string('size_id')->nullable();
             $table->string('image')->nullable();
             $table->string('keyword')->nullable();
+            $table->string('featured')->nullable();
+            $table->string('availability')->nullable();
+            $table->string('discount_id')->nullable();
+         
             $table->timestamps();
         });
     }

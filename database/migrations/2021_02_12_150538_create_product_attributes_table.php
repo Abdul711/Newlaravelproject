@@ -20,7 +20,11 @@ class CreateProductAttributesTable extends Migration
             $table->string('qty')->nullable();
             $table->string('mrp')->nullable();
             $table->string('price')->nullable();
+            $table->string('product_id')->nullable();
+            $table->string('sku')->nullable();
+            $table->string('tax_id')->nullable();
             $table->string('attr_image')->nullable();
+            $table->string('price_after_tax')->nullable();
             $table->timestamps();
         });
     }

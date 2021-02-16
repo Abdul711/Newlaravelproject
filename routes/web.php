@@ -22,7 +22,7 @@ use App\Http\Controllers\TaxController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('front_end.index');
 });
 Route::get('admin',[AdminController::class,'index']);
 

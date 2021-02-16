@@ -10,6 +10,7 @@ class TaxController extends Controller
     public function index()
     {
         $result['data']=Tax::all();
+        
         return view('admin/tax',$result);
     }
 

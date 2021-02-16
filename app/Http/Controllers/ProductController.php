@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Color;
-use  App\Models\Size;
-use  App\Models\ProductAttribute;
-use  App\Models\Brand;
+use App\Models\Size;
+use App\Models\ProductAttribute;
+use App\Models\ProductImage;
+use App\Models\Brand;
+use App\Models\Tax;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -73,6 +74,8 @@ class ProductController extends Controller
             $product_data['image']='';
             $product_data['brand_id']='';
             $product_data['id']='';
+            $product_data['featured']='1';
+            $product_data['availability']='1';
             $product_attributes[0]['id']='';
             $product_attributes[0]['color_id']='';      
             $product_attributes[0]['size_id']='';
@@ -81,6 +84,10 @@ class ProductController extends Controller
             $product_attributes[0]['sku']='';
             $product_attributes[0]['mrp']='';
             $product_attributes[0]['attr_image']='';
+            $product_attributes[0]['price_after_tax']='';
+            $product_attributes[0]['tax_id']='';
+            $product_image_collect[0]['images']='';
+            $product_image_collect[0]['id']='';
         }else{
             $product_data=DB::table('products')->where(['id'=>$id])->get();
              $product_data=json_decode($product_data,true);
@@ -89,6 +96,18 @@ class ProductController extends Controller
             $product_attributes=json_decode($product_attributes,true);
             $page_data['page_title']="Update Product";
             $page_data['page_btn']="Update Product";
+            $product_images=ProductImage::where(['product_id'=>$id])->get();
+            $product_images=json_decode($product_images,true);
+             $total_image=count($product_images);
+               if($total_image<=0){
+                   $product_image_collect[0]['images']='';
+                   $product_image_collect[0]['id']='';
+               }else{
+                   $product_image_collect=$product_images;
+               }
+
+             
+
         }
     
       $color_data=Color::where(['status'=>'1'])->get(); 
@@ -100,7 +119,9 @@ class ProductController extends Controller
       $sub_category_data=SubCategory::where(['status'=>'1'])->get(); 
       $sub_category_data=json_decode($sub_category_data,true); 
       $brand_data=Brand::where(['status'=>'1'])->get(); 
-      
+      $brand_data=json_decode($brand_data,true); 
+      $tax_data=Tax::where(['status'=>'1'])->get(); 
+      $tax_data=json_decode($tax_data,true); 
   
        return view('admin.manage_product',$page_data,[
            "product_data"=>$product_data,
@@ -109,7 +130,9 @@ class ProductController extends Controller
            "sizes"=>$size_data,
            "categories"=>$category_data,
            "subcategories"=>$sub_category_data,
-           "brands"=>$brand_data
+           "brands"=>$brand_data,
+           "taxes"=>$tax_data,
+           "product_images"=>$product_image_collect
            ]);       
     }
 
@@ -122,9 +145,19 @@ class ProductController extends Controller
      */
     public function manage_product_process(Request $request)
     {
-       $link=$request->headers->get('referer');  
-
+/* echo  $link=$request->headers->get('referer');  
+       echo "<pre>";     
+       print_r($request->post());
     
+       echo "</pre>";  
+       die();*/
+       
+       
+
+
+
+
+        
         if($request->post('id')==''){
         $name_valid="required|min:3|max:24|unique:products,product_name";
         $image_valid="required|mimes:jpg,png";
@@ -147,24 +180,26 @@ class ProductController extends Controller
             'name.unique'=>'Product AlReady Exists', 
             'name.max'=>'Product Name must Be less then 24 characters '
         ]);   
-        $link=$request->headers->get('referer');
+       $link=$request->headers->get('referer');
              if ($validator->fails()) {
              return redirect($link)->withErrors($validator);
              /*withInput()*/;
             }
 
 
-   echo "<pre>";     
-   print_r($request->post());
 
-   echo "</pre>";  
+
+
    $previous_link=$request->headers->get('referer');
    $product_id=$request->post('id');
    $category_id=$request->post('category_id');
    $sub_category_id=$request->post('sub_category_id');
-   $brand_id=$request->post('brand');
+   $brand_id=$request->post('brand_id');
    $product_name=$request->post('name');
-   $token=$request->post('_token');
+   $availability=$request->post('available');
+   $featured=$request->post('feature');
+
+   /* Get Value For Product Attribute */
    $product_attr_id_array=$request->post('paid');
    $product_attr_price_array=$request->post('price');
    $product_attr_mrp_array=$request->post('mrp');
@@ -172,11 +207,14 @@ class ProductController extends Controller
    $product_attr_color_array=$request->post('color_id');
    $product_attr_size_array=$request->post('size_id');
    $product_attr_sku_array=$request->post('sku');
- 
+   $product_attr_tax_id_array=$request->post('tax_id');
+      /* Get Value For Product Image */
+   $product_images_id_array=$request->post('piid'); 
    
         if($product_id==null && $product_id==''){
            $product_model=new Product();
            $new_status=1;
+          $new_av_status=1;
            $message="Product Inserted";
          if($request->hasFile('image')){
              $image=$request->file('image');
@@ -211,21 +249,21 @@ class ProductController extends Controller
             }
                  
    
-                  
+            $new_av_status=$product_model->availability;      
             $new_status=$product_model->status;
             $message="Product Updated";
         }
    
    
     
-
-
+        $product_model->featured=$featured;
+        $product_model->availability=$availability;
         $product_model->product_name=$product_name;
         $product_model->category_id=$category_id;
         $product_model->sub_category_id=$sub_category_id;
         $product_model->brand_id=$brand_id;
         $product_model->status=$new_status;
-        $product_model->token=$token;
+  
         $product_model->save();
         
         $product_id=$product_model->id;
@@ -239,6 +277,11 @@ class ProductController extends Controller
                $attr_size=$product_attr_size_array[$key];
                $attr_color=$product_attr_color_array[$key];
                $attr_sku=$product_attr_sku_array[$key];
+               $attr_tax_id=$product_attr_tax_id_array[$key];
+               $attr_tax=Tax::find($attr_tax_id);
+               $tax_value=$attr_tax->tax_value;
+                $tax_value=floor(($tax_value/100)*$attr_price);
+               $attr_price_after_tax=$tax_value+$attr_price;
                 if($attr_id=='' && $attr_id==null){
                   
                      $attribute_model=new ProductAttribute();
@@ -278,18 +321,40 @@ class ProductController extends Controller
                 $attribute_model->sku=$attr_sku;
                 $attribute_model->qty=$attr_qty;
                 $attribute_model->product_id=$product_id;
-                $attribute_model->save();
+                $attribute_model->tax_id=$attr_tax_id;
+                $attribute_model->price_after_tax=$attr_price_after_tax;
+              $attribute_model->save();
            }     
       
       
+           foreach ($product_images_id_array as $key => $product_images) {
+            $image_id=$product_images_id_array[$key];
+          if($request->hasFile("images.$key")){
+           $product_image=$request->file("images.$key");
+           $image_name=rand();
+           $image_name=$image_name+time();
+           $product_image_name=$image_name.'.'.$product_image->extension();
+             $product_image->storeAs('/public/media/product_images',$product_image_name);
+              if($image_id=='' && $image_id==null)
+             {
+             $product_image_model=new ProductImage();
+             }else{
+               $product_image_model=ProductImage::find($image_id);
+             }
+            
+               $product_image_model->images=$product_image_name;
+               $product_image_model->product_id=$product_id;  
+               $product_image_model->save();
+           }
+      }
+         
       
       
       
       
       
       
-      
-      
+
       
         session()->flash("message",$message);
        return redirect('admin/product');
@@ -325,6 +390,20 @@ class ProductController extends Controller
        $link="admin/product/manage_product/$product_id";
         return redirect($link);
      }
+     public function product_images_delete($image_id,$product_id)
+
+     {
+        $attribute_model=ProductImage::find($image_id);
+       $attr_image=$attribute_model->images;
+      if(Storage::exists('/public/media/product_images/',$attr_image)){
+             
+        Storage::delete("/public/media/product_iamges/$attr_image");
+       }
+       session()->flash("message","Product Image Deleted Successfully");
+        $attribute_model->delete();
+       $link="admin/product/manage_product/$product_id";
+        return redirect($link);
+     }
     /**
      * Remove the specified resource from storage.
      *
@@ -335,15 +414,25 @@ class ProductController extends Controller
     {
         //
        $product_attr_data=DB::table('product_attributes')->where(['product_id'=>$product_id])->get();
-      
+       $product_image_data=DB::table('product_images')->where(['product_id'=>$product_id])->get();
        $product_data=DB::table('products')->where(['id'=>$product_id])->get();
        $product_data=json_decode($product_data,true);
        $product_attr_data=json_decode($product_attr_data,true);
+       $product_image_data=json_decode($product_image_data,true);
               foreach ($product_data as $key => $value) {
                  $image_to_delete=$value['image'];
      if(Storage::exists('/public/media/',$image_to_delete)){
              
             Storage::delete("/public/media/$image_to_delete");
+
+
+        }
+              }
+                 foreach ($product_image_data as $key => $value2) {
+                 $image_to_delete=$value2['images'];
+     if(Storage::exists('/public/media/product_images',$image_to_delete)){
+             
+            Storage::delete("/public/media/product_images/$image_to_delete");
 
 
         }
@@ -359,11 +448,15 @@ class ProductController extends Controller
                 }
               }
               DB::table('product_attributes')->where(['product_id'=>$product_id])->delete();
-      
+         
+              DB::table('product_images')->where(['product_id'=>$product_id])->delete();
               DB::table('products')->where(['id'=>$product_id])->delete();
+
+
+
         $message="Product Deleted";
               session()->flash("message",$message);       
-          return redirect('admin/product');
+         return redirect('admin/product');
            
     }
 }
