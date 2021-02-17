@@ -17,7 +17,6 @@ class SubCategoryController extends Controller
    join('categories','categories.id','=','sub_categories.category_id')->
    select('categories.category_name','sub_categories.status','sub_categories.sub_category_name',
    'sub_categories.id','sub_categories.created_at')->get();
-
 $data=json_decode($data,true);
 
 

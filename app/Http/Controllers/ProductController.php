@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\SubCategory;
@@ -89,9 +90,20 @@ class ProductController extends Controller
             $product_image_collect[0]['images']='';
             $product_image_collect[0]['id']='';
         }else{
-            $product_data=DB::table('products')->where(['id'=>$id])->get();
-             $product_data=json_decode($product_data,true);
-             $product_data=$product_data[0];
+            $product_dat=DB::table('products')->where(['id'=>$id])->get();
+            $pn=$product_dat[0]->product_name;
+            $product_name=Crypt::decryptString($pn);
+           /* echo"<pre>";
+            print_r($product_dat);
+            echo"</pre>";*/
+           $product_data['product_name']=$product_name;
+           $product_data['category_id']=$product_dat[0]->category_id;
+           $product_data['sub_category_id']=$product_dat[0]->sub_category_id;;
+           $product_data['image']=$product_dat[0]->image;
+           $product_data['brand_id']=$product_dat[0]->brand_id;
+           $product_data['id']=$product_dat[0]->id;
+           $product_data['featured']=$product_dat[0]->featured;
+           $product_data['availability']=$product_dat[0]->availability;
               $product_attributes=ProductAttribute::where(['product_id'=>$id])->get();
             $product_attributes=json_decode($product_attributes,true);
             $page_data['page_title']="Update Product";

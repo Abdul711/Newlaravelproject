@@ -29,7 +29,7 @@
                         <tr>
                             <th>S.NO</th>
                             <th> Sub Categories Name</th>
-                            <th> Categories Name</th>
+                        
                             <th> Added On </th>
                             <th colspan="3" class="text-center" > Action </th>
                         </tr>
@@ -55,7 +55,7 @@ $total_record=   count($subcategories);
 <tr>
 <td>{{$key+1}}</td>
 <td>{{$sub['sub_category_name']}}      </td>
-<td>{{$sub['category_name']}}      </td>
+
 
 <td>{{ date("d-M-Y H:i:s",strtotime($sub['created_at']))}}</td>
 

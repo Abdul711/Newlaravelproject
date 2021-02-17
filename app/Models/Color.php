@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Color extends Model
 {
     use HasFactory;
+    public function getColorNameAttribute($value){
+        return ucFirst($value);
+    }
 }
