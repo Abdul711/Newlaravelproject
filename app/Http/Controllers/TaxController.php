@@ -19,7 +19,8 @@ class TaxController extends Controller
     {
         if($id>0){
             $arr=Tax::where(['id'=>$id])->get(); 
-
+            $result['page_title']='Update Tax';
+            $result['page_btn']='Update Tax';
             $result['tax_desc']=$arr['0']->tax_desc;
             $result['tax_value']=$arr['0']->tax_value;
             $result['status']=$arr['0']->status;
@@ -29,7 +30,8 @@ class TaxController extends Controller
             $result['tax_value']='';
             $result['status']='';
             $result['id']=0;
-            
+            $result['page_title']='Add Tax';
+            $result['page_btn']='Add Tax';
         }
         return view('admin/manage_tax',$result);
     }

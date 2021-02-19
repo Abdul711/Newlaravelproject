@@ -1,14 +1,14 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
-class {{ class }} extends Model
+use Illuminate\Support\Str;
+class Vendor extends Model
 {
  
     use HasFactory;
-  public $timestamps=false;
+   public $timestamps=false;
 }

@@ -23,6 +23,14 @@
    </button>
 </div> 
 @enderror
+@error('tax_id.*')
+<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+   {{$message}}  
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+         <span aria-hidden="true">×</span>
+   </button>
+</div> 
+@enderror
 
 @error('images.*')
 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">

@@ -1,20 +1,18 @@
 @extends('admin/layout')
-@section('page_title','Manage Tax')
+@section('page_title',"$page_title")
 @section('tax_select','active')
 @section('container')
-    <h1 class="mb10">Manage Tax</h1>
-    <a href="{{url('admin/tax')}}">
-        <button type="button" class="btn btn-success">
-            Back
-        </button>
-    </a>
+    <h1 class="mb10">{{$page_title}}</h1>
+
+                    
+                 
     <div class="row m-t-30">
         <div class="col-md-12">
         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form action="{{route('tax.manage_tax_process')}}" method="post">
+                                        <form action="{{route('vendor.manage_vendor_process')}}" method="post">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="size" class="control-label mb-1">Tax Value </label>
@@ -33,7 +31,8 @@
                                             
                                             <div>
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                                    Submit
+                                               {{$page_btn}}
+            
                                                 </button>
                                             </div>
                                             <input type="hidden" name="id" value="{{$id}}"/>

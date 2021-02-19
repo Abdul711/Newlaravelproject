@@ -10,6 +10,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\VendorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +24,9 @@ use App\Http\Controllers\TaxController;
 
 Route::get('/', function () {
     return view('front_end.index');
+});
+Route::get('/my_account', function () {
+    return view('front_end.account');
 });
 Route::get('admin',[AdminController::class,'index']);
 
@@ -84,14 +88,20 @@ Route::get('admin/brand/manage_brand/{id}',[BrandController::class,'create']);
 Route::post('admin/brand/manage_brand',[BrandController::class,'store'])->name('brand.store');
 Route::get('admin/brand/delete/{id}',[BrandController::class,'destroy']);
 Route::get('admin/brand/status/{id}/{status}',[BrandController::class,'update_status']);
-Route::get('admin/tax',[TaxController::class,'index']);
 
+Route::get('admin/tax',[TaxController::class,'index']);
 Route::get('admin/tax/manage_tax',[TaxController::class,'manage_tax']);
 Route::get('admin/tax/manage_tax/{id}',[TaxController::class,'manage_tax']);
 Route::post('admin/tax/manage_tax_process',[TaxController::class,'manage_tax_process'])->name('tax.manage_tax_process');
 Route::get('admin/tax/delete/{id}',[TaxController::class,'delete']);
 Route::get('admin/tax/status/{status}/{id}',[TaxController::class,'status']);
 
+Route::get('admin/vendor',[VendorController::class,'index']);
+Route::get('admin/vendor/manage_vendor',[VendorController::class,'manage_vendor']);
+Route::get('admin/vendor/manage_vendor/{id}',[VendorController::class,'manage_vendor']);
+Route::post('admin/vendor/manage_vendor_process',[VendorController::class,'manage_vendor_process'])->name('vendor.manage_vendor_process');
+Route::get('admin/vendor/delete/{id}',[VendorController::class,'delete']);
+Route::get('admin/vendor/status/{status}/{id}',[VendorController::class,'status']);
     Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');

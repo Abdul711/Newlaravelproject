@@ -182,7 +182,7 @@ class ProductController extends Controller
             /*|required|regex:/[A-Z]{2,}/i*/
              'name'=>$name_valid,
              'image'=>$image_valid,
-             
+             'tax_id.*'=>'required'
              
               
         ],[
@@ -190,13 +190,15 @@ class ProductController extends Controller
             'name.required'=>'Product Name must Be filled Out ',   
             'name.min'=>'Product Name Must Consist Of atleast 3 Character', 
             'name.unique'=>'Product AlReady Exists', 
-            'name.max'=>'Product Name must Be less then 24 characters '
+            'name.max'=>'Product Name must Be less then 24 characters ',
+            
+            'tax_id.*.required'=>'Tax Is Required'
         ]);   
        $link=$request->headers->get('referer');
              if ($validator->fails()) {
              return redirect($link)->withErrors($validator);
              /*withInput()*/;
-            }
+            }else{
 
 
 
@@ -358,6 +360,7 @@ class ProductController extends Controller
                $product_image_model->product_id=$product_id;  
                $product_image_model->save();
            }
+
       }
          
       
@@ -370,6 +373,7 @@ class ProductController extends Controller
       
         session()->flash("message",$message);
        return redirect('admin/product');
+    }
     }
     public function status(Request $request,$product_id,$status)
     {

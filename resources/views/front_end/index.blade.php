@@ -42,12 +42,12 @@
 
   </head>
   <body> 
-   <!-- wpf loader Two -->
+   <!-- wpf loader Two
     <div id="wpf-loader-two">          
       <div class="wpf-loader-two-inner">
         <span>Loading</span>
       </div>
-    </div> 
+    </div> -->
     <!-- / wpf loader Two -->       
   <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
@@ -68,12 +68,12 @@
                 <div class="aa-language">
                   <div class="dropdown">
                     <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <img src="img/flag/english.jpg" alt="english flag">ENGLISH
+                      <img src="{{asset('front_assets/img/flag/english.jpg')}}" alt="english flag">ENGLISH
                       <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                      <li><a href="#"><img src="img/flag/french.jpg" alt="">FRENCH</a></li>
-                      <li><a href="#"><img src="img/flag/english.jpg" alt="">ENGLISH</a></li>
+                      <li><a href="#"><img src="{{asset('front_assets/img/flag/french.jpg')}}" alt="">FRENCH</a></li>
+                      <li><a href="#"><img src="{{asset('front_assets/img/flag/english.jpg')}}" alt="">ENGLISH</a></li>
                     </ul>
                   </div>
                 </div>
@@ -102,11 +102,11 @@
               <!-- / header top left -->
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
-                  <li><a href="account.html">My Account</a></li>
-                  <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
-                  <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
-                  <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
-                  <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                  <li><a href="{{url('/my_account')}}">My Account</a></li>
+                  <li class="hidden-xs"><a href="{{url('/my_wishlist')}}">Wishlist</a></li>
+                  <li class="hidden-xs"><a href="{{url('/my_cart')}}">My Cart</a></li>
+                  <li class="hidden-xs"><a href="{{url('/my_checkout')}}">Checkout</a></li>
+                  <li><a href="{{url('/my_login')}}" data-toggle="modal" data-target="#login-modal">Login</a></li>
                 </ul>
               </div>
             </div>
@@ -151,7 +151,7 @@
                       <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
                     </li>
                     <li>
-                      <a class="aa-cartbox-img" href="#"><img src="img/woman-small-1.jpg" alt="img"></a>
+                      <a class="aa-cartbox-img" href="#"><img src="{{asset('front_assets/img/woman-small-1.jpg')}}" alt="img"></a>
                       <div class="aa-cartbox-info">
                         <h4><a href="#">Product Name</a></h4>
                         <p>1 x $250</p>
@@ -327,7 +327,7 @@
             <!-- single slide item -->
             <li>
               <div class="seq-model">
-                <img data-seq src="img/slider/1.jpg" alt="Men slide img" />
+                <img data-seq src="{{url('front_assets/img/slider/1.jpg')}}" alt="Men slide img" />
               </div>
               <div class="seq-title">
                <span data-seq>Save Up to 75% Off</span>                
@@ -339,7 +339,7 @@
             <!-- single slide item -->
             <li>
               <div class="seq-model">
-                <img data-seq src="img/slider/2.jpg" alt="Wristwatch slide img" />
+                <img data-seq src="{{url('front_assets/img/slider/2.jpg')}}" alt="Wristwatch slide img" />
               </div>
               <div class="seq-title">
                 <span data-seq>Save Up to 40% Off</span>                
