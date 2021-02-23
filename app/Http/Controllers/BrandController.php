@@ -41,7 +41,7 @@ class BrandController extends Controller
         $result['brand_name']='';
         $result['brand_id']='';
          }
-        return view('admin.manage_brand',$result);
+        return view('admin.brand.manage_brand',$result);
     }
 
     /**
@@ -121,7 +121,7 @@ class BrandController extends Controller
     {
     
        $brand_data=Brand::all();
-       return view('admin.brand',["brands"=>$brand_data]);
+       return view('admin.brand.brand',["brands"=>$brand_data]);
     }
 
     /**

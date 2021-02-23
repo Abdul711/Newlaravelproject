@@ -54,7 +54,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $data=Product::all();
-     return view('admin.product',["data"=>$data]);
+     return view('admin.product.product',["data"=>$data]);
     }
 
     /**
@@ -135,7 +135,7 @@ class ProductController extends Controller
       $tax_data=Tax::where(['status'=>'1'])->get(); 
       $tax_data=json_decode($tax_data,true); 
   
-       return view('admin.manage_product',$page_data,[
+       return view('admin.product.manage_product',$page_data,[
            "product_data"=>$product_data,
            "product_attributes"=>$product_attributes,
            "colors"=>$color_data,

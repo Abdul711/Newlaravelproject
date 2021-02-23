@@ -121,6 +121,10 @@
                             <a href="{{url('admin/brand')}}">
                                 <i class="fas fa-tachometer-alt"></i>Brand Management</a>
                         </li>
+                        <li>
+                            <a href="{{url('admin/banner')}}">
+                                <i class="fas fa-tachometer-alt"></i>Banner Management</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -147,7 +151,7 @@
                                            
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
+                                                    <a href="{{url('admin/manage')}}">
                                                         <i class="zmdi zmdi-account"></i>Account</a>
                                                 </div>
                                                 

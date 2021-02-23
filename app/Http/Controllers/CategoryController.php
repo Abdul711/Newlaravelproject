@@ -34,7 +34,7 @@ class CategoryController extends Controller
         $result['category_id']='';
         
     }
-    return view('admin/manage_category',$result);
+    return view('admin/category/manage_category',$result);
 
       
     }
@@ -120,7 +120,7 @@ class CategoryController extends Controller
     {
         //
          $data=Category::all();
-        return view('admin.category',['categories'=>$data]); 
+        return view('admin.category.category',['categories'=>$data]); 
     }
 
     /**

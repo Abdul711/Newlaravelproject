@@ -48,7 +48,7 @@ class SizeController extends Controller
     {
       
         $data=Size::all();
-    return view('admin.size',['categories'=>$data]);
+    return view('admin.size.size',['categories'=>$data]);
     }
     public function manage($id='')
     {
@@ -67,7 +67,7 @@ class SizeController extends Controller
         $result['category_id']='';
         
     }
-    return view('admin/manage_size',$result);
+    return view('admin/size/manage_size',$result);
 
       
     }

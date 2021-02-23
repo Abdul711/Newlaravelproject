@@ -12,7 +12,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form action="{{route('vendor.manage_vendor_process')}}" method="post">
+                                        <form action="{{route('tax.manage_tax_process')}}" method="post">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="size" class="control-label mb-1">Tax Value </label>

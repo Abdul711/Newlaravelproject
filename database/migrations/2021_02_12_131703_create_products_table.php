@@ -24,8 +24,9 @@ class CreateProductsTable extends Migration
             $table->string('image')->nullable();
             $table->string('keyword')->nullable();
             $table->string('featured')->nullable();
-            $table->string('availability')->nullable();
-            $table->string('discount_id')->nullable();
+            $table->string('discounted')->nullable();
+            $table->string('trending')->nullable();
+      
          
             $table->timestamps();
         });

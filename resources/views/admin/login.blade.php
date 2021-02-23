@@ -25,6 +25,17 @@
                             </a>
                         </div>
                         <div class="login-form">
+                        @if(session()->has('message'))
+
+<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+    <span class="badge badge-pill badge-danger">Some Thing Went Wrong</span>
+
+    {{session('message')}}	
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+@endif 
                             <form action="{{route('admin.auth')}}" method="post">
                                 @csrf
                                 <div class="form-group">
@@ -33,14 +44,55 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password" >
+                                    <input class="au-input au-input--full"  value="{{old('password')}}" type="password" name="password" placeholder="Password" >
                                 </div>
                                 
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
-                                
+                            
                                 <div class=" p-2 text-danger" role="alert">
-                                     {{session('error')}}	
-                                     @error('email'){{$message}}@enderror	
+                 
+                 
+                 
+                                @if(session()->has('session_logout'))
+
+<div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+ 
+
+    {{session('session_logout')}}	
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+@endif 
+                                @if(session()->has('error'))
+
+<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+    <span class="badge badge-pill badge-danger">Some Thing Went Wrong</span>
+
+    {{session('error')}}	
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+@endif 
+@error('email')
+<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+   {{$message}}  
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+         <span aria-hidden="true">×</span>
+   </button>
+</div> 
+@enderror
+@error('password')
+<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+   {{$message}}  
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+         <span aria-hidden="true">×</span>
+   </button>
+</div> 
+@enderror
+
+                                
 							    </div>
                             </form>
                         </div>

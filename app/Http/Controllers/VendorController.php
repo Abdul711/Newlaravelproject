@@ -13,7 +13,7 @@ class VendorController extends Controller
      public function index(){
 
             $result['brands']=Vendor::all();
-           return view('admin.vendor',$result);
+           return view('admin.vendor.vendor',$result);
      }
       public function manage_vendor($id=''){
             if($id==''){
@@ -41,7 +41,7 @@ class VendorController extends Controller
                 $result['page_btn']='Update Vendor';
             }
 
-            return view('admin.manage_vendor',$result);
+            return view('admin.vendor.manage_vendor',$result);
       }
          public function manage_vendor_process(Request $request){
             

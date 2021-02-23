@@ -21,7 +21,7 @@ $data=json_decode($data,true);
 
 
 
-     return view('admin.sub_category',["subcategories"=>$data]); 
+     return view('admin.sub category.sub_category',["subcategories"=>$data]); 
     }
     public function manage($id='')
     {
@@ -41,7 +41,7 @@ $data=json_decode($data,true);
         
     }
     $data=Category::all();
-    return view('admin/manage_sub_category',$result,["c"=>$data]);
+    return view('admin/sub category/manage_sub_category',$result,["c"=>$data]);
 }
 public function update_status($id,$status){
   

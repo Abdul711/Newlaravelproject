@@ -48,7 +48,7 @@ class CouponController extends Controller
     {
         //
         $data=Coupon::all();
-        return view('admin.coupon',['categories'=>$data]);
+        return view('admin.coupon.coupon',['categories'=>$data]);
     }
     public function manage($id='')
     {
@@ -72,7 +72,7 @@ class CouponController extends Controller
         $result['color_cart']="";
         $result['color_type']="";
     }
-    return view('admin/manage_coupon',$result);
+    return view('admin/coupon/manage_coupon',$result);
 
 }
     /**

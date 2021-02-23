@@ -11,7 +11,7 @@ class TaxController extends Controller
     {
         $result['data']=Tax::all();
         
-        return view('admin/tax',$result);
+        return view('admin/tax/tax',$result);
     }
 
     
@@ -33,7 +33,7 @@ class TaxController extends Controller
             $result['page_title']='Add Tax';
             $result['page_btn']='Add Tax';
         }
-        return view('admin/manage_tax',$result);
+        return view('admin/tax/manage_tax',$result);
     }
 
     public function manage_tax_process(Request $request)

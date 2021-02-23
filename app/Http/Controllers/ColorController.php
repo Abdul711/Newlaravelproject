@@ -47,7 +47,7 @@ class ColorController extends Controller
     public function show(Color $color)
     {
           $data=Color::all();
-        return view('admin.color',['categories'=>$data]); 
+        return view('admin.color.color',['categories'=>$data]); 
     }
 
     /**
@@ -77,7 +77,7 @@ class ColorController extends Controller
         $result['color_id']='';
         
     }
-    return view('admin/manage_color',$result);
+    return view('admin/color/manage_color',$result);
 
 }
     /**
