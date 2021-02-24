@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\Admin\Tax;
+use App\Http\Controllers\Controller;
 use App\Models\Tax;
 use Illuminate\Http\Request;
 

@@ -1,17 +1,17 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin\Product;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Product;
-use App\Models\Category;
-use App\Models\SubCategory;
-use App\Models\Color;
-use App\Models\Size;
-use App\Models\ProductAttribute;
 use App\Models\ProductImage;
-use App\Models\Brand;
+use App\Models\ProductAttribute;
 use App\Models\Tax;
+use App\Models\SubCategory;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Size;
+use App\Models\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;

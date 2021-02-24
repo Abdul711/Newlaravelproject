@@ -1,17 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SubCategoryController;
-use App\Http\Controllers\ColorController;
-use App\Http\Controllers\SizeController;
-use App\Http\Controllers\CouponController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\TaxController;
-use App\Http\Controllers\VendorController;
-use App\Http\Controllers\BannerController;
+use App\Http\Controllers\Admin\Admin\AdminController;
+use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\SubCategory\SubCategoryController;
+use App\Http\Controllers\Admin\Color\ColorController;
+use App\Http\Controllers\Admin\Size\SizeController;
+use App\Http\Controllers\Admin\Coupon\CouponController;
+use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Admin\Brand\BrandController;
+use App\Http\Controllers\Admin\Tax\TaxController;
+use App\Http\Controllers\Admin\Vendor\VendorController;
+use App\Http\Controllers\Admin\Banner\BannerController;
 /*
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +29,18 @@ Route::get('/', function () {
 });
 Route::get('/my_account', function () {
     return view('front_end.account');
+});
+Route::get('/my_checkout', function () {
+    return view('front_end.checkout');
+});
+Route::get('/my_contact', function () {
+    return view('front_end.contact');
+});
+Route::get('/my_cart', function () {
+    return view('front_end.cart');
+});
+Route::get('/shop', function () {
+    return view('front_end.product');
 });
 Route::get('admin',[AdminController::class,'index']);
 

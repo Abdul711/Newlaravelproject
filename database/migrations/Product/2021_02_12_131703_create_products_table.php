@@ -20,10 +20,12 @@ class CreateProductsTable extends Migration
             $table->string('sub_category_id')->nullable();
             $table->string('color_id')->nullable();
             $table->string('brand_id')->nullable();
-            $table->string('size_id')->nullable();
+          
             $table->string('image')->nullable();
+            $table->string('status')->nullable();
             $table->string('keyword')->nullable();
             $table->string('featured')->nullable();
+            $table->string('availability')->nullable();
             $table->string('discounted')->nullable();
             $table->string('trending')->nullable();
       

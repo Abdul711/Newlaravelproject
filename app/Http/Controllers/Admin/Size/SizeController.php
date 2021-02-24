@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\Admin\Size;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Size;
 use Illuminate\Http\Request;

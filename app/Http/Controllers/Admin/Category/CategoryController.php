@@ -1,6 +1,7 @@
 <?php
+namespace App\Http\Controllers\Admin\Category;
+use App\Http\Controllers\Controller;
 
-namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -71,7 +72,7 @@ class CategoryController extends Controller
           
            $validator=Validator::make($request->all(),[
             /*|required|regex:/[A-Z]{2,}/i*/
-                 'category_name'=>'required|min:3|max:24|unique:categories,category_name,'.$request->post('category_id'),
+    'category_name'=>'required|min:3|max:24|unique:categories,category_name'
              
              
               

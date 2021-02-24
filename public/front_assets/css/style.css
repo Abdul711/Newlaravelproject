@@ -1058,7 +1058,7 @@ img {
   float: left;
   height: 250px;
   margin: 0 0 0 30px;
-  width: 22.5%;
+  width:20.5%;
   margin-bottom: 20px;
 }
 .aa-products-tab {
@@ -1108,7 +1108,7 @@ img {
   height: 380px;
   text-align: center;
   margin: 0 0 20px 55px;
-  width: 20.5%;
+
   position: relative;
   overflow: hidden;
 }

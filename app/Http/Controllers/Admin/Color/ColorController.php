@@ -1,6 +1,6 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin\Color;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Color;
 use Illuminate\Http\Request;

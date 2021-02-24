@@ -976,7 +976,7 @@
       <div class="modal-content">                      
         <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4>Login or Register</h4>
+         <h4>Login or Register</h4>
           <form class="aa-login-form" action="">
             <label for="">Username or Email address<span>*</span></label>
             <input type="text" placeholder="Username or email">

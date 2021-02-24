@@ -28,14 +28,19 @@
     </button>
 </div>
 @endif                                        
-<form action="{{route('brand.store')}}" method="post" novalidate="novalidate">
+<form action="{{route('brand.store')}}"  enctype="multipart/form-data" method="post" novalidate="novalidate">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1">Brand Name</label>
                                                 <input id="cc-pament" name="brand_name" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{old('brand_name')}}{{$brand_name}}">
-                                                <input id="cc-pament" name="brand_id" type="text" class="form-control" aria-required="true" aria-invalid="false" hidden="hidden" value="{{$brand_id}}">
+                                                
                                             </div>
-                                  
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Brand Logo</label>
+                                                <input id="cc-pament" name="image" type="file" class="form-control" aria-required="true" aria-invalid="false" value="{{old('brand_name')}}{{$brand_name}}">
+                                                
+                                            </div>
+                                            <input id="cc-pament" name="brand_id" type="text" class="form-control" aria-required="true" aria-invalid="false" hidden="hidden" value="{{$brand_id}}">
                                             <div>
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
                                                
