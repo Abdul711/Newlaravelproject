@@ -75,8 +75,11 @@ class ProductController extends Controller
             $product_data['image']='';
             $product_data['brand_id']='';
             $product_data['id']='';
-            $product_data['featured']='1';
-            $product_data['availability']='1';
+            $product_data['featured']='';
+            $product_data['availability']='';
+            $product_data['discounted']='';
+            $product_data['trending']='';
+            $product_data['lead_time']="";
             $product_attributes[0]['id']='';
             $product_attributes[0]['color_id']='';      
             $product_attributes[0]['size_id']='';
@@ -92,7 +95,7 @@ class ProductController extends Controller
         }else{
             $product_dat=DB::table('products')->where(['id'=>$id])->get();
             $pn=$product_dat[0]->product_name;
-            $product_name=Crypt::decryptString($pn);
+            $product_name=$pn;
            /* echo"<pre>";
             print_r($product_dat);
             echo"</pre>";*/
@@ -104,6 +107,9 @@ class ProductController extends Controller
            $product_data['id']=$product_dat[0]->id;
            $product_data['featured']=$product_dat[0]->featured;
            $product_data['availability']=$product_dat[0]->availability;
+           $product_data['discounted']=$product_dat[0]->discounted;
+           $product_data['trending']=$product_dat[0]->trending;
+           $product_data['lead_time']=$product_dat[0]->lead_time;
               $product_attributes=ProductAttribute::where(['product_id'=>$id])->get();
             $product_attributes=json_decode($product_attributes,true);
             $page_data['page_title']="Update Product";
@@ -121,7 +127,11 @@ class ProductController extends Controller
              
 
         }
-    
+        /*    echo"<pre>";
+            print_r($product_data);
+            echo"</pre>";
+            die();*/
+            
       $color_data=Color::where(['status'=>'1'])->get(); 
       $color_data=json_decode($color_data,true);  
       $size_data=Size::where(['status'=>'1'])->get(); 
@@ -157,13 +167,13 @@ class ProductController extends Controller
      */
     public function manage_product_process(Request $request)
     {
-/* echo  $link=$request->headers->get('referer');  
+ /*echo  $link=$request->headers->get('referer');  
        echo "<pre>";     
        print_r($request->post());
     
        echo "</pre>";  
-       die();*/
-       
+       die();
+   */    
        
 
 
@@ -182,7 +192,7 @@ class ProductController extends Controller
             /*|required|regex:/[A-Z]{2,}/i*/
              'name'=>$name_valid,
              'image'=>$image_valid,
-             'tax_id.*'=>'required'
+        
              
               
         ],[
@@ -192,7 +202,7 @@ class ProductController extends Controller
             'name.unique'=>'Product AlReady Exists', 
             'name.max'=>'Product Name must Be less then 24 characters ',
             
-            'tax_id.*.required'=>'Tax Is Required'
+            
         ]);   
        $link=$request->headers->get('referer');
              if ($validator->fails()) {
@@ -212,7 +222,8 @@ class ProductController extends Controller
    $product_name=$request->post('name');
    $availability=$request->post('available');
    $featured=$request->post('feature');
-
+   $discounted=$request->post('discounted');
+   $trending=$request->post('trending');
    /* Get Value For Product Attribute */
    $product_attr_id_array=$request->post('paid');
    $product_attr_price_array=$request->post('price');
@@ -272,12 +283,14 @@ class ProductController extends Controller
     
         $product_model->featured=$featured;
         $product_model->availability=$availability;
+        $product_model->discounted=$discounted;
+        $product_model->trending=$trending;
         $product_model->product_name=$product_name;
         $product_model->category_id=$category_id;
         $product_model->sub_category_id=$sub_category_id;
         $product_model->brand_id=$brand_id;
         $product_model->status=$new_status;
-  
+      $product_model->lead_time="2-3days";
         $product_model->save();
         
         $product_id=$product_model->id;
@@ -292,10 +305,16 @@ class ProductController extends Controller
                $attr_color=$product_attr_color_array[$key];
                $attr_sku=$product_attr_sku_array[$key];
                $attr_tax_id=$product_attr_tax_id_array[$key];
+
+               if($attr_tax_id!=null && $attr_tax_id!=null){
                $attr_tax=Tax::find($attr_tax_id);
                $tax_value=$attr_tax->tax_value;
                 $tax_value=floor(($tax_value/100)*$attr_price);
                $attr_price_after_tax=$tax_value+$attr_price;
+               }else{
+                $attr_price_after_tax='';
+                $tax_value=0;
+               }
                 if($attr_id=='' && $attr_id==null){
                   
                      $attribute_model=new ProductAttribute();
@@ -331,7 +350,7 @@ class ProductController extends Controller
                 $attribute_model->color_id=$attr_color;
                 $attribute_model->size_id=$attr_size;
                 $attribute_model->price=$attr_price;
-                $attribute_model->mrp=$attr_mrp;
+                $attribute_model->mrp=$attr_mrp+$tax_value;
                 $attribute_model->sku=$attr_sku;
                 $attribute_model->qty=$attr_qty;
                 $attribute_model->product_id=$product_id;

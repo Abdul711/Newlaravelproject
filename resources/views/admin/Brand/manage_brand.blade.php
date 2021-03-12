@@ -40,6 +40,35 @@
                                                 <input id="cc-pament" name="image" type="file" class="form-control" aria-required="true" aria-invalid="false" value="{{old('brand_name')}}{{$brand_name}}">
                                                 
                                             </div>
+                                         @if($brand_image!="")
+                                         <a href="{{url('storage/media/brand/'.$brand_image)}}" target="_blank"> <img width="100px" src="{{asset('storage/media/brand/'.$brand_image)}}"/></a>
+                                         @endif
+                                            @if($brand_show_at_home==1)
+                                            <div class="form-group form-check">
+    <label class="form-check-label">
+      <input name="at_home" class="form-check-input" type="checkbox" value='0' >Hide
+    </label>
+  
+  </div>
+  <div class="form-group form-check">
+    <label class="form-check-label">
+      <input name="at_home" class="form-check-input" type="checkbox" value='1' checked>Show
+    </label>
+  </div>
+  @elseif($brand_show_at_home==0)
+  <div class="form-group form-check">
+    <label class="form-check-label">
+      <input name="at_home" class="form-check-input" type="checkbox" value='0' checked>Hide
+    </label>
+  </div>
+  <div class="form-group form-check">
+    <label class="form-check-label">
+      <input name="at_home" class="form-check-input" type="checkbox" value='1'>Show
+    </label>
+  </div>
+  @endif
+  
+
                                             <input id="cc-pament" name="brand_id" type="text" class="form-control" aria-required="true" aria-invalid="false" hidden="hidden" value="{{$brand_id}}">
                                             <div>
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">

@@ -34,6 +34,7 @@
                                            <label for="cc-payment" class="control-label mb-1">Category Name</label>
                                               
                                                 <select name="category_id">
+                                          <option value="0">Select Parent Category</option>
                                                 @foreach($c as $c_data)
                                                 <option value="{{$c_data['id']}}">{{$c_data['category_name']}}</option>
                                                 @endforeach

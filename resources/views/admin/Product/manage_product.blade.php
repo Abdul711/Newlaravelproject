@@ -139,7 +139,7 @@
                            <div class="col-md-6">
                      
                               <label for="is_feat" class="control-label mb-1">Is Featured</label>
-                              <select id="category_id" name="feature" class="form-control">
+                              <select id="featured" name="feature" class="form-control">
                           
                        
                                  @if($product_data['featured']==='1')
@@ -154,7 +154,46 @@
                      
                               </select>
                            </div>
-                         
+                           <div class="col-md-3">
+                     
+                     <label for="is_feat" class="control-label mb-1">Is Discounted</label>
+                     <select id="discounted" name="discounted" class="form-control">
+                 
+              
+                        @if($product_data['discounted']==='1')
+                        <option selected value="1" >Yes</option>
+                        <option  value="0">No</option>
+                           @else
+                           <option selected value="0" >No</option>
+                           <option  value="1">Yes</option>
+                           @endif
+                        
+                     
+            
+                     </select>
+                  </div>
+                  <div class="col-md-3">
+                  </div>
+                  <div class="col-md-6">
+                     
+                     <label for="is_feat" class="control-label mb-1">Is Trending</label>
+                     <select id="trending" name="trending" class="form-control">
+                 
+              
+                        @if($product_data['trending']==='1')
+                        <option selected value="1" >Yes</option>
+                        <option  value="0">No</option>
+                           @else
+                           <option selected value="0" >No</option>
+                           <option  value="1">Yes</option>
+                           @endif
+                        
+                     
+            
+                     </select>
+                  </div>
+
+
                         </div>
                      </div>
                      <!--product_image-->

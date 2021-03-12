@@ -1,24 +1,24 @@
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>404 </title>
-    <link href="{{asset('admin_assets/css/font-face.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/font-awesome-5/css/fontawesome-all.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/css/theme.css')}}" rel="stylesheet" media="all">
+  <!-- / menu -->  
+ 
+  @extends('front_end/layout2')
+@section('container')
 
-</head>
-
-
-<div class="container">
-
-   <div class="row">
-   
-  <h1 class="text-success"> Page Doesnot Exist </h1>
-   
-   </div>
-</div>
+  <!-- 404 error section -->
+  <section id="aa-error">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-error-area">
+            <h2>404</h2>
+            <span>Sorry! Page Not Found</span>
+            <p>Sorry this content has been moved Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, amet perferendis, nemo facere excepturi quis.</p>
+            <a href="{{url('/')}}"> Go to Homepage</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- / 404 error section -->
+@endsection
+  

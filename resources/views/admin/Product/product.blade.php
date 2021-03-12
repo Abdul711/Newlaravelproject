@@ -13,7 +13,7 @@
     <h1 class="mb10">Product</h1>
     <a href="{{url('admin/product/manage_product')}}">
         <button type="button" class="btn btn-success">
-            Add Products
+            Add Product
         </button>
     </a>
     <div class="row m-t-30">

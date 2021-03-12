@@ -68,12 +68,12 @@
                 <div class="aa-language">
                   <div class="dropdown">
                     <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <img src="{{asset('front_assets/img/flag/english.jpg')}}" alt="english flag">ENGLISH
+                      <img src="img/flag/english.jpg" alt="english flag">ENGLISH
                       <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                      <li><a href="#"><img src="{{asset('front_assets/img/flag/french.jpg')}}" alt="">FRENCH</a></li>
-                      <li><a href="#"><img src="{{asset('front_assets/img/flag/english.jpg')}}" alt="">ENGLISH</a></li>
+                      <li><a href="#"><img src="img/flag/french.jpg" alt="">FRENCH</a></li>
+                      <li><a href="#"><img src="img/flag/english.jpg" alt="">ENGLISH</a></li>
                     </ul>
                   </div>
                 </div>
@@ -102,10 +102,10 @@
               <!-- / header top left -->
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
-                  <li><a href="{{url('/my_account')}}">My Account</a></li>
-                  <li class="hidden-xs"><a href="{{url('/my_cart')}}">My Cart</a></li>
-                  <li class="hidden-xs"><a href="{{url('/my_checkout')}}">Checkout</a></li>
-                  <li class="hidden-xs"><a href="{{url('/my_contact')}}">Contact Us</a></li>
+                  <li><a href="account.html">My Account</a></li>
+                  <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
+                  <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
+                  <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
                   <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
                 </ul>
               </div>
@@ -115,6 +115,7 @@
       </div>
     </div>
     <!-- / header top  -->
+
     <!-- start header bottom  -->
     <div class="aa-header-bottom">
       <div class="container">
@@ -166,7 +167,7 @@
                       </span>
                     </li>
                   </ul>
-                  <a class="aa-cartbox-checkout aa-primary-btn" href="#">Checkout</a>
+                  <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.html">Checkout</a>
                 </div>
               </div>
               <!-- / cart box -->
@@ -183,8 +184,6 @@
         </div>
       </div>
     </div>
-    <!-- / header bottom  -->
-
     <!-- / header bottom  -->
   </header>
   <!-- / header section -->
@@ -204,126 +203,28 @@
           </div>
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
-            <ul class="nav navbar-nav">
-              <li><a href="{{url('/')}}">Home</a></li>
-              <li><a href="#">Men <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="#">Casual</a></li>
-                  <li><a href="#">Sports</a></li>
-                  <li><a href="#">Formal</a></li>
-                  <li><a href="#">Standard</a></li>                                                
-                  <li><a href="#">T-Shirts</a></li>
-                  <li><a href="#">Shirts</a></li>
-                  <li><a href="#">Jeans</a></li>
-                  <li><a href="#">Trousers</a></li>
-                  <li><a href="#">And more.. <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Sleep Wear</a></li>
-                      <li><a href="#">Sandals</a></li>
-                      <li><a href="#">Loafers</a></li>                                      
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li><a href="#">Women <span class="caret"></span></a>
-                <ul class="dropdown-menu">  
-                  <li><a href="#">Kurta & Kurti</a></li>                                                                
-                  <li><a href="#">Trousers</a></li>              
-                  <li><a href="#">Casual</a></li>
-                  <li><a href="#">Sports</a></li>
-                  <li><a href="#">Formal</a></li>                
-                  <li><a href="#">Sarees</a></li>
-                  <li><a href="#">Shoes</a></li>
-                  <li><a href="#">And more.. <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Sleep Wear</a></li>
-                      <li><a href="#">Sandals</a></li>
-                      <li><a href="#">Loafers</a></li>
-                      <li><a href="#">And more.. <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">Rings</a></li>
-                          <li><a href="#">Earrings</a></li>
-                          <li><a href="#">Jewellery Sets</a></li>
-                          <li><a href="#">Lockets</a></li>
-                          <li class="disabled"><a class="disabled" href="#">Disabled item</a></li>                       
-                          <li><a href="#">Jeans</a></li>
-                          <li><a href="#">Polo T-Shirts</a></li>
-                          <li><a href="#">SKirts</a></li>
-                          <li><a href="#">Jackets</a></li>
-                          <li><a href="#">Tops</a></li>
-                          <li><a href="#">Make Up</a></li>
-                          <li><a href="#">Hair Care</a></li>
-                          <li><a href="#">Perfumes</a></li>
-                          <li><a href="#">Skin Care</a></li>
-                          <li><a href="#">Hand Bags</a></li>
-                          <li><a href="#">Single Bags</a></li>
-                          <li><a href="#">Travel Bags</a></li>
-                          <li><a href="#">Wallets & Belts</a></li>                        
-                          <li><a href="#">Sunglases</a></li>
-                          <li><a href="#">Nail</a></li>                       
-                        </ul>
-                      </li>                   
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li><a href="#">Kids <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="#">Casual</a></li>
-                  <li><a href="#">Sports</a></li>
-                  <li><a href="#">Formal</a></li>
-                  <li><a href="#">Standard</a></li>                                                
-                  <li><a href="#">T-Shirts</a></li>
-                  <li><a href="#">Shirts</a></li>
-                  <li><a href="#">Jeans</a></li>
-         
-                  <li><a href="#">And more.. <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Sleep Wear</a></li>
-                      <li><a href="#">Sandals</a></li>
-                      <li><a href="#">Loafers</a></li>                                      
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li><a href="#">Sports</a></li>
-             <li><a href="#">Digital <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="#">Camera</a></li>
-                  <li><a href="#">Mobile</a></li>
-                  <li><a href="#">Tablet</a></li>
-                  <li><a href="#">Laptop</a></li>                                                
-                  <li><a href="#">Accesories</a></li>                
-                </ul>
-              </li>
-              <li><a href="#">Furniture</a></li>            
-              <li><a href="blog-archive.html">Blog <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="blog-archive.html">Blog Style 1</a></li>
-                  <li><a href="blog-archive-2.html">Blog Style 2</a></li>
-                  <li><a href="blog-single.html">Blog Single</a></li>                
-                </ul>
-              </li>
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="#">Pages <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="product.html">Shop Page</a></li>
-                  <li><a href="product-detail.html">Shop Single</a></li>                
-                  <li><a href="404.html">404 Page</a></li>                
-                </ul>
-              </li>
-            </ul>
+          
+  <x-nav-bar />
           </div><!--/.nav-collapse -->
+     
         </div>
       </div>       
     </div>
   </section>
   <!-- / menu -->
   <!-- Start slider -->
-  
-  <!-- / Subscribe section -->
+
+  <!-- / Support section -->
+  <!-- Testimonial -->
   @section('container')
-    @show
+  @show      
+  
+  <!-- / Client Brand -->
+
+  <!-- Subscribe section -->
+ 
+  <!-- / Subscribe section -->
+
   <!-- footer -->  
   <footer id="aa-footer">
     <!-- footer bottom -->
@@ -397,9 +298,6 @@
       </div>
      </div>
     </div>
-
-
-  
     <!-- footer-bottom -->
     <div class="aa-footer-bottom">
       <div class="container">

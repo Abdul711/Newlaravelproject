@@ -23,7 +23,7 @@
     </button>
 </div>
 @endif 
-      {{$data}}
+
             <div class="table-responsive m-b-40">
                 <table class="table table-borderless table-data3">
                     <thead>
@@ -37,8 +37,10 @@
                     </thead>
                     <tbody>
                     @php 
-      
+                 echo $total_count=count($data);
+
                     @endphp 
+                    @if($total_count>0)
                   @foreach($data as $key => $banners)
                 
                         <tr>
@@ -46,21 +48,24 @@
                         <td><a href="{{$banners->banner_link}}"><img src="{{asset('storage/media/banner/'.$banners->image)}}" width="50"></a></td>
                             <td>{{$banners->text}}</td>
                             <td><a href="{{$banners->banner_link}}">{{$banners->banner_link}}</a></td>
-                              @if($banners->status='0')       
+                              @if($banners->status==0)       
                              <td><a class="btn btn-warning" href="{{url('admin/banner/status')}}/{{$banners->status}}/{{$banners->id}}">Deactive</a></td> 
-                             @elseif($banners->status='1')   
+                             @elseif($banners->status==1)   
                              <td><a class="btn btn-success" href="{{url('admin/banner/status')}}/{{$banners->status}}/{{$banners->id}}">Active</a></td> 
                             @endif
                             <td><a class="btn btn-outline-secondary" href="{{url('admin/banner/manage_banner')}}/{{$banners->id}}">Edit</a></td> 
-                            <td><a class="btn btn-outline-danger" href="{{url('admin/banner/delete')}}/">Delete</a></td>
+                            <td><a class="btn btn-outline-danger" href="{{url('admin/banner/delete')}}/{{$banners->id}}">Delete</a></td> 
+                       
                         </tr>
                   
                   
                       
                   @endforeach
+                  @else
                   <tr>
                         <td colspan='5' class="text-center text-danger">No Brand Found In store</td>
                         </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

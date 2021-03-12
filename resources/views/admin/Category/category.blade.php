@@ -28,6 +28,7 @@
                         <tr>
                             <th>S.NO</th>
                             <th>Name</th>
+                            <th>Image</th>
                             <th> Added On </th>
                             <th colspan="3" class="text-center"> Action </th>
                         </tr>
@@ -38,10 +39,25 @@
                     @endphp 
                     @if($total_record>0)
                     @foreach($categories as $keys => $category)
-                        
+                     
                         <tr>
                         <td>{{$keys+1}}</td>
-                            <td>{{$category['category_name']}}</td>
+                        @if($category['parent_category_id']==0)
+                        <td>  {{$category['category_name']}}</td>
+                        @else
+                        <td>  {{$category['category_name']}} (Sub Category)</td>
+                        @endif
+                        
+                        <td>
+                        @if($category['parent_category_id']==0)
+                        <img src="{{asset('storage/media/category/'.$category['category_image'])}}">
+                       <br> No Parent Category Exists
+                   @else
+                   Parent Category : {{$parent_category[$category['id']]}}
+                    
+@endif               
+                        
+                        </td>
                             <td>{{ date("d-M-Y H:i:s",strtotime($category['created_at']))}}</td>
                               @if($category['status']==0)
                              <td><a class="btn btn-warning" href="{{url('admin/category/status')}}/{{$category['id']}}/{{$category['status']}}">Deactive</a></td> 
@@ -51,7 +67,7 @@
                             <td><a class="btn btn-outline-secondary" href="{{url('admin/category/manage_category')}}/{{$category['id']}}">Edit</a></td> 
                             <td><a class="btn btn-outline-danger" href="{{url('admin/category/delete')}}/{{$category['id']}}">Delete</a></td>
                         </tr>
-                  
+           
                         @endforeach
                         @elseif($total_record<=0)
                         <tr>

@@ -13,3 +13,5 @@ npm-debug.log
 yarn-error.log
 composer.json
 public/admin_assets/images/
+public/admin_assets/
+*.json

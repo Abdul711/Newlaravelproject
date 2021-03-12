@@ -15,23 +15,24 @@ class SubCategoryController extends Controller
     {
         //
     
-       $data=DB::table('sub_categories')->
-   join('categories','categories.id','=','sub_categories.category_id')->
-   select('categories.category_name','sub_categories.status','sub_categories.sub_category_name',
-   'sub_categories.id','sub_categories.created_at')->get();
+       $data=DB::table('categories')->where('parent_category_id','!=','0')->get();
+              
 $data=json_decode($data,true);
+     $result['subcategories']=$data;
+        foreach ($data as $key => $value) {
+            $result['parent_category'][$value['id']]=parent_category_name($value['parent_category_id']);
+        }
 
 
-
-     return view('admin.sub category.sub_category',["subcategories"=>$data]); 
+     return view('admin.sub category.sub_category',$result); 
     }
     public function manage($id='')
     {
    
     if($id>0){
-        $arr=SubCategory::where(['id'=>$id])->get(); 
+        $arr=Category::where(['id'=>$id])->get(); 
 
-        $result['sub_category_name']=$arr['0']->sub_category_name;
+        $result['sub_category_name']=$arr['0']->category_name;
          $result['sub_category_btn']="Update Category";
          $result['sub_category_title']="Update Category";
         $result['sub_category_id']=$arr['0']->id;
@@ -42,8 +43,10 @@ $data=json_decode($data,true);
         $result['sub_category_id']='';
         
     }
-    $data=Category::all();
-    return view('admin/sub category/manage_sub_category',$result,["c"=>$data]);
+    
+    $data=Category::where(['parent_category_id'=>'0'])->get();
+    $result['c']=$data;
+    return view('admin/sub category/manage_sub_category',$result);
 }
 public function update_status($id,$status){
   
@@ -56,7 +59,7 @@ public function update_status($id,$status){
         $new_status="1";
 
      }
-   $total_record= SubCategory::where('id',$id)->count();
+   $total_record=Category::where('id',$id)->count();
    if($total_record>=1){
   $model=SubCategory::find($id);
   $model->status=$new_status;
@@ -104,15 +107,15 @@ public function manage_sub_category_process(Request $request)
            $sub_category_id=$request->post('sub_category_id');
            if($sub_category_id==null){
             $message="Sub Category Inserted";
-             $model=new SubCategory();
+             $model=new Category();
            }else{
             $message="Sub Category Updated";
-               $model=SubCategory::find($sub_category_id);
+               $model=Category::find($sub_category_id);
            }
 $status=1;
-           $model->category_id=$category_id;
-           $model->status=$status;
-           $model->sub_category_name=$category_name;
+              $model->parent_category_id=$category_id;
+            $model->status=$status;
+           $model->category_name=$category_name;
            $model->save();
         
            $request->session()->flash("message","$message");

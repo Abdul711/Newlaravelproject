@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Brand\BrandController;
 use App\Http\Controllers\Admin\Tax\TaxController;
 use App\Http\Controllers\Admin\Vendor\VendorController;
 use App\Http\Controllers\Admin\Banner\BannerController;
+use App\Http\Controllers\FrontController;
 /*
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +24,9 @@ use App\Http\Controllers\Admin\Banner\BannerController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('front_end.index');
-});
+Route::get('/', [FrontController::class,'index']);
+Route::get('/product/{id}', [FrontController::class,'view_product']);
+Route::get('/category/{id}', [FrontController::class,'view_product_by_cat']);
 Route::get('/my_account', function () {
     return view('front_end.account');
 });
@@ -39,9 +39,9 @@ Route::get('/my_contact', function () {
 Route::get('/my_cart', function () {
     return view('front_end.cart');
 });
-Route::get('/shop', function () {
-    return view('front_end.product');
-});
+
+
+  
 Route::get('admin',[AdminController::class,'index']);
 
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
@@ -104,17 +104,20 @@ Route::get('admin/brand/manage_brand/{id?}',[BrandController::class,'create']);
 Route::post('admin/brand/manage_brand',[BrandController::class,'store'])->name('brand.store');
 Route::get('admin/brand/delete/{id}',[BrandController::class,'destroy']);
 Route::get('admin/brand/status/{id}/{status}',[BrandController::class,'update_status']);
-
+/* Crud Operation Route For Tax */
 Route::get('admin/tax',[TaxController::class,'index']);
 Route::get('admin/tax/manage_tax',[TaxController::class,'manage_tax']);
 Route::get('admin/tax/manage_tax/{id?}',[TaxController::class,'manage_tax']);
 Route::post('admin/tax/manage_tax_process',[TaxController::class,'manage_tax_process'])->name('tax.manage_tax_process');
 Route::get('admin/tax/delete/{id}',[TaxController::class,'delete']);
 Route::get('admin/tax/status/{status}/{id}',[TaxController::class,'status']);
+/* Crud Operation Route For Banner */
 Route::get('admin/banner',[BannerController::class,'index']);
 Route::get('admin/banner/manage_banner/{id?}',[BannerController::class,'manage']);
 Route::post('admin/banner/manage_banner_process',[BannerController::class,'store'])->name('banner.store');
-
+Route::get('admin/banner/status/{status?}/{id?}',[BannerController::class,'update']);
+Route::get('admin/banner/delete/{id}',[BannerController::class,'delete']);
+/* Crud Operation Route For Vendor */
 Route::get('admin/vendor',[VendorController::class,'index']);
 Route::get('admin/vendor/manage_vendor',[VendorController::class,'manage_vendor']);
 Route::get('admin/vendor/manage_vendor/{id}',[VendorController::class,'manage_vendor']);

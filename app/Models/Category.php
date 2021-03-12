@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Crypt;
 class Category extends Model
 {
     use HasFactory;
-    public function getCategoryNameAttribute($value){
-        $value=Crypt::decryptString($value);
+ /*   public function getCategoryNameAttribute($value){
+     $value=Crypt::decryptString($value);
         $data=ucwords($value);
 
     return $data;
@@ -18,5 +18,5 @@ class Category extends Model
     public function setCategoryNameAttribute($value)
     {
         return $this->attributes['category_name']=Crypt::encryptString($value);
-    }
+    }*/
 }

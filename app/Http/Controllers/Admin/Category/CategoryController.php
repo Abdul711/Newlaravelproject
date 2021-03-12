@@ -23,18 +23,32 @@ class CategoryController extends Controller
    
     if($id>0){
         $arr=Category::where(['id'=>$id])->get(); 
-
+     
         $result['category_name']=$arr['0']->category_name;
+        $result['category_text']=$arr['0']->category_title;
          $result['category_btn']="Update Category";
          $result['category_title']="Update Category";
         $result['category_id']=$arr['0']->id;
+        $result['category_image']=$arr['0']->category_image;
+        $result['show_at_home']=$arr['0']->category_show;
+        $result['parent_category_id']=$arr['0']->parent_category_id;
+        $result['categories']=DB::table('categories')->
+       where(['status'=>1])->where('id','!=',$id)->get();
     }else{
+        $result['category_text']='';
         $result['category_name']='';
         $result['category_btn']="Add Category";
         $result['category_title']="Add Category";
         $result['category_id']='';
-        
+        $result['show_at_home']='';
+        $result['parent_category_id']='';
+        $result['categories']=DB::table('categories')->where(['status'=>1])->get();
+
     }
+
+ 
+
+
     return view('admin/category/manage_category',$result);
 
       
@@ -59,21 +73,54 @@ class CategoryController extends Controller
     public function manage_category_process(Request $request)
     {
         //   
-       $id= $request->post('category_id');
 
-           if($id!=null){
+        $id=$request->post('category_id');
+ if($id!=''){
             $link="admin/category/manage_category/".$id;
+            $category_image_valid="mimes:jpeg,png";
+          
+            $category_name_valid='min:3|max:24';
+        
+            $model=Category::find($id);
+            $status=$model->status;
+            if($request->hasFile("category_image")){
+                $category_image=$request->file("category_image");
+                
+                $image_name=time().'.'.$category_image->extension();
+                $category_image->storeAs('/public/media/category',$image_name);  
+                #    
+            }else{
+                $image_name=$model->category_image;
             }
+
+            $message="Category Updated";
+
+
+
+}
             else{
                 $link="admin/category/manage_category";
+                $category_image_valid="required|mimes:jpeg,png";
+                $category_name_valid='required|min:3|max:24|unique:categories,category_name';
+                $message="Category Inserted";
+                $status=1;
+                $model=new Category();
+                if($request->hasFile("category_image")){
+                     $category_image=$request->file("category_image");
+                     
+                     $image_name=time().'.'.$category_image->extension();
+                      $category_image->storeAs('/public/media/category',$image_name);           
+                     #    
+                 } 
+       
             }
-             
+
         
           
            $validator=Validator::make($request->all(),[
             /*|required|regex:/[A-Z]{2,}/i*/
-    'category_name'=>'required|min:3|max:24|unique:categories,category_name'
-             
+    'category_name'=>$category_name_valid,
+            'category_image'=>$category_image_valid 
              
               
         ],[
@@ -88,20 +135,29 @@ class CategoryController extends Controller
              return redirect($link)->withErrors($validator);
              /*withInput()*/;
             }else{
+               
                $category_name= $request->post('category_name');
                $category_id=$request->post('category_id');
-               $status=1;
-               if($category_id==null){
-                $message="Category Inserted";
-                 $model=new Category();
+               $category_text=$request->post('category_text');
+               $parent_category_id=$request->post('parent_category_id');
+                  
+               $category_show=$request->post('at_home');
+     
+               if(isset($category_show)){
+                   $at_home=$category_show;
                }else{
-                $message="Category Updated";
-                   $model=Category::find($category_id);
+                   $at_home=0;
                }
-
-               
+            
+                 
+           
+               $model->category_show=$at_home;	
+           
+               $model->category_title=$category_text;
                $model->status=$status;
                $model->category_name=$category_name;
+               $model->category_image=$image_name;
+               $model->parent_category_id=$parent_category_id;      
                $model->save();
             
                $request->session()->flash("message","$message");
@@ -120,8 +176,23 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         //
-         $data=Category::all();
-        return view('admin.category.category',['categories'=>$data]); 
+        $data_c=DB::table('categories')->get();
+        $data_c=json_decode($data_c,true);
+
+        $result['categories']=$data_c;
+
+            foreach ($data_c as $key => $value) {
+          
+                  
+                 
+                $result['parent_category'][$value['id']]=parent_category_name($value['parent_category_id']);
+                
+
+            }
+       
+
+
+        return view('admin.category.category',$result); 
     }
 
     /**

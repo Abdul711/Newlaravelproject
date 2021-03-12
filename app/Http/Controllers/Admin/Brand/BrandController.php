@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Brand;
 use App\Http\Controllers\Controller;
-
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 
@@ -34,15 +34,22 @@ class BrandController extends Controller
             $result['brand_name']=$arr['0']->brands;
             $result['brand_btn']='Update Brand';
             $result['brand_title']='Update Brand';
-         
+            $result['brand_show_at_home']=$arr['0']->show_at_home;     
             $result['brand_id']=$arr['0']->id;
+            $result['brand_image']=$arr['0']->brand_image;
          }else{
-
+      
         $result['brand_btn']='Add Brand';
         $result['brand_title']='Add Brand';
         $result['brand_name']='';
         $result['brand_id']='';
+        $result['brand_image']='';
+        $result['brand_show_at_home']='1';
          }
+   /*  echo "<pre>";
+         print_r($result);
+         echo "</pre>";
+         die('con');*/
         return view('admin.brand.manage_brand',$result);
     }
 
@@ -54,63 +61,82 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {    
-
+    
         $brand_id= $request->post('brand_id');
         $brand_name= $request->post('brand_name');
-        if($brand_id=='' && $brand_id==null){
-    
-        if($brand_name=="" && $brand_name==null){
-            $request->session()->flash('error_message','Please Enter The Brand Name');
-            return redirect ('admin/brand/manage_brand');
-        }else{
-        $total_record= Brand::where('brands',$brand_name)->count();
-        
-        
-           if($total_record>0){
-                $request->session()->flash('error_message',"This Brand $brand_name Already Exists");
-             
-                return redirect ('admin/brand/manage_brand')->withInput();
-            }else{
-                $request->session()->flash('success_message',"This Brand $brand_name Has Been Added Successfully");
-                $model=new Brand();
-            
-                $model->brands=$brand_name;
-                $model->status=1;
-                $model->save();
-                
-                return redirect ('admin/brand');
-            }
-        }   
+        $show_at_home= $request->post('at_home');
+        $link=$request->headers->get('referer');  
+               
+
+
+
+
    
 
-        }else{
-            if($brand_name=="" && $brand_name==null){
-                $request->session()->flash('error_message',"Brand Name Required");
-             
-                return redirect ("admin/brand/manage_brand/$brand_id");
-            }else{
-                $total_record= Brand::where('brands',$brand_name)->count();
-        
-        
-                if($total_record>0){
-                   
-             
-                    $model=Brand::find($brand_id);
-                 $message="Brand $brand_name Has Been Updated Successfully";
-                   
-                }else{
-                    $model=new Brand();
-                    $message="Brand $brand_name Has Been Added Successfully";
-                }
-                $model->brands=$brand_name;
-                $model->status=1;
-                $model->save();
-                $request->session()->flash('success_message',$message);
-                return redirect('admin/brand');
-            }
 
-        
-        }
+
+        $validator=Validator::make($request->all(),[
+            /*|required|regex:/[A-Z]{2,}/i*/
+    'brand_name'=>'required|min:1|unique:categories,category_name'
+             
+             
+              
+        ],[
+      
+            'brand_name.required'=>'Category Name must Be filled Out ',   
+            'brand_name.min'=>'Category Name Must Consist Of atleast 3 Character', 
+            'brand_name.unique'=>'Category AlReady Exists', 
+            'barnd_name.max'=>'Category Name must Be less then 24 characters '
+        ]);   
+
+             if ($validator->fails()) {
+             return redirect($link)->withErrors($validator);
+             /*withInput()*/;
+            }else{
+
+
+                if($brand_id!=''){
+                    $message="Brand Updated";
+                    $brand_model= Brand::find($brand_id);
+                    $brand_status=$brand_model->status;
+                    if($request->hasFile('image')){
+                     $image=$request->file('image');
+                     $image_name=time().'.'.$image->extension();
+                    $image->storeAs('/public/media/brand',$image_name);
+                    $brand_model->brand_image=$image_name;
+                    }else{
+              
+                    $image_name=$brand_model->brand_image;
+                        $brand_model->brand_image=$image_name;
+                    }
+
+                }else{
+                    $message="Brand Added";
+                 $brand_model= new Brand;
+                 if($request->hasFile('image')){
+                     $image=$request->file('image');
+                     $image_name=time().'.'.$image->extension();
+                    $image->storeAs('/public/media/brand',$image_name);
+                    $brand_model->brand_image=$image_name;
+                
+                 }
+                 $brand_status=1;
+               }
+
+            
+                $brand_model->show_at_home=$show_at_home;
+                $brand_model->brands=$brand_name;
+                $brand_model->status=$brand_status;
+                $brand_model->save();
+                session()->flash("success_message",$message);
+              return redirect('admin/brand');
+            } 
+
+   
+             
+
+
+      
     }
 
     /**

@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('product_name')->nullable();
             $table->string('category_id')->nullable();
             $table->string('sub_category_id')->nullable();
-            $table->string('color_id')->nullable();
+     
             $table->string('brand_id')->nullable();
           
             $table->string('image')->nullable();
@@ -28,7 +28,7 @@ class CreateProductsTable extends Migration
             $table->string('availability')->nullable();
             $table->string('discounted')->nullable();
             $table->string('trending')->nullable();
-      
+            $table->string('lead_time')->nullable();
          
             $table->timestamps();
         });

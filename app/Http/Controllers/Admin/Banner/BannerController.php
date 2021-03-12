@@ -54,10 +54,10 @@ class BannerController extends Controller
             $banner_id=$request->post('banner_id');
             if($banner_id==null && $banner_id==''){
                 $banner_model= new Banner();
-                $image_valid='required|mimes:png';
+                $image_valid='required|mimes:png,gif,jpeg';
                }else{
                 $banner_model=Banner::find($banner_id);
-                $image_valid='required|mimes:gif';
+                $image_valid='required|mimes:gif,png,jpeg';
                }   
          $validator=  Validator::make($request->all(),[
     
@@ -79,30 +79,60 @@ class BannerController extends Controller
                     $image_name=rand().'.'.$ext;
                      $image->storeAs('/public/media/banner',$image_name);
                        $banner_model->text=$banner_text;
-                     $banner_model->image=$image_name;
-                     $banner_model->banner_slug=$banner_slug;
-                     $banner_model->status=1;
-                     $banner_model->banner_link=$banner_link;
-                     $banner_model->save();
+                       $banner_model->image=$image_name;     
+               
                       
                 }   
 
+                $banner_model->banner_slug=$banner_slug;
+                $banner_model->status=1;
+                $banner_model->banner_link=$banner_link;
+                $banner_model->save();
                return redirect('admin/banner'); 
             }
   
     
         
         }
-        public function delete(Request $request, $id){
+         public function update($status,$id)
+   
+         {
+            if($status==1){
+        $new_status=0;
+        $new_sta="Deactive";
+
+           }else{
+            $new_status=1;
+            $new_sta="Active";
+           }
+           $model=Banner::find($id);
+           $model->status=$new_status;
+           $model->save();
+           $message="Banner $new_sta";
+           session()->flash("success_message",$message);
+           return redirect('admin/banner');
+        }
+        public function delete($id){
             /* Check If The Record Of This Id Is present */
         $record_total=Banner::where(['id'=>$id])->count();
-            if($record_total>0){
+         if($record_total>0){
          $model=Banner::find($id);
+        $image_to_delete=$model->image;
+        if(Storage::exists('/public/media/banner/',$image_to_delete)){
+             
+            Storage::delete("/public/media/banner/$image_to_delete");
+
+
+        }
+ 
          $model->delete();
-              $link=$request->headers->get('referer');
+         session()->flash("success_message","Banner Deleted");
+   
+              $link="admin/banner";
              return redirect($link);
             }else{
-                   $link=$request->headers->get('referer');
+                session()->flash("success_message","Banner Deleted");
+                   $link="admin/banner";
              return redirect($link);
             }
 

@@ -18,6 +18,7 @@ class CreateBrandsTable extends Migration
             $table->string('brands');
             $table->string('brand_image');
             $table->string('status');
+            $table->string('show_at_home');
             $table->timestamps();
         });
     }
