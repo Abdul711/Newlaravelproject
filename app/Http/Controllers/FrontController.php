@@ -22,16 +22,24 @@ class FrontController extends Controller
     foreach($result['categories'] as $list){
      $result['home_categories_product'][$list->id]=
      DB::table('products')
-     ->where(['status'=>1])
-     ->where(['category_id'=>$list->id])
+     ->leftJoin("brands","brands.id","=","products.brand_id")
+     ->select('products.*','brands.brands')
+     ->where(['products.status'=>1])
+     ->where(['products.category_id'=>$list->id])
      ->get();
+  
         foreach($result['home_categories_product'][$list->id] as $list1){
-            $result['home_product_attribute'][$list1->id]=
+            $result['home_product_attributes'][$list1->id]=
             DB::table('product_attributes')
             ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
             ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
             ->leftJoin('colors','colors.id','=','product_attributes.color_id')
             ->where(['product_attributes.product_id'=>$list1->id])
+            ->get();
+            $result['image_collection'][$list1->id]=
+            DB::table('product_images')
+         
+            ->where(['product_images.product_id'=>$list1->id])
             ->get();
         }          
         
@@ -41,7 +49,7 @@ class FrontController extends Controller
     $result['home_featured_product']=
     DB::table('products')
     ->where(['status'=>'1'])
-    ->where(['featured'=>'1'])
+    ->where(['is_featured'=>'1'])
     ->get();
        
            foreach($result['home_featured_product']as $list1){
@@ -51,13 +59,14 @@ class FrontController extends Controller
                ->leftJoin('colors','colors.id','=','product_attributes.color_id')
                ->where(['product_attributes.product_id'=>$list1->id])
                ->get();
+              
            }          
            
    
        
-
-
-       /* prx($result);*/
+/*
+prx($result);
+*/
     
            return view('front_end.index',$result);
      }
@@ -69,12 +78,15 @@ class FrontController extends Controller
         ->leftJoin("categories","categories.id","=","products.category_id")
         ->leftJoin("brands","brands.id","=","products.brand_id")
         ->select(
-            "products.product_name",
+            "products.name",
             "products.id",
             "products.category_id",
             "products.status","products.image",
-            "products.trending","products.availability",
-            "products.featured","products.discounted",
+            "products.is_tranding",
+            "products.desc",
+            "products.lead_time",
+            "products.warranty",
+            "products.is_featured","products.is_discounted",
             "categories.category_name",
             "brands.brands as brand_name"
             )
@@ -136,7 +148,8 @@ class FrontController extends Controller
      /* echo"<pre>";
        print_r($result);
        echo"</pre>";
-       die('');*/
+       die('');
+       prx($result);*/
        return view('front_end.product-detail',$result);
       }
          public function store(Request $request){
@@ -170,15 +183,15 @@ class FrontController extends Controller
          ->leftJoin("categories","categories.id","=","products.category_id")
          ->leftJoin("brands","brands.id","=","products.brand_id")
          ->select("products.id",
-         "products.product_name",
+         "products.name",
          "products.image",
          "products.status",
-         "products.featured",
-         "products.trending",
-         "products.discounted",
+         "products.is_featured",
+         "products.is_tranding",
+         "products.is_discounted",
          "products.lead_time",
          "products.category_id",
-         "products.availability",
+         "products.desc",
          "categories.category_name",
          "brands.brands"
          
@@ -220,7 +233,80 @@ $result['product_attributes']=$product_attributes;
     
        $result['categories']=$categories;
 
-
+/*  prx($result);*/
 return view('front_end.product',$result);
-        }
+    }
+
+
+
+
+    public function view_product_by_sub($category_id)
+    {
+
+    $result['category_product']=DB::table('products')
+     ->leftJoin("categories","categories.id","=","products.category_id")
+     ->leftJoin("brands","brands.id","=","products.brand_id")
+     ->select("products.id",
+     "products.name",
+     "products.image",
+     "products.status",
+     "products.featured",
+     "products.trending",
+     "products.discounted",
+     "products.lead_time",
+     "products.category_id",
+     "products.availability",
+     "categories.category_name",
+     "brands.brands"
+     
+     )
+
+    ->where('products.status','=','1')->where(['products.sub_category_id'=>$category_id])->get();
+         foreach ($result["category_product"] as $key => $value) {
+             # code...
+             $result['category_product_attributes'][$value->id]=DB::table('product_attributes')
+             ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
+             ->leftJoin('colors','colors.id','=','product_attributes.color_id')
+             ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
+             ->select(
+                 'sizes.size_name',
+                 'sizes.id as size_id',
+             'colors.color_name',
+             'colors.id as color_id',
+             "taxes.tax_value",
+             "product_attributes.price",
+             "product_attributes.mrp",
+             "product_attributes.qty",
+             "product_attributes.price_after_tax",
+             )
+             ->where('product_id','=',$value->id)->
+        get();
+           
+         }
+
+$product_attributes=DB::table('product_attributes')->get();
+$result['product_attributes']=$product_attributes;
+ foreach ($product_attributes as $key => $value) {
+   $color_id=$value->color_id;
+      $result['colors'][$value->id]=DB::table('colors')->select('colors.id','colors.color_name')->where(['id'=>$color_id])->get();
+ }
+   $categories= DB::table("categories")->where('parent_category_id','!=','0')->where(['status'=>1])->get();
+   
+
+   $sizes= DB::table("sizes")->where(['status'=>1])->get();
+
+   $result['categories']=$categories;
+
+ 
+return view('front_end.product-sub_category',$result);
+}
+
+
+
+
+
+
+
+
+
 }

@@ -41,7 +41,7 @@
                             home_add_to_cart('',
                             '','')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                             <figcaption>
-                              <h4 class="aa-product-title"><a href="{{url('product/'.$product->id)}}">{{$product->name}}</a></h4>
+                              <h4 class="aa-product-title"><a href="{{url('product/'.$product->id)}}">{{$product->product_name}}</a></h4>
                               <span class="aa-product-price">Rs{{$category_product_attributes[$product->id][0]->price}}</span><span class="aa-product-price"><del>Rs{{$category_product_attributes[$product->id][0]->mrp}}</del></span>
                             </figcaption>
                           </figure>    
@@ -94,13 +94,12 @@
                         <!-- Modal view content -->
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <div class="aa-product-view-content">
-                            <h3>{{$product->name}}</h3>
-                            Delivery Time:<p class="text-danger"><b>{{$product->lead_time}}</b></p>
+                            <h3>{{$product->product_name}}</h3>
                             <div class="aa-price-block">
                               <span class="aa-product-view-price">Rs {{$category_product_attributes[$product->id][0]->price}}</span>
                               <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
                             </div>
-                            <p>{!!$product->desc!!}</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis animi, veritatis quae repudiandae quod nulla porro quidem, itaque quis quaerat!</p>
                             <h4>Size</h4>
                             <div class="aa-prod-view-size">
                                  @foreach($category_product_attributes[$product->id] as $color)
@@ -159,7 +158,7 @@
                   <h3>Category</h3>
                   <ul class="aa-catg-nav">
                      @foreach($categories as $category)
-                     <li><a href="{{url('category/'.$category->id)}}">{{$category->category_name}}</a></li>
+                     <li><a href="{{url('sub_category/'.$category->id)}}">{{$category->category_name}}</a></li>
                      @endforeach
                
                   </ul>
@@ -193,13 +192,13 @@
                   @endforeach
                            @endforeach
 
-                   {{count($colors_product)}}
-                   @if(count($colors_product)>0)
+@if(isset($colors_product[0]))                  
                    @foreach( $colors_product as $key=> $product)
                     <a class="aa-color-{{strtolower($product)}}" href="#"></a>
                     @endforeach
-                   @endif
-                  
+                    @else
+                    No Colors Available
+                    @endif
                   </div>
                </div>
 

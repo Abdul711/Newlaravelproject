@@ -27,6 +27,7 @@ use App\Http\Controllers\FrontController;
 Route::get('/', [FrontController::class,'index']);
 Route::get('/product/{id}', [FrontController::class,'view_product']);
 Route::get('/category/{id}', [FrontController::class,'view_product_by_cat']);
+Route::get('/sub_category/{id}', [FrontController::class,'view_product_by_sub']);
 Route::get('/my_account', function () {
     return view('front_end.account');
 });

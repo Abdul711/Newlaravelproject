@@ -10,7 +10,7 @@
     <link href="{{asset('admin_assets/vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('admin_assets/vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('admin_assets/css/theme.css')}}" rel="stylesheet" media="all">
-
+    <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
 </head>
 
 <body>

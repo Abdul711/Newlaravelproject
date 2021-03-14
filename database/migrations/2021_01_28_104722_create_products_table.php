@@ -15,21 +15,22 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name')->nullable();
-            $table->string('category_id')->nullable();
-            $table->string('sub_category_id')->nullable();
-     
+            $table->integer('category_id')->nullable();
+            $table->string('name')->nullable();
             $table->string('brand_id')->nullable();
-          
             $table->string('image')->nullable();
-            $table->string('status')->nullable();
-            $table->string('keyword')->nullable();
-            $table->string('featured')->nullable();
-            $table->string('availability')->nullable();
-            $table->string('discounted')->nullable();
-            $table->string('trending')->nullable();
             $table->string('lead_time')->nullable();
-         
+            $table->string('model')->nullable();
+            $table->string('sub_category_id')->nullable();
+            $table->longText('short_desc')->nullable();
+            $table->longText('desc')->nullable();
+            $table->longText('keywords')->nullable();
+            $table->longText('is_promo')->nullable();
+            $table->longText('is_featured')->nullable();
+            $table->longText('is_discounted')->nullable();
+            $table->longText('is_tranding')->nullable();
+            $table->longText('warranty')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

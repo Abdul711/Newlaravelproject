@@ -1,10 +1,40 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@Abdul711 
+Abdul711
+/
+Newlaravelproject
+1
+00
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Newlaravelproject/public/front_assets/css/style.css
+@Abdul711
+Abdul711 Front End Edit
+Latest commit b12a2fa 3 hours ago
+ History
+ 1 contributor
+4219 lines (3969 sloc)  104 KB
+  
 /*
   Template Name: Daily Shop
   Author : MarkUps
   Author URI: http://www.markups.io/
   Version: 1.0
   Tags: light, white, ecommerce, online store, multi page, custom-colors, Bootstrap,responsive, html5, css3, Sass, template, web template
-
 */
 
 /* Table of Content
@@ -32,7 +62,6 @@
 #ERROR  PAGE
 #FOOTER SECTION
 #RESPONSIVE DESIGN
-
 */
 
 /* BASE - Base tyles, Variables, Mixins, etc. */
@@ -1313,6 +1342,21 @@ height:850px;
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
+#quick-view-modal .modal-content .aa-product-view-content .aa-prod-view-color a {
+  border: 123px solid #ddd;
+  display:none;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  background:red;
+  margin-bottom: 5px;
+  margin-right: 8px;
+  padding: 5px 10px;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
 #quick-view-modal .modal-content .aa-product-view-content .aa-prod-quantity {
   margin-top: 10px;
 }
@@ -1335,6 +1379,7 @@ height:850px;
   margin-top: 10px;
   padding-top: 10px;
 }
+
 #quick-view-modal .modal-content .aa-product-view-content .aa-prod-view-bottom a:last-child {
   margin-left: 10px;
 }
@@ -2107,7 +2152,7 @@ height:850px;
 /*==================
  PRODUCT DETAILS PAGE
 ====================*/
-
+     
 #aa-product-details {
   display: inline;
   float: left;
@@ -3611,7 +3656,7 @@ height:850px;
     width: 100%;
   }
   .aa-product-details-content .aa-product-view-slider .simpleLens-big-image-container .simpleLens-lens-image {
-    width: 100%;
+    width: 75%;
   }
 
   .cart-view-table .table-responsive .aa-cart-view-bottom .aa-cart-view-btn {

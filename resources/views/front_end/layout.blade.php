@@ -100,12 +100,12 @@
                 <!-- / cellphone -->
               </div>
               <!-- / header top left -->
-              <div class="aa-header-top-right">
+            <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
-                  <li><a href="account.html">My Account</a></li>
-                  <li class="hidden-xs"><a href="wishlist.html">Wishlist</a></li>
-                  <li class="hidden-xs"><a href="cart.html">My Cart</a></li>
-                  <li class="hidden-xs"><a href="checkout.html">Checkout</a></li>
+                  <li><a href="{{url('my_account')}}">My Account</a></li>
+                  <li class="hidden-xs"><a href="javascript:void(0)">Wishlist</a></li>
+                  <li class="hidden-xs"><a href="javascript:void(0)">My Cart</a></li>
+                  <li class="hidden-xs"><a href="javascript:void(0)">Checkout</a></li>
                   <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
                 </ul>
               </div>

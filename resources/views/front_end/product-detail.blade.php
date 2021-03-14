@@ -1,6 +1,6 @@
 
 @extends('front_end/layout')
-@section('page_title',$product[0]->product_name)
+@section('page_title',$product[0]->name)
 @section('container')
 
 
@@ -58,12 +58,12 @@
                 <!-- Modal view content -->
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <div class="aa-product-view-content">
-                    <h3>{{$product[0]->product_name}}</h3>
+                    <h3>{{$product[0]->name}}</h3>
   
                     <div class="aa-price-block">
 
                       <span class="aa-product-view-price">Rs {{$product_attributes[$product[0]->id][0]->price}}&nbsp;&nbsp;</span>
-                      @if($product[0]->discounted!=0)
+                      @if($product[0]->is_discounted!=0)
                       <span class="aa-product-view-price"><del>Rs {{$product_attributes[$product[0]->id][0]->mrp}}</del></span>
                        @endif
                       <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
@@ -148,16 +148,17 @@
               <!-- Tab panes -->
               <div class="tab-content">
                 <div class="tab-pane fade in active" id="description">
-            
+          
+            {!!$product[0]->desc!!}
                 </div>
                 <div class="tab-pane fade" id="technical_specification">
-         
+                {{$product[0]->desc}}
                 </div>
                 <div class="tab-pane fade" id="uses">
-       
+                {{$product[0]->desc}}
                 </div>
                 <div class="tab-pane fade" id="warranty">
-          
+                {{$product[0]->warranty}}
                 </div>
                 <div class="tab-pane fade " id="review">
                  <div class="aa-product-review-area">
@@ -225,22 +226,22 @@
                     @foreach($related_product as $productArr)
                     <li>
                         <figure>
-                        <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}"><img src="{{asset('storage/media/'.$productArr->image)}}" alt="{{$productArr->product_name}}"></a>
+                        <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}"><img src="{{asset('storage/media/'.$productArr->image)}}" alt="{{$productArr->name}}"></a>
                         <a class="aa-add-card-btn" href="{{url('product/'.$productArr->id)}}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                         <figcaption>
                             <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">
-                            {{$productArr->product_name}}</a></h4>
+                            {{$productArr->name}}</a></h4>
                             <span class="aa-product-price">
                             Rs {{$product_related_attributes[$productArr->id][0]->price}}
   </span>
-  @if($productArr->discounted==1)
+  @if($productArr->is_discounted==1)
   <span class="aa-product-price">
   <del>Rs {{$product_related_attributes[$productArr->id][0]->mrp}}</del>
   </span>
   @endif
                         </figcaption>
                         </figure>       
-                        @if($productArr->discounted==1)
+                        @if($productArr->is_discounted==1)
                           @php
 
                           if($product_related_attributes[$productArr->id][0]->price_after_tax!='')

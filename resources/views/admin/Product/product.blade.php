@@ -25,39 +25,37 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            
+                            <th>Slug</th>
                             <th>Image</th>
-                            <th colspan="3" class="text-center">Action</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                 
-                    @php
-                    $total=count($data);
-                    @endphp
-                    @if($total>0)            
-                        @foreach($data as $key => $product_data)
+                        @foreach($data as $list)
                         <tr>
-                        <td>{{$key+1}}</td>
-                        <td>{{$product_data->product_name}}</td>
-                       <td> <a href="{{url('storage/media/'.$product_data->image)}}"> <img src="{{asset('storage/media/'.$product_data->image)}}" width="100px"> </a>  </td>
-                       @if($product_data['status']==0)
-<td><a class="btn btn-warning" href="{{url('admin/product/status')}}/{{$product_data['id']}}/{{$product_data['status']}}">Deactive</a></td> 
-@elseif($product_data['status']==1)
-<td><a class="btn btn-success" href="{{url('admin/product/status')}}/{{$product_data['id']}}/{{$product_data['status']}}">Active</a></td> 
-@endif
-<td><a class="btn btn-outline-secondary" href="{{url('admin/product/manage_product')}}/{{$product_data['id']}}">Edit</a></td> 
-                            <td><a class="btn btn-outline-danger" href="{{url('admin/product/delete')}}/{{$product_data['id']}}">Delete</a></td>
+                            <td>{{$list->id}}</td>
+                            <td>{{$list->name}}</td>
+                            <td>{{$list->slug}}</td>
+                            <td>
+                            @if($list->image!='')
+                                <img width="100px" src="{{asset('storage/media/'.$list->image)}}"/>
+                            @endif
+                            </td>
+                            <td>
+                                <a href="{{url('admin/product/manage_product/')}}/{{$list->id}}"><button type="button" class="btn btn-success">Edit</button></a>
+
+                                @if($list->status==1)
+                                    <a href="{{url('admin/product/status/0')}}/{{$list->id}}"><button type="button" class="btn btn-primary">Active</button></a>
+                                 @elseif($list->status==0)
+                                    <a href="{{url('admin/product/status/1')}}/{{$list->id}}"><button type="button" class="btn btn-warning">Deactive</button></a>
+                                @endif
+
+                                <a href="{{url('admin/product/delete/')}}/{{$list->id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+                            </td>
                         </tr>
-                        @endforeach 
-                        @else
-                        <tr>
-                        <td colspan="5" class="text-center">No Record Found</td>
-                        <tr>
-                        @endif 
+                        @endforeach
                     </tbody>
                 </table>
-          
             </div>
             <!-- END DATA TABLE-->
         </div>
