@@ -110,13 +110,14 @@
                               
                             </div>
                             <h4>Color</h4>
-                            <div class="aa-prod-view-color">
+                          
+                   
                                  @foreach($category_product_attributes[$product->id] as $color)
-                                 <a href="#"> {{$color->color_name}}</a>
+                           
                                  @endforeach
-
-                              
-                            </div>
+                                 <div class="aa-col-red" id="a-color-red"></div>
+                     
+                     
                             <div class="aa-prod-quantity">
                               <form action="">
                                 <select name="" id="">

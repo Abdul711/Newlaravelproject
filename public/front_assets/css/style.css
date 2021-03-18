@@ -1347,7 +1347,7 @@ height:850px;
   display:none;
   font-size: 14px;
   letter-spacing: 0.5px;
-  background:red;
+  background-color:black;
   margin-bottom: 5px;
   margin-right: 8px;
   padding: 5px 10px;
@@ -4261,4 +4261,7 @@ height:135px;
 .aa-slider-area img{
  width:1000px;
  height:1000px;
+}
+.aa-col-red{
+  background-color:red;
 }

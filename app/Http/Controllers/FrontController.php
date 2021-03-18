@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Mail;
 class FrontController extends Controller
 {
      
@@ -302,11 +305,161 @@ return view('front_end.product-sub_category',$result);
 }
 
 
+ function registration_process(Request $reg)
+{
+$user_name=$reg->post('user_name');
+$user_email=$reg->post('user_email');
+$user_mobile=$reg->post('user_mobile');
+$user_password=$reg->post('user_password');
+$user_password=Hash::make($user_password);
+$user_status=1;      
+
+$mr=mt_rand(1000,9999);
+$mrt=mt_rand(1,9999999);
+$mrt=bin2hex($mrt);
+$mrt=md5($mrt);
+$data_result=DB::table("customers")->where(["customer_email"=>$user_email])->count();
+if($data_result>0){
+    return response()->json(['status'=>"error",'msg'=>"User Already Exists"]);    
+}else{
+
+         
+    $data["names"]=DB::table("products")->get();
+    $data["token"]=$mrt;
+
+    $users["to"]="syedabdultechnicalcop@gmail.com";
+    $data["name"]=$user_name;
+    $template_name="mail";
+     Mail::send($template_name,$data,function($messages) use ($users){
+        $messages->to($users["to"]);
+        $messages->subject("Thank for Registration");
+    });
+$mr="";
+     $insert_user_arr=[
+         "customer_name"=>$user_name,
+         "customer_email"=>$user_email,
+         "customer_mobile"=>$user_mobile,
+         "customer_password"=>$user_password,
+         "customer_otp"=>$mr,
+         "customer_verified"=>"0",
+         "customer_rand_str"=>$mrt,
+         "customer_status"=>"1"
+     ];
+/*print_r($insert_user_arr);*/
+DB::table("customers")->insert($insert_user_arr);
+
+
+
+
+
+  return response()->json(['status'=>"success",'msg'=>"User Register"]);  
+      
+    }   
 
 
 
 
 
 
+    
+
+}
+
+public function login_process(Request $reg)
+{
+
+
+
+
+   $user_email=$reg->post('user_login_email');
+   $user_password=$reg->post('user_login_password');
+   $data_result=DB::table("customers")->where(["customer_email"=>$user_email])->get();
+  if(isset($data_result[0])){
+
+             if(Hash::check($user_password,$data_result[0]->customer_password)){
+                if($data_result[0]->customer_verified==1){
+                return response()->json(['status'=>"success",'msg'=>"User Login ","link"=>""]); 
+                }else{
+                    return response()->json(['status'=>"error",'msg'=>"First Verify Your account To login","link"=>""]);   
+                }
+             }else{
+                return response()->json(['status'=>"error",'msg'=>"Wrong Password","link"=>""]); 
+             }
+
+
+ 
+
+   
+
+  }else{
+    return response()->json(['status'=>"error",'msg'=>"User Not Found","link"=>""]);    
+  }
+
+
+
+}
+
+public function invite_user(){
+    echo "h";
+$data["names"]=DB::table("products")->get();
+
+
+    $users["to"]="syedabdultechnicalcop@gmail.com";
+    $data["name"]="syedabdultechnicalcop@gmail.com";
+    $template_name="mail";
+     Mail::send($template_name,$data,function($messages) use ($users){
+        $messages->to($users["to"]);
+        $messages->subject("Thank for Registration");
+    });
+}
+public function customer_verify($token=null){
+ if($token!=null){
+    $rop=DB::table("customers")->where(["customer_rand_str"=>$token])->update([
+        "customer_verified"=>"1"
+    ]);
+return redirect("/my_account");                 
+  
+ }
+}
+
+public function forget_password(Request $reg){
+print_r($_POST);
+echo $user_email=$_POST["user_email"];
+
+
+$mr=mt_rand(1000,9999);
+$data_result=DB::table("customers")->where(["customer_email"=>$user_email])->update([
+    "customer_otp"=>$mr
+]
+   
+);
+$data_result=DB::table("customers")->where(["customer_email"=>$user_email])->get();
+$token=$data_result[0]->customer_rand_str;
+
+$user_na=$data_result[0]->customer_name;
+$otp=$data_result[0]->customer_otp;
+$users["to"]="syedabdultechnicalcop@gmail.com";
+#
+
+
+$users["to"]="syedabdultechnicalcop@gmail.com";
+$data["name"]=$user_na;
+$data["token"]=$token;
+$data["otp"]=$otp;
+ Mail::send("forget_mail",$data,function($messages) use ($users){
+    $messages->to($users["to"]);
+    $messages->subject("Link For Reset Password");
+});
+
+
+
+
+
+
+
+}
+public function reset_p($token=null){
+    return view('front_end.reset_password',["token"=>$token]);
+}
 
 }

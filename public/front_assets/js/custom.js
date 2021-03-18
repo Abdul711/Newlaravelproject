@@ -237,39 +237,8 @@ jQuery(function($){
   /*  9. PRICE SLIDER  (noUiSlider SLIDER)
   /* ----------------------------------------------------------- */        
 
-    jQuery(function(){
-      if($('body').is('.productPage')){
-       var skipSlider = document.getElementById('skipstep');
-        noUiSlider.create(skipSlider, {
-            range: {
-                'min': 0,
-                '10%': 10,
-                '20%': 20,
-                '30%': 30,
-                '40%': 40,
-                '50%': 50,
-                '60%': 60,
-                '70%': 70,
-                '80%': 80,
-                '90%': 90,
-                'max': 100
-            },
-            snap: true,
-            connect: true,
-            start: [20, 70]
-        });
-        // for value print
-        var skipValues = [
-          document.getElementById('skip-value-lower'),
-          document.getElementById('skip-value-upper')
-        ];
-
-        skipSlider.noUiSlider.on('update', function( values, handle ) {
-          skipValues[handle].innerHTML = values[handle];
-        });
-      }
-    });
-
+  
+   
 
     
   /* ----------------------------------------------------------- */
@@ -357,3 +326,126 @@ jQuery(function($){
     
 });
 
+
+
+
+
+$("#register_user").submit(function (e) { 
+  e.preventDefault();
+  var user_email=$('#user_email_reg').val();
+    var user_mobile=$('#user_mobile_reg').val();
+      var user_password=$('#user_password_reg').val();
+        var user_name=$('#user_name_reg').val();
+  if(user_email==""){
+        swal("Oops!","Please Provide Email Address","error");
+
+   return false;
+  }
+  valid_email=/[A-Za-z0-9_.]{3,}@[A-Za-z]{3,}[.]{1}[A-Za-z]{3,6}$/;
+
+  if(user_name==""){
+        swal("Oops!","Please Provide User Name","error");
+     return false;
+  }
+  if(user_mobile==""){
+        swal("Oops!","Please Provide Mobile Number","error");
+
+   return false;
+  }
+    if(user_password==""){
+        swal("Oops!","Please Provide Password","error");
+
+   return false;
+  }
+    if(!valid_email.test(user_email)){
+        swal("Oops!","Please Provide Correct Email Address","error");
+
+   return false;
+  }
+  jQuery.ajax({
+    url:'registration_process',
+    data:jQuery('#register_user').serialize(),
+    type:'post',
+    success:function(result){
+    alert(result);
+    console.log(result);
+  if(result.status=="success"){
+    swal("Congratulations!",result.msg,result.status);
+  }
+    if(result.status=="error"){
+    swal("Oops!",result.msg,result.status);
+  }   
+    }
+  });
+
+
+
+});
+$('.login-user').submit(function (e) { 
+  e.preventDefault();
+  var user_email=$("input[name='user_login_email']").val();
+   valid_email=/[A-Za-z0-9_.]{3,}@[A-Za-z]{3,}[.]{1}[A-Za-z]{3,6}$/;
+  if(user_email==""){
+    swal("Oop!","Please Enter Email Address","error");
+    return false;
+  }
+
+ if(!valid_email.test(user_email)){
+        swal("Oops!","Please Provide Correct Email Address","error");
+
+   return false;
+  }
+     form_data=$(this).serialize();
+    jQuery.ajax({
+    url:'login_process',
+    data:form_data,
+    type:'post',
+    success:function(result){
+    alert(result);
+    console.log(result);
+          if(result.status=="success"){
+            swal("Congratulations",result.msg,result.status);
+
+          } if(result.status=="error"){
+            swal("Oops",result.msg,result.status);
+      
+          }
+         links=result.link;
+             if(links!=''){
+               window.location.href=links;
+             }
+
+    }
+  });
+      
+
+});
+$("#send_link").submit(function (e) { 
+  e.preventDefault();
+  var form_data=$(this).serialize();
+  user_reset_pass_email=$("#user_reset_pass_email").val();
+     valid_email=/[A-Za-z0-9_.]{3,}@[A-Za-z]{3,}[.]{1}[A-Za-z]{3,6}$/;
+  if(user_reset_pass_email==""){
+        swal("Oops!","Please Provide  Email Address","error");
+
+   return false;
+  }
+   if(!valid_email.test(user_reset_pass_email)){
+        swal("Oops!","Please Provide Correct Email Address","error");
+
+   return false;
+  }
+  jQuery.ajax({
+    url:'forget_password',
+    data:form_data,
+    type:'post',
+    success:function(result){
+    alert(result);
+    console.log(result);
+    
+          
+
+    }
+  });
+  alert(form_data);
+});

@@ -28,24 +28,35 @@ Route::get('/', [FrontController::class,'index']);
 Route::get('/product/{id}', [FrontController::class,'view_product']);
 Route::get('/category/{id}', [FrontController::class,'view_product_by_cat']);
 Route::get('/sub_category/{id}', [FrontController::class,'view_product_by_sub']);
+
+    Route::get('/send_invite', [FrontController::class,'invite_user']);
+Route::get('/customer_verify/{token?}',[FrontController::class,'customer_verify']);
+
+
 Route::get('/my_account', function () {
     return view('front_end.account');
 });
 Route::get('/my_checkout', function () {
     return view('front_end.checkout');
 });
+Route::get('/forget_password', function () {
+    return view('front_end.forget_password');
+});
 Route::get('/my_contact', function () {
     return view('front_end.contact');
 });
-Route::get('/my_cart', function () {
+Route::get('/cart', function () {
     return view('front_end.cart');
 });
 
 
   
 Route::get('admin',[AdminController::class,'index']);
-
+Route::get('/reset_password/{id?}',[FrontController::class,'reset_p']);
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
+Route::post('registration_process',[FrontController::class,'registration_process'])->name('registration.registration_process');
+Route::post('login_process',[FrontController::class,'login_process'])->name('registration.login_process');
+Route::post('forget_password',[FrontController::class,'forget_password'])->name('registration.forget_password');
 Route::get('admin/add_admin',[AdminController::class,'add_admin']);
 Route::get('admin/update/{id?}',[AdminController::class,'update_admin']);
 Route::group(['middleware'=>'admin_auth'],function(){
@@ -55,7 +66,7 @@ Route::group(['middleware'=>'admin_auth'],function(){
     /* Crud Operation Route For Category */
     Route::get('admin/category',[CategoryController::class,'show']);
     Route::get('admin/category/delete/{id}',[CategoryController::class,'destroy']);
-
+     Route::get('/reset/{?token}',[FrontController::class,'reset_p']);
     Route::get('admin/category/manage_category/{id?}',[CategoryController::class,'manage']);
     Route::post('admin/category/manage_category',[CategoryController::class,'manage_category_process'])->name('category.store');
     Route::get('admin/category/status/{id}/{status}',[CategoryController::class,'update_status']);

@@ -104,6 +104,15 @@ function getAddToCartTotalItem(){
    
 }
 
-
+ function send_mail($template_name,$email)
+{
+    $users["to"]="syedabdultechnicalcop@gmail.com";
+    $data["name"]="syedabdultechnicalcop@gmail.com";
+    $template_name="mail";
+    echo Mail::send($template_name,$data="",function($messages) use ($users){
+        $messages->to($users["to"]);
+        $messages->subject("Thank for Registration");
+    });
+}
 
 ?>
