@@ -69,7 +69,17 @@
                   
                   <li class="hidden-xs"><a href="{{url('/cart')}}">My Cart</a></li>
                   <li class="hidden-xs"><a href="javascript:void(0)">Checkout</a></li>
-                  <li><a href="" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                 @if(session()->has('FRONT_USER_LOGIN')=='0' && session()->has('FRONT_USER_LOGIN')=='0')
+                    
+                  <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                    
+               
+        @else
+             
+                  <li><a href="{{url('/logout')}}">Logout</a></li>
+          
+              @endif
+                 
                 </ul>
               </div>
             </div>
@@ -96,39 +106,44 @@
                 <!-- <a href="javascript:void(0)"><img src="img/logo.jpg" alt="logo img"></a> -->
               </div>
               <!-- / logo  -->
-               <!-- cart box -->
-        
+              
               <div class="aa-cartbox">
                 <a class="aa-cart-link" href="#" id="cartBox">
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">SHOPPING CART</span>
-                  <span class="aa-cart-notify">}</span>
+                  <span class="aa-cart-notify">2</span>
                 </a>
                 <div class="aa-cartbox-summary">
-     
+              
                 
                   <ul>
-          
+                 
                     <li>
-                      <a class="aa-cartbox-img" href="#"><img src="{{asset('storage/media/')}}" alt="img"></a>
+                      <a class="aa-cartbox-img" href="#"><img src="{{asset('storage/media/1615993097.jpg')}}" alt="img"></a>
                       <div class="aa-cartbox-info">
-                        <h4><a href="#"></a></h4>
-                        <p>* </p>
+                        <h4><a href="#">Gul Ahmed Kurti</a></h4>
+                        <p>2 * Rs 2042</p>
                       </div>
                     </li>
-                  
+                    <li>
+                      <a class="aa-cartbox-img" href="#"><img src="{{asset('storage/media/1615998207.jpg')}}" alt="img"></a>
+                      <div class="aa-cartbox-info">
+                        <h4><a href="#">Shirt</a></h4>
+                        <p>2 * Rs 2040</p>
+                      </div>
+                    </li>             
                     <li>
                       <span class="aa-cartbox-total-title">
                         Total
                       </span>
                       <span class="aa-cartbox-total-price">
-                      
+                        Rs 8164
                       </span>
                     </li>
                   </ul>
-                  <a class="aa-cartbox-checkout aa-primary-btn" href="{{url('/checkout')}}">Checkout</a>
+                  <a class="aa-cartbox-checkout aa-primary-btn" href="{{url('/my_checkout')}}">Checkout</a>
                
-           
+                
                 </div>
               </div>
               <!-- / cart box -->
@@ -278,16 +293,29 @@
         <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4>Login or Register</h4>
+          @php
+          if(isset($_COOKIE['login_password']) && isset($_COOKIE['login_email'])){
+                  $login_password=$_COOKIE['login_password'];
+                  $login_email=$_COOKIE['login_email'];
+                  $rememberme="checked='checked'";
+                }else{
+                  $login_password="";
+                  $login_email="";
+                  $rememberme="";
+                }
+
+                @endphp
           <form class="aa-login-form login-user" action="">
             <label for="">Username or Email address<span>*</span></label>
-            <input type="text" name="user_login_email" placeholder="Username or email">
+            <input type="text" name="user_login_email" value="{{$login_email}}" placeholder="Username or email">
             <label for="">Password<span>*</span></label>
             <input type="password" name="user_login_password" placeholder="Password">
             <button class="aa-browse-btn" type="submit">Login</button>
-            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
-            <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
+            <label class="rememberme" for="rememberme"><input type="checkbox" value="rem" name="rem" id="rememberme" {{$rememberme}}> Remember me </label>
+        
+            <p class="aa-lost-password"><a href="{{url('/forget_password')}}">Lost your password?</a></p>
             <div class="aa-register-now">
-              Don't have an account?<a href="javascript:void(0)">Register now!</a>
+              Don't have an account?<a href="{{url('/my_account')}}">Register now!</a>
             </div>
             @csrf
           </form>

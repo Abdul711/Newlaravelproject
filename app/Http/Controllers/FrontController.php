@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -9,6 +10,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Mail;
+
 class FrontController extends Controller
 {
      
@@ -373,18 +375,40 @@ public function login_process(Request $reg)
 
    $user_email=$reg->post('user_login_email');
    $user_password=$reg->post('user_login_password');
+   $rem=$reg->post('rem');
+
+
    $data_result=DB::table("customers")->where(["customer_email"=>$user_email])->get();
   if(isset($data_result[0])){
 
-             if(Hash::check($user_password,$data_result[0]->customer_password)){
-                if($data_result[0]->customer_verified==1){
+           
+            if($data_result[0]->customer_verified==1){
+                if($data_result[0]->customer_status==1){
+                    if(Hash::check($user_password,$data_result[0]->customer_password)){
+                        if(isset($rem) && $rem!=null){
+                           setcookie('login_email',$user_email,time()+60*60*2);
+                           setcookie('login_password',$user_password,time()+60*60*2);
+                        }else{
+                             if(isset($_COOKIE['login_email'])){
+                                setcookie('login_email',$user_email,time()-60*60*2);
+                             }
+                             if(isset($_COOKIE['login_password'])){
+                                setcookie('login_password',$user_password,time()-60*60*2);
+                             }
+                        }     
+                        $reg->session()->put('FRONT_USER_LOGIN','1');   
+                        $reg->session()->put('FRONT_USER_ID','1');                    
                 return response()->json(['status'=>"success",'msg'=>"User Login ","link"=>""]); 
+                 }else{
+                return response()->json(['status'=>"error",'msg'=>"Wrong Password","link"=>""]); 
+                }
+             }else{
+                return response()->json(['status'=>"error",'msg'=>"Your Account Has Been Deactivated","link"=>""]); 
+             }
                 }else{
                     return response()->json(['status'=>"error",'msg'=>"First Verify Your account To login","link"=>""]);   
                 }
-             }else{
-                return response()->json(['status'=>"error",'msg'=>"Wrong Password","link"=>""]); 
-             }
+             
 
 
  
@@ -413,23 +437,35 @@ $data["names"]=DB::table("products")->get();
     });
 }
 public function customer_verify($token=null){
- if($token!=null){
+    $rop=DB::table("customers")->where(["customer_rand_str"=>$token])->get();
+    /*prx($rop);*/
+    if(isset($rop[0])){
+        $mrt="";
     $rop=DB::table("customers")->where(["customer_rand_str"=>$token])->update([
-        "customer_verified"=>"1"
+        "customer_verified"=>"1",
+        "customer_rand_str"=>$mrt
     ]);
-return redirect("/my_account");                 
+    return redirect('/success');
+    }else{
+        return redirect('/failure');
+    }        
   
- }
+ 
 }
 
 public function forget_password(Request $reg){
-print_r($_POST);
-echo $user_email=$_POST["user_email"];
 
-
+ $user_email=$_POST["user_email"];
+   
+ $data_result=DB::table("customers")->where(["customer_email"=>$user_email])->get();
+ print_r($data_result);
+ $mrt=mt_rand(1,9999999);
+ $mrt=bin2hex($mrt);
+ $mrt=md5($mrt);
 $mr=mt_rand(1000,9999);
 $data_result=DB::table("customers")->where(["customer_email"=>$user_email])->update([
-    "customer_otp"=>$mr
+    "customer_otp"=>$mr,
+    "customer_rand_str"=>$mrt
 ]
    
 );
@@ -457,6 +493,36 @@ $data["otp"]=$otp;
 
 
 
+
+}
+public function reset_new_password(Request $req){
+     "d";
+      $toke=$_POST["c_token"];
+     $c_otp=$_POST["otp"];
+     $new_pass=$_POST["new_pass"];
+
+    $user_data=DB::table("customers")->where(['customer_rand_str'=>$toke])->get();
+
+    $otp_data=$user_data[0]->customer_otp;
+    $customer_id=$user_data[0]->id;
+       if($c_otp===$otp_data){
+           $customer_password=$user_data[0]->customer_password;
+           if(Hash::check($new_pass,$customer_password)){
+            return response()->json(["status"=>"error","msg"=>"Please Enter A New Password It is already in data Base"]);
+           }else{
+            $new_pass=Hash::make($new_pass);
+            $new_rand_str="";
+            $new_otp="";
+            $user_data=DB::table("customers")->where(['id'=>$customer_id])->update([
+              "customer_rand_str"=>$new_rand_str,
+              "customer_otp"=>$new_otp
+            ]);
+            return response()->json(["status"=>"success","msg"=>"Password Change Successfully"]);
+           }
+       }else{
+           return response()->json(["status"=>"error","msg"=>"You Enter Wrong OTP"]);
+       }
+    
 }
 public function reset_p($token=null){
     return view('front_end.reset_password',["token"=>$token]);

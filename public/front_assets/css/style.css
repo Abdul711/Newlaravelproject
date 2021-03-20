@@ -1924,7 +1924,9 @@ height:850px;
 #aa-product-category .aa-sidebar .aa-sidebar-widget .aa-color-tag .aa-color-red {
   background-color: red;
 }
-
+#aa-product-category .aa-sidebar .aa-sidebar-widget .aa-color-tag .aa-color-brown {
+  background-color: brown;
+}
 #aa-product-category .aa-sidebar .aa-sidebar-widget .aa-color-tag .aa-color-purple {
   background-color: purple;
 }
@@ -4263,5 +4265,66 @@ height:135px;
  height:1000px;
 }
 .aa-col-red{
-  background-color:red;
+   display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:red;
+}
+.aa-col-blue{
+   display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:blue;
+}
+.aa-col-orange{
+   display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:orange;
+}
+.aa-col-green{
+   display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:green;
+}
+.aa-col-yellow{
+   display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:yellow;
+}
+.aa-col-purple{   
+display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:purple;
+}
+.aa-col-black{
+   display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:black;
+}
+.aa-col-brown{
+   display:inline-block;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 30px;
+background:brown;
 }

@@ -113,9 +113,9 @@
                           
                    
                                  @foreach($category_product_attributes[$product->id] as $color)
-                           
+                                 <a href="#" class="aa-col-{{strtolower($color->color_name)}}"></a>
                                  @endforeach
-                                 <div class="aa-col-red" id="a-color-red"></div>
+                      
                      
                      
                             <div class="aa-prod-quantity">
@@ -194,7 +194,7 @@
                   @endforeach
                            @endforeach
 
-                   {{count($colors_product)}}
+               
                    @if(count($colors_product)>0)
                    @foreach( $colors_product as $key=> $product)
                     <a class="aa-color-{{strtolower($product)}}" href="#"></a>

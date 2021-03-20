@@ -17,13 +17,25 @@
               <div class="col-md-6">
                 <div class="aa-myaccount-login">
                 <h4>Login</h4>
+                @php
+                if(isset($_COOKIE['login_password']) && isset($_COOKIE['login_email'])){
+                  $login_password=$_COOKIE['login_password'];
+                  $login_email=$_COOKIE['login_email'];
+                  $rememberme="checked='checked'";
+                }else{
+                  $login_password="";
+                  $login_email="";
+                  $rememberme="";
+                }
+
+                @endphp
                  <form action="" class="aa-login-form login-user">
                   <label for="">Username or Email address<span>*</span></label>
-                   <input type="text"  name="user_login_email" placeholder="Username or email">
+                   <input type="text" value="{{$login_email}}"  name="user_login_email" placeholder="Username or email">
                    <label for="">Password<span>*</span></label>
-                    <input name="user_login_password" type="password" placeholder="Password">
+                    <input name="user_login_password" value="{{$login_password}}" type="password" placeholder="Password">
                     <button type="submit" class="aa-browse-btn">Login</button>
-                    <label class="rememberme" for="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
+                    <label class="rememberme" for="rememberme"><input type="checkbox" value="rem" name="rem" id="rememberme" {{$rememberme}}> Remember me </label>
                     <p class="aa-lost-password"><a href="{{url('/forget_password')}}">Lost your password?</a></p>
                     @csrf
                   </form>

@@ -159,13 +159,15 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                               
                             </div>
                             <h4>Color</h4>
-                            <div class="aa-prod-view-color">
+                            <div class="aa-col-tag">
                                  @foreach($home_product_attributes[$product->id] as $color)
-                                 <a href="#"> {{$color->color_name}}</a>
+                              
+                                 <a href="#" class="aa-col-{{strtolower($color->color_name)}}"></a>
+                            
                                  @endforeach
 
-                              
-                            </div>
+                                 </div>
+                       
                             <div class="aa-prod-quantity">
                               <form action="">
                                 <select name="" id="">

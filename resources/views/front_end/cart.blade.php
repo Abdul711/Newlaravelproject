@@ -3,20 +3,7 @@
   @extends('front_end/layout')
 @section('container')
   <!-- catg header banner section -->
-  <section id="aa-catg-head-banner">
-   <img src="{{('front_assets/img/fashion/fashion-header-bg-8.jpg')}}" alt="fashion img">
-   <div class="aa-catg-head-banner-area">
-     <div class="container">
-      <div class="aa-catg-head-banner-content">
-        <h2>Cart Page</h2>
-        <ol class="breadcrumb">
-          <li><a href="index.html">Home</a></li>                   
-          <li class="active">Cart</li>
-        </ol>
-      </div>
-     </div>
-   </div>
-  </section>
+  
   <!-- / catg header banner section -->
 
  <!-- Cart view section -->
@@ -43,11 +30,19 @@
                   
                       <tr>
                         <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="{{('front_assets/img/man/polo-shirt-2.png')}}" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#">Polo T-Shirt</a></td>
-                        <td>$150</td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td>$150</td>
+                        <td><a href="#"><img src="{{asset('storage/media/1615998207.jpg')}}" alt="img"></a></td>
+                        <td><a class="aa-cart-title" href="#">Shirt</a></td>
+                         <td> Rs 2040</td>  
+                         <td><input type="number"  class="aa-cart-quantity" value="2" min="0" max="10"> </td>
+                         <td> Rs 4080 </td>
+                      </tr>
+                      <tr>
+                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
+                        <td><a href="#"><img src="{{asset('storage/media/1615993097.jpg')}}" alt="img"></a></td>
+                        <td><a class="aa-cart-title" href="#">Gul Ahemd Kurti</a></td>
+                         <td> Rs 2042</td>  
+                         <td><input type="number"  class="aa-cart-quantity" value="2" min="0" max="10"></td>
+                         <td> Rs 4084 </td>
                       </tr>
                    
                       </tbody>
@@ -65,7 +60,7 @@
                    </tr>
                    <tr>
                      <th>Total</th>
-                     <td>$450</td>
+                     <td>Rs 8164</td>
                    </tr>
                  </tbody>
                </table>

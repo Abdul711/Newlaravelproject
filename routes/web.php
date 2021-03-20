@@ -32,7 +32,11 @@ Route::get('/sub_category/{id}', [FrontController::class,'view_product_by_sub'])
     Route::get('/send_invite', [FrontController::class,'invite_user']);
 Route::get('/customer_verify/{token?}',[FrontController::class,'customer_verify']);
 
-
+Route::get('/logout', function () {
+    session()->forget('FRONT_USER_LOGIN','0');   
+    session()->forget('FRONT_USER_ID','0');   
+    return redirect('/');
+});
 Route::get('/my_account', function () {
     return view('front_end.account');
 });
@@ -48,8 +52,12 @@ Route::get('/my_contact', function () {
 Route::get('/cart', function () {
     return view('front_end.cart');
 });
-
-
+Route::get('/success', function () {
+    return view('front_end.verify_success');
+});
+Route::get('/failure', function () {
+    return view('front_end.verify_failure');
+});
   
 Route::get('admin',[AdminController::class,'index']);
 Route::get('/reset_password/{id?}',[FrontController::class,'reset_p']);
@@ -57,6 +65,7 @@ Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
 Route::post('registration_process',[FrontController::class,'registration_process'])->name('registration.registration_process');
 Route::post('login_process',[FrontController::class,'login_process'])->name('registration.login_process');
 Route::post('forget_password',[FrontController::class,'forget_password'])->name('registration.forget_password');
+Route::post('reset_password/reset',[FrontController::class,'reset_new_password'])->name('reset_password.store');
 Route::get('admin/add_admin',[AdminController::class,'add_admin']);
 Route::get('admin/update/{id?}',[AdminController::class,'update_admin']);
 Route::group(['middleware'=>'admin_auth'],function(){

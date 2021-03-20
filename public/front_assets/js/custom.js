@@ -384,11 +384,17 @@ $("#register_user").submit(function (e) {
 $('.login-user').submit(function (e) { 
   e.preventDefault();
   var user_email=$("input[name='user_login_email']").val();
+   var user_password=$("input[name='user_login_password']").val();
    valid_email=/[A-Za-z0-9_.]{3,}@[A-Za-z]{3,}[.]{1}[A-Za-z]{3,6}$/;
   if(user_email==""){
     swal("Oop!","Please Enter Email Address","error");
     return false;
   }
+  if(user_password==""){
+    swal("Oop!","Please Enter Password","error");
+    return false;
+  }
+
 
  if(!valid_email.test(user_email)){
         swal("Oops!","Please Provide Correct Email Address","error");
@@ -411,10 +417,7 @@ $('.login-user').submit(function (e) {
       
           }
          links=result.link;
-             if(links!=''){
-               window.location.href=links;
-             }
-
+             
     }
   });
       
@@ -448,4 +451,55 @@ $("#send_link").submit(function (e) {
     }
   });
   alert(form_data);
+});
+$("#password_reset").submit(function (e) { 
+  e.preventDefault();
+  form_data=$(this).serialize();
+ var Password= $("#new_pass").val();
+  var CPassword= $("#c_new_pass").val();
+    var otp=$("#otp").val();
+    var valid_otp=/^[0-9]{4}$/;
+    var vaild_password=/^[A-Za-z]{4,}[0-9]{1,}$/;
+ if(Password==""){
+   swal("Oop!","New Password Must Be Filled Out","error");
+   return false;
+ }
+  if(CPassword==""){
+   swal("Oop!","Confirm New Password Must Be Filled Out","error");
+   return false;
+ 
+ }
+ if(!vaild_password.test(Password)){
+      swal("Oop!"," Password Must Be AlphaNumeric With Atleast Four AlphaBet And One Number Out","error");
+   return false;
+ }
+ if(CPassword!=Password){
+     swal("Oop!","Confirm Password Must Be Similar To New Password","error");
+   return false;
+ 
+ }
+ if(otp==""){
+        swal("Oop!","OTP Must Be Filled Out","error");
+   return false;
+ }
+ if(!valid_otp.test(otp)){
+         swal("Oop!","Invalid OTP! OTP Must Be Four Digit Number","error");
+   return false;
+ }
+ jQuery.ajax({
+    url:"reset",
+    data:form_data,
+    type:'post',
+    success:function(result){
+    alert(result);
+    console.log(result);
+       if(result.status="success"){
+         swal("Congratulations",result.msg,result.status);
+         window.location.href="/";
+       }  
+
+    }
+  });
+
+
 });
