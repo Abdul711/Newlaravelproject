@@ -58,7 +58,7 @@ Route::get('/success', function () {
 Route::get('/failure', function () {
     return view('front_end.verify_failure');
 });
-  
+Route::post('add_cart',[FrontController::class,"add_to_cart"]);  
 Route::get('admin',[AdminController::class,'index']);
 Route::get('/reset_password/{id?}',[FrontController::class,'reset_p']);
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');

@@ -29,6 +29,7 @@
       
     <script>
     var PRODUCT_IMAGE="{{asset('storage/media/')}}";
+    var FRONT_PATH="{{url('/')}}";
     </script>
 
   </head>

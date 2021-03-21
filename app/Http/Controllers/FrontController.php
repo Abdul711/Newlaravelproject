@@ -105,16 +105,7 @@ prx($result);
             ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
             ->leftJoin('colors','colors.id','=','product_attributes.color_id')
             ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
-    ->select('taxes.tax_value','colors.color_name','sizes.size_name',
-    'product_attributes.price_after_tax',
-    'product_attributes.price',
-    'product_attributes.mrp',
-    'product_attributes.attr_image',
-    'product_attributes.qty',
-    'product_attributes.product_id',
-'product_attributes.color_id',
-    'product_attributes.size_id',
-    )
+ 
             ->where(['product_attributes.product_id'=>$list1->id])
             ->get();
     }   
@@ -125,38 +116,36 @@ prx($result);
           ->select('product_images.images as product_image_collection')
             ->where(['products.id'=>$id])
             ->get();
-            $result['related_product']=DB::table('products')
-            ->where(['products.status'=>'1'])
-            ->where('products.id','!=',$id)
-          ->where('products.category_id','=',$products[0]->category_id)
-            ->get();
-           foreach($result['related_product'] as $product_second){
-        $result['product_related_attributes'][$product_second->id]=
-            DB::table('product_attributes')
-            ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
-            ->leftJoin('colors','colors.id','=','product_attributes.color_id')
-            ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
-    ->select('taxes.tax_value','colors.color_name','sizes.size_name',
-    'product_attributes.price_after_tax',
-    'product_attributes.price',
-    'product_attributes.mrp',
-    'product_attributes.attr_image',
-    'product_attributes.qty',
-    'product_attributes.product_id',
-'product_attributes.color_id',
-    'product_attributes.size_id',
-    )
-            ->where(['product_attributes.product_id'=>$product_second->id])
-            ->get();
-        
-           }
+       
      /* echo"<pre>";
        print_r($result);
        echo"</pre>";
-       die('');
-       prx($result);*/
+       die('');*/
+     
        return view('front_end.product-detail',$result);
       }
+     function add_to_cart(Request $req){
+       
+         $size_id=$_POST['size_id'];
+         $color_id=$_POST['color_id'];
+         $product_id=$_POST["product_id"];
+         $skuid=$_POST["attr_id"];
+         $qty=$_POST["pqty"];
+         $data=DB::table("product_attributes")->where(["sku"=>$skuid])->get();
+        $attr_id=$data[0]->id;
+        $price=$data[0]->price;
+        $mrp=$data[0]->mrp;
+      $cart_data["product_id"]=$product_id;
+      $cart_data["ip_add"]="::1";
+       $cart_data["qty"]=$qty;
+       $cart_data["color_id"]=$color_id;
+       $cart_data["size_id"]=$size_id;
+       $cart_data["attr_id"]=$attr_id;
+       $cart_data["price"]=$price;
+       $cart_data["mrp"]=$mrp;
+       print_r($cart_data);
+       DB::table("carts")->insert($cart_data);
+     }
          public function store(Request $request){
          $validator=  Validator::make($request->all(),[
     

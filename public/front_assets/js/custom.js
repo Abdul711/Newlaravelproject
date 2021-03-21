@@ -503,3 +503,52 @@ $("#password_reset").submit(function (e) {
 
 
 });
+function add_to_cart(){
+alert(FRONT_PATH);
+/*PRODUCT_IMAGE*/
+path=FRONT_PATH+"/add_cart";
+alert(path);
+form_data=$('#frmAddToCart').serialize();
+
+$.ajax({
+  type: "post",
+  url:path,
+  data:form_data,
+
+  success: function (response) {
+ alert(response);    
+  }
+});
+
+
+
+}
+ function change_color(){
+alert("");
+}
+
+$("#qty").change(function(){
+    qty=$(this).val();
+    $("#pqty").val(qty);
+    alert(qty);
+});
+function change_product_color_image(color_id,product_id,price){
+alert("color_id"+color_id+"product_id"+product_id);
+$("#color_id").val(color_id);
+$("#price").val(price);
+$("#product_id").val(product_id);
+        
+$("#prod_attr").val(price);
+  jQuery('.colors').css('border','0px solid black');
+  jQuery('.color_'+color_id).css('border','3px solid black');
+
+}
+function showColor(size){
+  
+  $(".product_color").hide();
+  $('.size_'+size).show();
+   jQuery('.size_link').css('border','1px solid #ddd');
+  jQuery('#size_'+size).css('border','1px solid black');
+  $("#size_id").val(size);
+
+}

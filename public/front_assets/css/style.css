@@ -1,4 +1,4 @@
-Skip to content
+/*Skip to content
 Search or jump to…
 
 Pull requests
@@ -2252,6 +2252,10 @@ height:850px;
   background-color: blue;
   border: 1px solid #ccc;
 }
+#aa-product-details .aa-product-details-area .aa-product-details-content .aa-product-view-content .aa-color-tag .aa-color-brown{
+  background-color: brown;
+  border: 1px solid #ccc;
+}
 #aa-product-details .aa-product-details-area .aa-product-details-bottom {
   display: inline;
   float: left;
@@ -3500,9 +3504,11 @@ height:850px;
   font-weight: bold;
   letter-spacing: 1px;
   margin-bottom: 0;
+  
 }
 #aa-footer .aa-footer-bottom .aa-footer-bottom-area > p a {
-  color: #888;
+  color:#888;
+  
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   -ms-transition: all 0.5s;

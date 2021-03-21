@@ -83,20 +83,21 @@
                     <h4>Size</h4>
                     <div class="aa-prod-view-size">
                     @php
-                      $arrSize=[];
+                   
                       foreach($product_attributes[$product[0]->id] as $attr){
-                        $arrSize[]=$attr->size_name;
+          
+                    $arrSize[$attr->size_id]=$attr->size_name;
+                        
                       }  
-                      $arrSize=array_unique($arrSize);
-                     
+           
+                     prx($arrSize);
                     @endphp
-                    @foreach($arrSize as $attr)  
-
-                    @if($attr!='')
-                      <a href="javascript:void(0)" onclick="showColor('{{$attr}}')" id="size_{{$attr}}" class="size_link">{{$attr}}</a>
-                      @endif  
-
-                      @endforeach  
+             
+                  @foreach($arrSize as $key => $value)
+             
+                      <a href="javascript:void(0)" onclick=showColor("{{$key}}") id="size_{{$key}}" class="size_link">{{$value}}</a>
+                  @endforeach
+ 
                     </div>
                     @endif
                     
@@ -105,22 +106,36 @@
                     
                     <h4>Color</h4>
                     <div class="aa-color-tag">
-                      @foreach($product_attributes[$product[0]->id] as $attr)  
-                      
+                    @foreach($product_attributes[$product[0]->id] as $attr)  
+                      @php
+
+                      @endphp
                       @if($attr->color_id!='')
 
-                      <a href="javascript:void(0)" class="aa-color-{{strtolower($attr->color_name)}} product_color size_{{$attr->size_id}}"  onclick="change_product_color_image()"></a>
+                      <a href="javascript:void(0)" class="aa-color-{{strtolower($attr->color_name)}} 
+                      colors  color_{{$attr->color_id}} product_color size_{{$attr->size_id}}"  
+                      onclick=change_product_color_image("{{$attr->color_id}}","{{$attr->product_id}}","{{$attr->sku}}")></a>
                       @endif  
 
                       @endforeach  
+                    </div>     
+              
+                      
+                   
+
+              
+               
+
+               
                     </div>
                     @endif    
 
                     <div class="aa-prod-quantity">
                       <form action="">
-                        <select id="qty" name="qty">
+                        <select id="qty" name="qty" >
+                        <option >Select Qty</option>
                         @for ($i=1; $i<11; $i++)
-                            <option value="">{{$i}}</option>
+                            <option value="{{$i}}">{{$i}}</option>
                   @endfor
                         </select>
                       </form>
@@ -129,7 +144,7 @@
                       </p>
                     </div>
                     <div class="aa-prod-view-bottom">
-                      <a class="aa-add-to-cart-btn" href="javascript:void(0)" onclick="add_to_cart('{{$product[0]->id}}','{{$product_attributes[$product[0]->id][0]->size_id}}','{{$product_attributes[$product[0]->id][0]->color_id}}')">Add To Cart</a>
+                      <a class="aa-add-to-cart-btn" href="javascript:void(0)" onclick="add_to_cart()">Add To Cart</a>
                     </div>
                     <div id="add_to_cart_msg"></div>
                   </div>
@@ -284,10 +299,12 @@
     </div>
   </section>
   <form id="frmAddToCart">
-    <input type="hidden" id="size_id" name="size_id"/>
-    <input type="hidden" id="color_id" name="color_id"/>
-    <input type="hidden" id="pqty" name="pqty"/>
-    <input type="hidden" id="product_id" name="product_id"/>           
+    <input type="text" id="size_id" name="size_id" value=""/>
+    <input type="text" id="color_id" name="color_id" value=""/>
+    <input type="text" id="pqty" name="pqty"/>
+
+    <input type="text" id="product_id" name="product_id" value=""/>    
+    <input type="text" id="prod_attr" name="attr_id" value=""/>            
     @csrf
   </form>
 @endsection
