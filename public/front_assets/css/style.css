@@ -4334,3 +4334,35 @@ background:black;
   width: 30px;
 background:brown;
 }
+.checkout_box{
+  display:block;
+  border:3px solid black;
+  padding:10px;
+}
+.Siz{
+border:1px solid gray;
+  padding:5px;
+}
+.coupon_hide{
+  display:none;
+}
+.coupon_show{
+  display:block;
+}
+.wallet_msg{
+color:red;
+font-weight:700;
+}
+.title-success{
+  background:green;
+  color:white;
+  width:90px;
+padding:5px;
+border-radius:15%;
+box-sizing:border-box;
+}
+.nav_cat_active{
+  color:red;
+}
+          
+                               

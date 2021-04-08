@@ -59,12 +59,29 @@
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <div class="aa-product-view-content">
                     <h3>{{$product[0]->name}}</h3>
-  
-                    <div class="aa-price-block">
+                    @php
+        
+                   $p=$product_attributes[$product[0]->id][0]->price;
+                    $dis=$product[0]->discount_amount;
+                    if($dis==""){
+                      $discount=0;
+                    }else{
+                      $discount=$dis;
+                    }
+                    $discounted_price=($discount/100)*$p;
+                  $discounted_price=$p-$discounted_price;
+                   @endphp
+                   @if($product[0]->is_discounted!=0)
+                    <div class="title-success" >SALE {{$product[0]->discount_amount}} %</div>      
+                               @endif
+                               <div class="aa-price-block">
 
-                      <span class="aa-product-view-price">Rs {{$product_attributes[$product[0]->id][0]->price}}&nbsp;&nbsp;</span>
+                  
                       @if($product[0]->is_discounted!=0)
-                      <span class="aa-product-view-price"><del>Rs {{$product_attributes[$product[0]->id][0]->mrp}}</del></span>
+                      <span class="aa-product-view-price">Rs {{$discounted_price}} &nbsp;&nbsp;</span>
+                     <del> <span class="aa-product-view-price">Rs {{$product_attributes[$product[0]->id][0]->price}}</span></del>
+                     @else
+                     <span class="aa-product-view-price">Rs {{$product_attributes[$product[0]->id][0]->price}}</span>
                        @endif
                       <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
                  <p>  Brand: {{$product[0]->brand_name}}</p>
@@ -90,12 +107,11 @@
                         
                       }  
            
-                     prx($arrSize);
                     @endphp
              
                   @foreach($arrSize as $key => $value)
              
-                      <a href="javascript:void(0)" onclick=showColor("{{$key}}") id="size_{{$key}}" class="size_link">{{$value}}</a>
+                      <a href="javascript:void(0)" onclick=showColor("{{$value}}") id="size_{{$value}}" class="size_link">{{$value}}</a>
                   @endforeach
  
                     </div>
@@ -108,13 +124,13 @@
                     <div class="aa-color-tag">
                     @foreach($product_attributes[$product[0]->id] as $attr)  
                       @php
-
+                     
                       @endphp
-                      @if($attr->color_id!='')
-
+                      @if($attr->color_id!="" && $attr->color_id!=0)
+           
                       <a href="javascript:void(0)" class="aa-color-{{strtolower($attr->color_name)}} 
-                      colors  color_{{$attr->color_id}} product_color size_{{$attr->size_id}}"  
-                      onclick=change_product_color_image("{{$attr->color_id}}","{{$attr->product_id}}","{{$attr->sku}}")></a>
+                      colors  color_{{$attr->color_name}} product_color size_{{$attr->size_name}}"  
+                      onclick=change_product_color_image("{{$attr->color_name}}","{{$attr->product_id}}")></a>
                       @endif  
 
                       @endforeach  
@@ -304,7 +320,7 @@
     <input type="text" id="pqty" name="pqty"/>
 
     <input type="text" id="product_id" name="product_id" value=""/>    
-    <input type="text" id="prod_attr" name="attr_id" value=""/>            
+      
     @csrf
   </form>
 @endsection

@@ -57,22 +57,27 @@ class CouponController extends Controller
     if($id>0){
         $arr=Coupon::where(['id'=>$id])->get(); 
 
-        $result['color_name']=$arr['0']->coupon_code;
-        $result['color_value']=$arr['0']->coupon_value;
-         $result['color_btn']="Update Coupon Code";
-         $result['color_title']="Update Coupon Code";
-         $result['color_cart']=$arr['0']->cart_min_value;
-        $result['color_id']=$arr['0']->id;
-        $result['color_type']=$arr['0']->coupon_type;
+        $result['coupon_name']=$arr['0']->coupon_code;
+        $result['coupon_value']=$arr['0']->coupon_value;
+         $result['coupon_btn']="Update Coupon Code";
+         $result['coupon_title']="Update Coupon Code";
+         $result['coupon_cart']=$arr['0']->cart_min_value;
+        $result['coupon_id']=$arr['0']->id;
+        $result['coupon_type']=$arr['0']->coupon_type;
+        $result["coupon_max_discount"]=$arr['0']->max_discount;
     }else{
-        $result['color_name']='';
-        $result['color_btn']="Add Coupon Code";
-        $result['color_title']="Add Coupon Code";
-        $result['color_id']='';
-        $result['color_value']="";
-        $result['color_cart']="";
-        $result['color_type']="";
+        $result['coupon_name']='';
+        $result['coupon_btn']="Add Coupon Code";
+        $result['coupon_title']="Add Coupon Code";
+        $result['coupon_id']='';
+        $result['coupon_value']="";
+        $result['coupon_cart']="";
+        $result['coupon_type']="";
+        $result["coupon_max_discount"]="";
     }
+    /*
+    prx($result);
+    die();*/
     return view('admin/coupon/manage_coupon',$result);
 
 }
@@ -132,6 +137,7 @@ class CouponController extends Controller
     public function manage_coupon_process(Request $request)
     {
         //   
+
        $id= $request->post('coupon_id');
 
            if($id!=null){
@@ -171,6 +177,7 @@ class CouponController extends Controller
                $cart_min_value= $request->post('cart_min_value');
                $coupon_type= $request->post('coupon_type');
                $coupon_id=$request->post('coupon_id');
+               $max_discount=$request->post('coupon_max_discount');
                if($coupon_type==="Percentage"){
                 if($coupon_code_value >= 100){
                     $coupon_code_value==55;
@@ -192,6 +199,7 @@ class CouponController extends Controller
                $model->coupon_value=$coupon_code_value;
                $model->coupon_type=$coupon_type;
                $model->cart_min_value=$cart_min_value;
+               $model->max_discount=$max_discount;
                $model->save();
             
                $request->session()->flash("message","$message");

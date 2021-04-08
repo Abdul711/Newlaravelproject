@@ -11,20 +11,18 @@ class {{ class }} extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+ Schema::create('{{ table }}', function (Blueprint $table) {
             $table->id();
-            $table->string('customer_name')->nullable();
-            $table->string('{{table}}_status')->nullable();
+            $table->string('')->nullable();
+            $table->string('')->nullable();
             $table->integer()->nullable();
             $table->timestamps();
             
         });
-    }
+        
 
     /**
-     * Reverse the migrations.
+or     * Reverse the migrations.
      *
      * @return void
      */

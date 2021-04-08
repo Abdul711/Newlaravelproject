@@ -1,5 +1,5 @@
 @extends('admin/layout')
-@section('page_title','Manage Product')
+@section('page_title',$pageTitle)
 @section('product_select','active')
 @section('container')
 @if($id>0)
@@ -11,7 +11,7 @@
       $image_required="required";
    @endphp
 @endif
-<h1 class="mb10">Manage Product</h1>
+<h1 class="mb10">{{$pageTitle}}</h1>
 @if(session()->has('sku_error'))
 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
    {{session('sku_error')}}  
@@ -74,8 +74,8 @@
                         <div class="row">
                            <div class="col-md-4">
                               <label for="category_id" class="control-label mb-1"> Category</label>
-                              <select id="category_id" name="category_id" class="form-control" >
-                                 <option value="">Select Categories</option>
+                              <select id="category_id" name="category_id" class="form-control">
+                                 <option value="0">Select Categories</option>
                                  @foreach($category as $list)
                                  @if($category_id==$list->id)
                                  <option selected value="{{$list->id}}">
@@ -103,8 +103,14 @@
                               </select>
                            </div>
                            <div class="col-md-4">
-                              <label for="model" class="control-label mb-1"> Model</label>
-                              <input id="model" value="{{$model}}" name="model" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                           <label for="category_id" class="control-label mb-1">Sub Category</label>
+                             <select name="sub_category" id="subcat" class="form-control">
+                          <option>Select Sub Category</option>
+                          @if($sub_category_name!="")
+                          <option value="{{$sub_category_id}}" selected>{{$sub_category_name}}</option>
+                          @endif
+                             </select>
+
                            </div>
                         </div>
                      </div>
@@ -129,9 +135,17 @@
 
                      <div class="form-group">
                         <div class="row">
-                           <div class="col-md-8">
+                           <div class="col-md-4">
                               <label for="model" class="control-label mb-1"> Lead Time</label>
                               <input id="lead_time" value="{{$lead_time}}" name="lead_time" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                           </div>
+                           <div class="col-md-2">
+                              <label for="model" class="control-label mb-1">Delivery Charge</label>
+                              <input id="lead_time" value="{{$delivery_charge}}" name="delivery_charge" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                           </div>
+                           <div class="col-md-2">
+                              <label for="model" class="control-label mb-1">Discount Percentage </label>
+                              <input id="lead_time" value="{{$discount_amount}}" name="discount_amount" type="text" class="form-control" aria-required="true" aria-invalid="false">
                            </div>
                            <div class="col-md-4">
                               <label for="model" class="control-label mb-1"> Tax</label>
@@ -321,10 +335,10 @@
                               &nbsp;&nbsp;&nbsp;</label>
                               
                               @if($loop_count_num==2)
-                                <button type="button" class="btn btn-success btn-lg" onclick="add_more()">
+                                <button type="button" class="btn btn-success mt-4 btn-lg" onclick="add_more()">
                                 <i class="fa fa-plus"></i>&nbsp; Add</button>
                               @else
-                              <a href="{{url('admin/product/product_attr_delete/')}}/{{$pAArr['id']}}/{{$id}}"><button type="button" class="btn btn-danger btn-lg">
+                              <a href="{{url('admin/product/product_attr_delete/')}}/{{$pAArr['id']}}/{{$id}}"><button type="button" class="btn btn-danger btn-lg mt-4">
                                 <i class="fa fa-minus"></i>&nbsp; Remove</button></a>
                               @endif  
 
@@ -338,7 +352,7 @@
          </div>
          <div>
             <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-            Submit
+            {{$pageTitle}}
             </button>
          </div>
          <input type="hidden" name="id" value="{{$id}}"/>
@@ -369,7 +383,7 @@
 
        html+='<div class="col-md-4"><label for="attr_image" class="control-label mb-1"> Image</label><input id="attr_image" name="attr_image[]" type="file" class="form-control" aria-required="true" aria-invalid="false" ></div>';
 
-       html+='<div class="col-md-2"><label for="attr_image" class="control-label mb-1"> &nbsp;&nbsp;&nbsp;</label><button type="button" class="btn btn-danger btn-lg" onclick=remove_more("'+loop_count+'")><i class="fa fa-minus"></i>&nbsp; Remove</button></div>'; 
+       html+='<div class="col-md-2"><label for="attr_image" class="control-label mb-1"> &nbsp;&nbsp;&nbsp;</label><button type="button" class="btn btn-danger mt-4 btn-lg" onclick=remove_more("'+loop_count+'")><i class="fa fa-minus"></i>&nbsp; Remove</button></div>'; 
 
        html+='</div></div></div></div>';
 
@@ -393,6 +407,6 @@
    }
    CKEDITOR.replace('short_desc');
    CKEDITOR.replace('desc');
-   CKEDITOR.replace('technical_specification');
+
 </script>
 @endsection

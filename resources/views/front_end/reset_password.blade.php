@@ -22,7 +22,7 @@
                     <label for="">New Password<span>*</span></label>
                     <input type="password" id="new_pass" value="" name="new_pass" placeholder="Enter New Password">
                     <label for="">Confirm New Password<span>*</span></label>
-                    <input type="password" id="c_new_pass" value="" name="c_new_pass" placeholder="Enter New Confirm Password">
+                    <input type="text" id="c_new_pass" value="" name="c_new_pass" placeholder="Enter New Confirm Password">
                     <label for="">Enter OTP<span>*</span></label>
                     <input type="text" id="otp" value="" name="otp" placeholder="Enter OTP">
                     @csrf

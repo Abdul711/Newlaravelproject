@@ -50,7 +50,7 @@
                     <label for="">Username or Email address<span>*</span></label>
                     <input type="text" id="user_email_reg" value="" name="user_email" placeholder="Username or email">
                     <label for="">Password<span>*</span></label>
-                    <input type="password" id="user_password_reg"   name="user_password" placeholder="Password">
+                    <input type="text" id="user_password_reg"   name="user_password" placeholder="Password">
                     <label for="">Mobile<span>*</span></label>
                     <input type="text" id="user_mobile_reg"   name="user_mobile" placeholder="Mobile">
                     <button type="submit" id="register" class="aa-browse-btn">Register</button>   

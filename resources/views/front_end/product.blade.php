@@ -1,5 +1,5 @@
 @extends('front_end/layout')
-
+@section('page_title','Category Page')
 @section('container')
 
   <!-- product category -->
@@ -32,6 +32,17 @@
                      <!-- start single product item -->
                      
                      @foreach($category_product as $product)
+                     @php
+                    $p=$category_product_attributes[$product->id][0]->price;
+                    $dis=$product->discount_amount;
+                    if($dis==""){
+                      $discount=0;
+                    }else{
+                      $discount=$dis;
+                    }
+                    $discounted_price=($discount/100)*$p;
+                  $discounted_price=$p-$discounted_price;
+                  @endphp
                      <li>
                           <figure>
                             <a class="aa-product-img" href="{{url('product/'.$product->id)}}">
@@ -42,16 +53,24 @@
                             '','')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                             <figcaption>
                               <h4 class="aa-product-title"><a href="{{url('product/'.$product->id)}}">{{$product->name}}</a></h4>
-                              <span class="aa-product-price">Rs{{$category_product_attributes[$product->id][0]->price}}</span><span class="aa-product-price"><del>Rs{{$category_product_attributes[$product->id][0]->mrp}}</del></span>
+                        
+                              @if($product->is_discounted=="1")
+                              <span class="aa-product-price">Rs  {{$discounted_price}}</span>
+                              <span class="aa-product-price"><del>Rs{{$category_product_attributes[$product->id][0]->price}}</del></span>
+                          @else
+                          <span class="aa-product-price">Rs{{$category_product_attributes[$product->id][0]->price}}</span>
+                            @endif
                             </figcaption>
                           </figure>    
-
+                          @if($product->is_discounted=="1")
+                          <span class="aa-badge aa-sale" href="#">SALE {{$product->discount_amount}} %</span>   
+                   @endif
                           <div class="aa-product-hvr-content">
 
                     <a href="#" data-toggle2="tooltip" data-placement="top" title="Quick View" 
                     data-toggle="modal" data-target="#quick-view-modal-{{$product->id}}"><span class="fa fa-search"></span></a>
                   </div>
-
+                    
                         </li>  
                       @endforeach
                    
@@ -59,6 +78,17 @@
                      
                   </ul>
                   @foreach($category_product as $product)
+                  @php
+                    $p=$category_product_attributes[$product->id][0]->price;
+                    $dis=$product->discount_amount;
+                    if($dis==""){
+                      $discount=0;
+                    }else{
+                      $discount=$dis;
+                    }
+                    $discounted_price=($discount/100)*$p;
+                  $discounted_price=$p-$discounted_price;
+                  @endphp
                   <div class="modal fade" id="quick-view-modal-{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">                      
@@ -73,11 +103,7 @@
                              
                              
                               
-                                  <div class="simpleLens-container">
-                                      <a class="simpleLens-lens-image" data-lens-image="{{asset('storage/media/'.$product->image)}}">
-                                          <img src="{{asset('storage/media/'.$product->image)}}" width="100px" class="simpleLens-big-image">
-                                      </a>
-                                  </div>
+                                
                               </div>
                               <div class="simpleLens-thumbnails-container">
                                   <a href="#" class="simpleLens-thumbnail-wrapper"
@@ -95,16 +121,28 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <div class="aa-product-view-content">
                             <h3>{{$product->name}}</h3>
+
                             Delivery Time:<p class="text-danger"><b>{{$product->lead_time}}</b></p>
+                            
                             <div class="aa-price-block">
+                      
+                            @if($product->is_discounted=="1")
+                              <del><span class="aa-product-view-price">Rs {{$category_product_attributes[$product->id][0]->price}}</span>
+                              </del>
+                              <span class="aa-product-view-price">Rs {{$discounted_price}}</span>
+                              @else
                               <span class="aa-product-view-price">Rs {{$category_product_attributes[$product->id][0]->price}}</span>
+                              @endif
                               <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
                             </div>
+                            @if($product->is_discounted=="1")
+                            <span class="title-success" href="#">SALE {{$product->discount_amount}} %</span>    
+                            @endif
                             <p>{!!$product->desc!!}</p>
                             <h4>Size</h4>
                             <div class="aa-prod-view-size">
-                                 @foreach($category_product_attributes[$product->id] as $color)
-                                 <a href="#"> {{$color->size_name}}</a>
+                                 @foreach($category_product_attributes[$product->id] as $size)
+                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$product->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$product->id}}"> {{$size->size_name}}</a>
                                  @endforeach
 
                               
@@ -113,20 +151,21 @@
                           
                    
                                  @foreach($category_product_attributes[$product->id] as $color)
-                                 <a href="#" class="aa-col-{{strtolower($color->color_name)}}"></a>
+                                 <a   href="javascript:void(0)"  id="color_{{$color->color_name}}{{$product->id}}" class="productColor  
+                                  ColorSize{{$color->size_name}} aa-col-{{strtolower($color->color_name)}}" onclick="selectColor('{{$color->color_name}}','{{$product->id}}')"   ></a>
                                  @endforeach
                       
                      
                      
                             <div class="aa-prod-quantity">
                               <form action="">
-                                <select name="" id="">
-                                  <option value="0" selected="1">1</option>
-                                  <option value="1">2</option>
-                                  <option value="2">3</option>
-                                  <option value="3">4</option>
-                                  <option value="4">5</option>
-                                  <option value="5">6</option>
+                                <select name="" id="qtyProduct">
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
                                 </select>
                               </form>
                               <p class="aa-prod-category">
@@ -134,8 +173,8 @@
                               </p>
                             </div>
                            <div class="aa-prod-view-bottom">
-                              <a href="#" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
-                           
+
+                              <a href="javascript:void(0)" onclick="qtyTake('{{$product->id}}')" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>                
                             </div>
                            
                           </div>
@@ -159,8 +198,17 @@
                <div class="aa-sidebar-widget">
                   <h3>Category</h3>
                   <ul class="aa-catg-nav">
+      
                      @foreach($categories as $category)
-                     <li><a href="{{url('category/'.$category->id)}}">{{$category->category_name}}</a></li>
+                          @php
+                          if($category->id == $cat_id){
+                            $class_cat="nav_cat_active";
+                          }else{
+                            $class_cat="";
+                          }
+                          @endphp
+
+                     <li><a class="{{$class_cat}}" href="{{url('category/'.$category->id)}}">{{$category->category_name}}</a></li>
                      @endforeach
                
                   </ul>
@@ -213,10 +261,10 @@
 
 <input type="hidden" id="qty" value="1"/>
   <form id="frmAddToCart">
-    <input type="hidden" id="size_id" name="size_id"/>
-    <input type="hidden" id="color_id" name="color_id"/>
-    <input type="hidden" id="pqty" name="pqty"/>
-    <input type="hidden" id="product_id" name="product_id"/>           
+    <input type="text" id="size_id" name="size_id"/>
+    <input type="text" id="color_id" name="color_id"/>
+    <input type="text" id="pqty" name="pqty"/>
+    <input type="text" id="product_id" name="product_id"/>           
     @csrf
   </form>  
 

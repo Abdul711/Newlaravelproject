@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Tax\TaxController;
 use App\Http\Controllers\Admin\Vendor\VendorController;
 use App\Http\Controllers\Admin\Banner\BannerController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\SettingWebsiteController;
 /*
 /*
 |--------------------------------------------------------------------------
@@ -40,34 +41,41 @@ Route::get('/logout', function () {
 Route::get('/my_account', function () {
     return view('front_end.account');
 });
-Route::get('/my_checkout', function () {
-    return view('front_end.checkout');
-});
+
 Route::get('/forget_password', function () {
     return view('front_end.forget_password');
 });
 Route::get('/my_contact', function () {
     return view('front_end.contact');
 });
-Route::get('/cart', function () {
-    return view('front_end.cart');
-});
+
+
+Route::get('/print_invoice/{id}',[FrontController::class,"invoice"]);
+Route::get('/thank',[FrontController::class,"thanks"]);
+Route::get('/cart_total',[FrontController::class,"cart_total"]);
 Route::get('/success', function () {
     return view('front_end.verify_success');
 });
 Route::get('/failure', function () {
     return view('front_end.verify_failure');
 });
+Route::get('/cart',[FrontController::class,'cart_view']);
+Route::get('/place_coupon/{c}',[FrontController::class,'apply_coupon']);
+Route::get('/checkout',[FrontController::class,'checkout']);
 Route::post('add_cart',[FrontController::class,"add_to_cart"]);  
-Route::get('admin',[AdminController::class,'index']);
+
 Route::get('/reset_password/{id?}',[FrontController::class,'reset_p']);
-Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
+
 Route::post('registration_process',[FrontController::class,'registration_process'])->name('registration.registration_process');
 Route::post('login_process',[FrontController::class,'login_process'])->name('registration.login_process');
 Route::post('forget_password',[FrontController::class,'forget_password'])->name('registration.forget_password');
-Route::post('reset_password/reset',[FrontController::class,'reset_new_password'])->name('reset_password.store');
+Route::get('/cart_detail',[FrontController::class,'cart_detail']);
+Route::post('/place_order',[FrontController::class,'PlaceOrder'])->name('placeorder.store');
+Route::post('/passwordreset',[FrontController::class,'reset_new_password'])->name('reset_password.store');
 Route::get('admin/add_admin',[AdminController::class,'add_admin']);
+Route::get('admin',[AdminController::class,'index']);
 Route::get('admin/update/{id?}',[AdminController::class,'update_admin']);
+Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
 Route::group(['middleware'=>'admin_auth'],function(){
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
     Route::get('admin/manage',[AdminController::class,'manage_account']);
@@ -120,7 +128,7 @@ Route::post('admin/size/manage_size',[SizeController::class,'manage_size_process
 Route::get('admin/size/status/{id}/{status}',[SizeController::class,'update_status']);
 /* Crud Operation Route For Brand */
 Route::get('admin/brand',[BrandController::class,'show']);
-
+Route::get("admin/sub/{id}",[ProductController::class,"cat_by_id"]);
 Route::get('admin/brand/manage_brand/{id?}',[BrandController::class,'create']);
 Route::post('admin/brand/manage_brand',[BrandController::class,'store'])->name('brand.store');
 Route::get('admin/brand/delete/{id}',[BrandController::class,'destroy']);
@@ -133,6 +141,7 @@ Route::post('admin/tax/manage_tax_process',[TaxController::class,'manage_tax_pro
 Route::get('admin/tax/delete/{id}',[TaxController::class,'delete']);
 Route::get('admin/tax/status/{status}/{id}',[TaxController::class,'status']);
 /* Crud Operation Route For Banner */
+
 Route::get('admin/banner',[BannerController::class,'index']);
 Route::get('admin/banner/manage_banner/{id?}',[BannerController::class,'manage']);
 Route::post('admin/banner/manage_banner_process',[BannerController::class,'store'])->name('banner.store');
@@ -145,6 +154,8 @@ Route::get('admin/vendor/manage_vendor/{id}',[VendorController::class,'manage_ve
 Route::post('admin/vendor/manage_vendor_process',[VendorController::class,'manage_vendor_process'])->name('vendor.manage_vendor_process');
 Route::get('admin/vendor/delete/{id}',[VendorController::class,'delete']);
 Route::get('admin/vendor/status/{status}/{id}',[VendorController::class,'status']);
+Route::get('admin/setting',[SettingWebsiteController::class,"index"]);  
+Route::post('admin/setting',[SettingWebsiteController::class,'manage_web_process'])->name('settingweb.manage_website_process');
     Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');

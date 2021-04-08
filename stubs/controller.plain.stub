@@ -6,57 +6,11 @@ use {{ rootNamespace }}Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Models\{{ class }};
+use App\Models\;
 use Illuminate\Support\Facades\Storage;
 class {{ class }} extends Controller
 {
      
-     public function index(){
-           
-     }
-      public function manage($id=''){
-            if($id=''){
-                /* Get The Record Of Specific id From DataBase */ 
-              $record=  {{ class }}::where(['id'=>$id])->get();
-             /* echo"<pre>";
-              print_r($record);
-              echo"<pre>";
-              die();*/
-            }
-      }
-         public function store(Request $request){
-         $validator=  Validator::make($request->all(),[
-    
-             
-             
-              
-        ],[
-      
-       
-        ]); 
-         $link=$request->headers->get('referer');
-         if ($validator->fails()) {
-             return redirect($link)->withErrors($validator)->withInput();
-            }else{
-
-            }
   
-
-        
-        }
-        public function delete(Request $request, $id){
-            /* Check If The Record Of This Id Is present */
-        $record_total={{ class }}::where(['id'=>$id])->count();
-            if($record_total>0){
-         $model={{ class }}::find($id);
-         $model->delete();
-              $link=$request->headers->get('referer');
-             return redirect($link);
-            }else{
-                   $link=$request->headers->get('referer');
-             return redirect($link);
-            }
-
-        }
 
 }

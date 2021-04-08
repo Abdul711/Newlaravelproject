@@ -12,7 +12,9 @@
     <link href="{{asset('admin_assets/css/theme.css')}}" rel="stylesheet" media="all">
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
 </head>
-
+<script>
+ADMIN_PATH="{{url('/admin')}}";
+</script>
 <body>
 <div class="page-wrapper">
         <!-- HEADER MOBILE-->
@@ -125,6 +127,10 @@
                             <a href="{{url('admin/banner')}}">
                                 <i class="fas fa-tachometer-alt"></i>Banner Management</a>
                         </li>
+                        <li>
+                            <a href="{{url('admin/setting')}}">
+                                <i class="fas fa-tachometer-alt"></i>Web Setting</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -188,7 +194,7 @@
     <script src="{{asset('admin_assets/vendor/jquery-3.2.1.min.js')}}"></script>
     <script src="{{asset('admin_assets/vendor/bootstrap-4.1/popper.min.js')}}"></script>
     <script src="{{asset('admin_assets/vendor/bootstrap-4.1/bootstrap.min.js')}}"></script>
-    <script src="{{asset('admin_assets/vendor/wow/wow.min.js')}}"></script>
+  <!--  <script src="{{asset('admin_assets/vendor/wow/wow.min.js')}}"></script>--->
     <script src="{{asset('admin_assets/js/main.js')}}"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@ class CategoryController extends Controller
         $result['show_at_home']=$arr['0']->category_show;
         $result['parent_category_id']=$arr['0']->parent_category_id;
         $result['categories']=DB::table('categories')->
-       where(['status'=>1])->where('id','!=',$id)->get();
+       where(['status'=>1])->where(["parent_category_id"=>0])->where('id','!=',$id)->get();
     }else{
         $result['category_text']='';
         $result['category_name']='';
@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $result['category_id']='';
         $result['show_at_home']='';
         $result['parent_category_id']='';
-        $result['categories']=DB::table('categories')->where(['status'=>1])->get();
+        $result['categories']=DB::table('categories')->where(["parent_category_id"=>0])->where(['status'=>1])->get();
 
     }
 
@@ -183,7 +183,7 @@ class CategoryController extends Controller
 
             foreach ($data_c as $key => $value) {
           
-                  
+                       
                  
                 $result['parent_category'][$value['id']]=parent_category_name($value['parent_category_id']);
                 

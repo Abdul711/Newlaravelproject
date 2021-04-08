@@ -21,16 +21,26 @@ class ProductController extends Controller
     public function manage_product(Request $request,$id='')
     {
         if($id>0){
-            $arr=Product::where(['id'=>$id])->get(); 
 
+            $sub_name=DB::table("products")->leftJoin("categories","categories.id","=","products.sub_category_id")
+             ->where("products.id","=",$id)   ->get();
+           $result["sub_category_name"]=$sub_name['0']->category_name;
+           
+
+
+
+            $arr=Product::where(['id'=>$id])->get(); 
+    
+                 $result["sub_category_id"]=$arr['0']->sub_category_id;  
             $result['category_id']=$arr['0']->category_id;
             $result['name']=$arr['0']->name;
             $result['image']=$arr['0']->image;
             $result['slug']=$arr['0']->slug;
-            $result['brand']=$arr['0']->brand;
+            $result['brand']=$arr['0']->brand_id;
             $result['model']=$arr['0']->model;
             $result['short_desc']=$arr['0']->short_desc;
             $result['desc']=$arr['0']->desc;
+            $result['delivery_charge']=$arr['0']->delivery_charge;
             $result['keywords']=$arr['0']->keywords;
             $result['technical_specification']=$arr['0']->technical_specification;
             $result['uses']=$arr['0']->uses;
@@ -41,9 +51,10 @@ class ProductController extends Controller
             $result['is_featured']=$arr['0']->is_featured;
             $result['is_discounted']=$arr['0']->is_discounted;
             $result['is_tranding']=$arr['0']->is_tranding;
+            $result['discount_amount']=$arr['0']->discount_amount;
             $result['status']=$arr['0']->status;
             $result['id']=$arr['0']->id;
-
+            $result["pageTitle"]="Update Product";
             $result['productAttrArr']=DB::table('product_attributes')->where(['product_id'=>$id])->get();
 
             $productImagesArr=DB::table('product_images')->where(['product_id'=>$id])->get();
@@ -56,6 +67,8 @@ class ProductController extends Controller
             }
             //$result['productImagesArr']
         }else{
+            $result["discount_amount"]="";
+            $result["pageTitle"]="Add Product";
             $result['category_id']='';
             $result['name']='';
             $result['slug']='';
@@ -71,12 +84,14 @@ class ProductController extends Controller
             $result['lead_time']='';
             $result['tax_id']='';
             $result['is_promo']='';
+            $result['delivery_charge']="";
             $result['is_featured']='';
             $result['is_discounted']='';
             $result['is_tranding']='';
             $result['status']='';
             $result['id']=0;
-
+            $result["sub_category_id"]=0;      
+            $result["sub_category_name"]="";        
             $result['productAttrArr'][0]['id']='';
             $result['productAttrArr'][0]['products_id']='';
             $result['productAttrArr'][0]['sku']='';
@@ -92,11 +107,13 @@ class ProductController extends Controller
             /*echo '<pre>';
             print_r( $result['productAttrArr']);
             die();*/
+
+
         }
         /*echo '<pre>';
         print_r( $result);
         die();*/
-        $result['category']=DB::table('categories')->where(['status'=>1])->get();
+        $result['category']=DB::table('categories')->where(["parent_category_id"=>0])->where(['status'=>1])->get();
 
         $result['sizes']=DB::table('sizes')->where(['status'=>1])->get();
 
@@ -105,15 +122,19 @@ class ProductController extends Controller
         $result['brands']=DB::table('brands')->where(['status'=>1])->get();
 
         $result['taxs']=DB::table('taxes')->where(['status'=>1])->get();
+$result["sub_category"]=DB::table("categories")->where('parent_category_id','!=','0')->get();
+
         return view('admin/product/manage_product',$result);
     }
 
     public function manage_product_process(Request $request)
     {
         //return $request->post();
-        //echo '<pre>';
-        //print_r($request->post());
-        //die();
+     /*   echo '<pre>';
+    print_r($request->post());
+    echo '/<pre>';
+    die();
+    prx($request->post());*/
         if($request->post('id')>0){
             $image_validation="mimes:jpeg,jpg,png";
         }else{
@@ -172,14 +193,15 @@ class ProductController extends Controller
         $model->name=$request->post('name');
      
         $model->brand_id=$request->post('brand');
-        $model->sub_category_id=$request->post('model');
+        $model->sub_category_id=$request->post('sub_category');
         $model->short_desc=$request->post('short_desc');
         $model->desc=$request->post('desc');
         $model->keywords=$request->post('keywords');
- 
+        $model->discount_amount=$request->post('discount_amount');
         $model->warranty=$request->post('warranty');
         $model->lead_time=$request->post('lead_time');
-      
+        $model->tax_id=$request->post('tax_id');
+        $model->delivery_charge=$request->post('delivery_charge');
         $model->is_promo=$request->post('is_promo');
         $model->is_featured=$request->post('is_featured');
         $model->is_discounted=$request->post('is_discounted');
@@ -200,7 +222,7 @@ class ProductController extends Controller
             }else{
                 $productAttrArr['size_id']=$size_idArr[$key];
             }
-            $productAttrArr['tax_id']=$request->post('tax_id');
+   
             if($color_idArr[$key]==''){
                 $productAttrArr['color_id']=0;
             }else{
@@ -222,15 +244,15 @@ class ProductController extends Controller
                 $request->file("attr_image.$key")->storeAs('/public/media',$image_name);
                 $productAttrArr['attr_image']=$image_name;
             }
-			
+		
             if($paidArr[$key]!=''){
                 DB::table("product_attributes")->where(['id'=>$paidArr[$key]])->update($productAttrArr);
             }else{
-                DB::table("product_attributes")->insert($productAttrArr);
+               DB::table("product_attributes")->insert($productAttrArr);
             }
             
         }  
-		
+        
         /*Product Attr End*/ 
         
         /*Product Images Start*/
@@ -277,11 +299,11 @@ class ProductController extends Controller
     }
 
     public function product_attr_delete(Request $request,$paid,$pid){
-        $arrImage=DB::table('products_attr')->where(['id'=>$paid])->get();
+        $arrImage=DB::table('product_attributes')->where(['id'=>$paid])->get();
         if(Storage::exists('/public/media/'.$arrImage[0]->attr_image)){
             Storage::delete('/public/media/'.$arrImage[0]->attr_image);
         }
-        DB::table('products_attr')->where(['id'=>$paid])->delete();
+        DB::table('product_attributes')->where(['id'=>$paid])->delete();
         return redirect('admin/product/manage_product/'.$pid);
     }
 
@@ -300,5 +322,21 @@ class ProductController extends Controller
         $model->save();
         $request->session()->flash('message','Product status updated');
         return redirect('admin/product');
+    }
+    public function cat_by_id($id){
+ $id;
+       $category_data=DB::table("categories")->where(["parent_category_id"=>$id])->get();
+       $category_data_p=DB::table("categories")->select('category_name','id')->where(["parent_category_id"=>$id])->get();
+
+ $total_category=count($category_data);
+      if($total_category>0){
+      
+       $data=$category_data_p;
+      }else{
+        $category_data_name=DB::table("categories")->where(["id"=>$id])->get();
+       $cate_n=$category_data_name[0]->category_name;
+        $data="There is No Sub Category In $cate_n";
+      }
+    return response()->json(["total_sub"=>$total_category,"data"=>$data]);
     }
 }

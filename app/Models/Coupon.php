@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Crypt;
 class Coupon extends Model
 {
     use HasFactory;
-    public function getCouponCodeAttribute($value){
+   /* public function getCouponCodeAttribute($value){
         $value=Crypt::decryptString($value);
         $data=ucFirst($value);
     return $data;
@@ -17,6 +17,6 @@ class Coupon extends Model
     public function setCouponCodeAttribute($value)
     {
         return $this->attributes['coupon_code']=Crypt::encryptString($value);
-    }
+    }*/
 
 }

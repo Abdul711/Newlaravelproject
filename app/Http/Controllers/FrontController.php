@@ -10,6 +10,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Mail;
+use \PDF;
 
 class FrontController extends Controller
 {
@@ -37,7 +38,7 @@ class FrontController extends Controller
             $result['home_product_attributes'][$list1->id]=
             DB::table('product_attributes')
             ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
-            ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
+ 
             ->leftJoin('colors','colors.id','=','product_attributes.color_id')
             ->where(['product_attributes.product_id'=>$list1->id])
             ->get();
@@ -46,6 +47,10 @@ class FrontController extends Controller
          
             ->where(['product_images.product_id'=>$list1->id])
             ->get();
+    
+
+
+
         }          
         
 
@@ -69,9 +74,8 @@ class FrontController extends Controller
            
    
        
-/*
-prx($result);
-*/
+
+
     
            return view('front_end.index',$result);
      }
@@ -91,6 +95,8 @@ prx($result);
             "products.desc",
             "products.lead_time",
             "products.warranty",
+            "products.is_discounted",
+            "products.discount_amount",
             "products.is_featured","products.is_discounted",
             "categories.category_name",
             "brands.brands as brand_name"
@@ -104,7 +110,7 @@ prx($result);
             DB::table('product_attributes')
             ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
             ->leftJoin('colors','colors.id','=','product_attributes.color_id')
-            ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
+       
  
             ->where(['product_attributes.product_id'=>$list1->id])
             ->get();
@@ -124,27 +130,96 @@ prx($result);
      
        return view('front_end.product-detail',$result);
       }
+      function cart_total_user(){
+        $total=cartTotal();
+        return $total;
+      }
      function add_to_cart(Request $req){
-       
-         $size_id=$_POST['size_id'];
-         $color_id=$_POST['color_id'];
-         $product_id=$_POST["product_id"];
-         $skuid=$_POST["attr_id"];
-         $qty=$_POST["pqty"];
-         $data=DB::table("product_attributes")->where(["sku"=>$skuid])->get();
-        $attr_id=$data[0]->id;
-        $price=$data[0]->price;
-        $mrp=$data[0]->mrp;
-      $cart_data["product_id"]=$product_id;
-      $cart_data["ip_add"]="::1";
-       $cart_data["qty"]=$qty;
-       $cart_data["color_id"]=$color_id;
-       $cart_data["size_id"]=$size_id;
-       $cart_data["attr_id"]=$attr_id;
-       $cart_data["price"]=$price;
-       $cart_data["mrp"]=$mrp;
-       print_r($cart_data);
-       DB::table("carts")->insert($cart_data);
+ 
+    
+  
+ $size_id=$_POST["size_id"];
+$color_id=$_POST["color_id"];
+$product_id=$_POST["product_id"];
+ $ip=ip_address();
+$qty=$_POST["pqty"];
+  
+    
+
+$attr_data=DB::table("product_attributes")
+->select('product_attributes.id')
+->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
+->leftJoin('colors','colors.id','=','product_attributes.color_id')
+->where(["colors.color_name"=>$color_id])->
+where(['sizes.size_name'=>$size_id])->where(["product_id"=>$product_id])->get();   
+   
+if(isset($attr_data[0])){
+    $attr_id=$attr_data[0]->id;
+ $ip=ip_address();
+ if(session()->has('FRONT_USER_ID')){
+    $user_type="Reg";
+  $user_id=session('FRONT_USER_ID');
+     }else{
+            $user_type="Non-Reg";   
+            $user_id=0;
+        }
+    $cart_data_query=DB::table("carts")->
+    where(["product_id"=>$product_id])
+    ->where(['ip_add'=>$ip])->where(['attr_id'=>$attr_id])->where(["user_type"=>$user_type])->get();
+
+
+
+
+    $cart_data['user_id']=$user_id;
+        $cart_data['user_type']=$user_type;
+        $cart_data['ip_add']=$ip;
+        $cart_data["qty"]=$qty;
+        $cart_data["product_id"]=$product_id;
+        $cart_data["attr_id"]=$attr_id;
+      if(isset($cart_data_query[0])){
+        $cart=cartTotal();    
+        extract($cart);
+      /*  prx($cart);
+      
+        die();*/
+       $cart_id=$cart_data_query[0]->id;
+         if($qty==0){
+             DB::table("carts")->where(["id"=>$cart_id])->delete();
+             return response()->json([
+                 "status"=>"success",
+             "msg"=>"You Have Deleted Product From Cart",
+             "cart_total"=>$cart_total,
+             "gst"=>$gst,
+             "delivery_charge"=>$delivery_charge,
+             "final_price"=>$final_price,
+             "total_item"=>$total_item
+             
+             ]);
+         }
+
+       DB::table("carts")->where(["id"=>$cart_id])->update($cart_data);
+       $msg="updated";
+      }else{
+        DB::table("carts")->insertGetId($cart_data);
+        $msg="inserted";
+      }
+      $cart=cartTotal();    
+      extract($cart);
+   return response()->json(["status"=>"success",
+   "msg"=>"You Have $msg Product In Cart",
+   "cart_total"=>$cart_total,
+   "gst"=>$gst,
+   "delivery_charge"=>$delivery_charge,
+   "final_price"=>$final_price,
+   "total_item"=>$total_item
+   
+   ]);
+
+}
+else{
+    return response()->json(["status"=>"error", "msg"=>"No Product"]);
+}
+ 
      }
          public function store(Request $request){
          $validator=  Validator::make($request->all(),[
@@ -187,7 +262,8 @@ prx($result);
          "products.category_id",
          "products.desc",
          "categories.category_name",
-         "brands.brands"
+         "brands.brands",
+         "products.discount_amount"
          
          )
 
@@ -197,13 +273,13 @@ prx($result);
                  $result['category_product_attributes'][$value->id]=DB::table('product_attributes')
                  ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
                  ->leftJoin('colors','colors.id','=','product_attributes.color_id')
-                 ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
+               
                  ->select(
                      'sizes.size_name',
                      'sizes.id as size_id',
                  'colors.color_name',
                  'colors.id as color_id',
-                 "taxes.tax_value",
+      
                  "product_attributes.price",
                  "product_attributes.mrp",
                  "product_attributes.qty",
@@ -226,8 +302,10 @@ $result['product_attributes']=$product_attributes;
        $sizes= DB::table("sizes")->where(['status'=>1])->get();
     
        $result['categories']=$categories;
-
-/*  prx($result);*/
+$result["cat_id"]=$category_id;
+  /*prx($result);
+  die();*/
+  
 return view('front_end.product',$result);
     }
 
@@ -261,7 +339,7 @@ return view('front_end.product',$result);
              $result['category_product_attributes'][$value->id]=DB::table('product_attributes')
              ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
              ->leftJoin('colors','colors.id','=','product_attributes.color_id')
-             ->leftJoin('taxes','taxes.id','=','product_attributes.tax_id')
+       
              ->select(
                  'sizes.size_name',
                  'sizes.id as size_id',
@@ -386,7 +464,29 @@ public function login_process(Request $reg)
                              }
                         }     
                         $reg->session()->put('FRONT_USER_LOGIN','1');   
-                        $reg->session()->put('FRONT_USER_ID','1');                    
+                        $reg->session()->put('FRONT_USER_ID',$data_result[0]->id); 
+                        setcookie('CUSTOMER_ID',$data_result[0]->id,time()+60*60*2);  
+                       $ip=ip_address();
+                       $user_type_old="Non-Reg";
+                       $user_id_old=0;
+                      
+                     $cart_data=DB::table("carts")->where(["ip_add"=>$ip])->get(); 
+                        if(isset($cart_data[0])){
+                            $user_id=$data_result[0]->id;
+                            $user_type="Reg";
+                                       
+                    $cart_data=DB::table("carts")->where(["ip_add"=>$ip])->where(["user_id"=>$user_id_old])->where(["user_type"=>$user_type_old])->update(
+                         [
+                             "user_type"=>$user_type,
+                             "user_id"=>$user_id
+                         ]
+                     );
+         
+                     
+
+
+
+                        }
                 return response()->json(['status'=>"success",'msg'=>"User Login ","link"=>""]); 
                  }else{
                 return response()->json(['status'=>"error",'msg'=>"Wrong Password","link"=>""]); 
@@ -464,9 +564,6 @@ $token=$data_result[0]->customer_rand_str;
 $user_na=$data_result[0]->customer_name;
 $otp=$data_result[0]->customer_otp;
 $users["to"]="syedabdultechnicalcop@gmail.com";
-#
-
-
 $users["to"]="syedabdultechnicalcop@gmail.com";
 $data["name"]=$user_na;
 $data["token"]=$token;
@@ -515,6 +612,348 @@ public function reset_new_password(Request $req){
 }
 public function reset_p($token=null){
     return view('front_end.reset_password',["token"=>$token]);
+}
+public function cart_view()
+{
+    
+
+
+    $ip=ip_address();
+$cart_data=userCart();
+$result["cart_datas"]=$cart_data;
+$cart=cartTotal();
+$total_item=$cart["total_item"];
+$result["total_item"]=$cart["total_item"];   
+$result['cart_total']=$cart["cart_total"];
+$result["delivery_charge"]=$cart["delivery_charge"];
+if($total_item>0){
+  
+    return view('front_end.cart',$result);  
+}else{
+    return redirect('/');
+}
+
+
+
+ 
+
+}
+public function checkout()
+{
+
+
+ 
+    $cart_data=userCart();
+    $cart_data=json_decode($cart_data,true);
+    $result["cart_datas"]=$cart_data;
+    $cart=cartTotal();
+    $total_item=$cart["total_item"];
+    $result["total_item"]=$cart["total_item"];   
+    $result['cart_total']=$cart["cart_total"];
+    $result['gst']=$cart["gst"];
+    $result['tax']=$cart["tax_value"];
+    $result['delivery_charge']=$cart["delivery_charge"];
+    $result['final_price']=$cart["final_price"];
+    $result['discount']=$cart["discount"];
+    $result['cart_after']=$cart["cart_promo"];
+    $result['COUPONCODE']=$cart["COUPONCODE"];
+    $result['COUPONID']=$cart["coupon_id"];
+    $result["USER_ID"]=session('FRONT_USER_ID');
+
+
+if(session()->has("FRONT_USER_ID")){
+    $user_id=session('FRONT_USER_ID');
+    $customer=DB::table("customers")->where(['id'=>$user_id])->get();
+  if(isset($customer[0])){
+    $result["customer_email"]=$customer[0]->customer_email;
+    $result["customer_name"]=$customer[0]->customer_name;
+    $result["customer_mobile"]=$customer[0]->customer_mobile;
+    $result["user_id"]=$user_id;
+  }else{
+    $result["customer_name"]="";
+    $result["customer_mobile"]="";
+    $result["customer_email"]="";
+    $result["user_id"]=0;
+
+  }
+  $amount=500;
+  $msg="Thanks";
+  $type_trans="out";
+  $date_today=date("Y-m-d H:is");
+ /* ManageWallet($user_id,$amount,$msg,$type_trans);*/
+
+ $result["wallet_amt"]=WalletAmt($user_id);
+ $web=webSetting();
+
+if($total_item>0){
+    return view("front_end.checkout",$result);
+}else{
+    return redirect('/');
+}
+}else{
+    return view("front_end.account");
+}
+
+     
+
+
+
+}
+function cart_detail(){
+$cart_data= userCart();
+    $cart_data=json_decode($cart_data,true);
+    $cart=cartTotal();
+    $total_item=$cart["total_item"];   
+    $cart_total=$cart["cart_total"];
+ if($total_item==0){
+        $cart_total=0;
+        return response()->json(["state"=>"success","data"=>"No Item In cart","total_item"=>$total_item,"cart_total"=>$cart_total]);  
+    }else{
+  
+        return response()->json(["state"=>"success","data"=>$cart_data,"total_item"=>$total_item,"cart_total"=>$cart_total]);  
+    }
+
+  
+}
+public function PlaceOrder(Request $req)
+{
+  
+ 
+   $webset=webSetting();
+$webset=json_decode($webset,true);
+extract($webset);
+extract($_POST);
+if($customer_payment=="Wallet"){
+    $user_id=$customer_id;
+    $amount=$final_price;
+    $msg="Payment For Order";
+    $type_trans="out";
+    ManageWallet($user_id,$amount,$msg,$type_trans);
+}
+$data["customer_name"]=$customer_name;
+$data["customer_payment"]=$customer_payment;
+$data["customer_email"]=$customer_email;
+$data["customer_id"]=$customer_id;
+$data["orders_status"]=$orders_status;
+$data["customer_phone"]=$customer_phone;
+$data["customer_address"]=$customer_address;
+$data["total_price"]=$total_price;
+$data["final_price"]=$final_price;
+$data["gst"]=$gst;
+$data["coupon_code"]=$coupon_code;
+$data["coupon_value"]=$coupon_value;
+$data["delivery_charge"]=$delivery_charge;
+$data["zipcode"]=$zipcode;
+$data["city"]=$city;
+$data["district"]=$district;
+$data["created_at"]=date("Y-m-d H:i:s");
+$user_carts=userCartTo();
+$user_carts=json_decode($user_carts,true);
+
+
+
+    $user_order_detail=[];
+
+
+ $order_id=DB::table("orders")->insertGetId($data);
+foreach($user_carts as $key=> $user_cart){
+
+    extract($user_cart);
+       if($is_discounted==1){
+           $price=$price-(($discount_amount/100)*$price);
+       }else{
+           $price=$price;
+       }
+    $user_order_detail["qty"]=$qty;
+    $user_order_detail["attr_id"]=$attr_id;
+    $user_order_detail["order_id"]=$order_id;
+    $user_order_detail["price"]=$price;
+    $user_order_detail["product_id"]=$product_id;
+
+    $insert_id=DB::table("order_details")->insertGetId($user_order_detail);
+
+}
+
+if($order_id>0 && $insert_id>0){
+    if(session()->has("COUPONCODE")){
+        session()->forget('COUPONCODE');
+    session()->forget('COUPONVALUE');
+    session()->forget('COUPONID');    
+    }
+  
+return response()->json(["status"=>"success","msg"=>"Order Placed"]);
+}
+}
+ public function apply_coupon($coupon)
+{
+
+
+    $web=webSetting();
+    $min_cart_amt=$web[0]->min_cart_amt;
+    $min_cart_am=$web[0]->free_delivery_cart;
+
+
+    if(session()->has("COUPONCODE")){
+        session()->forget('COUPONCODE');
+    session()->forget('COUPONVALUE');
+    session()->forget('COUPONID');    
+    }
+  
+  $coupons=DB::table('coupons')->where(["coupon_code"=>$coupon])->get();
+  $cart_total=cartTotal();
+  if(session()->has('FRONT_USER_ID')){
+  $user_id=session('FRONT_USER_ID');
+  $amt_w=WalletAmt($user_id);
+      }else{
+        $amt_w=0; 
+      }
+  extract($cart_total);
+  if(isset($coupons[0])){
+  
+  
+   
+
+   $type=$coupons[0]->coupon_type;
+      if($cart_total > $coupons[0]->cart_min_value){
+     if($type=="Fixed"){
+         $coupon_discount=$coupons[0]->coupon_value;
+     }
+     if($type=="Percentage"){
+        $coupon_discount=(($coupons[0]->coupon_value)/100)*$cart_total;
+
+    }
+    if($coupons[0]->max_discount<$coupon_discount){
+        $coupon_discount=$coupons[0]->max_discount;
+    }else{
+        $coupon_discount=$coupon_discount;
+    }
+
+     $coupon_discount;
+    session()->put('COUPONCODE',$coupons[0]->coupon_code);
+    session()->put('COUPONVALUE',$coupon_discount);
+    session()->put('COUPONID',$coupons[0]->id);
+    $status="success";
+    $msg="$coupon Applied";
+    $cart_total=cartTotal();
+  extract($cart_total);  
+    return response()->json(["cart_promo"=>$cart_promo,"gst"=>$gst,"tax_value"=>$tax_value,
+    "COUPONCODE"=>$COUPONCODE,"delivery_charge"=>$delivery_charge,"final_price"=>$final_price,
+    "discount"=>$discount,"coupon_id"=>$coupon_id,"cart_total"=>$cart_total,"total_item"=>$total_item,
+    "status"=>$status,"msg"=>$msg,"wallet"=>$amt_w,"min_cart"=>$min_cart_am
+    ]);
+   }else{
+    $status="error";
+    $msg="$coupon Not Applied Because Cart Total ($cart_total) is Less To Apply The Coupon $coupon";
+  
+    return response()->json(["cart_promo"=>$cart_promo,"gst"=>$gst,"tax_value"=>$tax_value,
+    "COUPONCODE"=>$COUPONCODE,"delivery_charge"=>$delivery_charge,"final_price"=>$final_price,
+    "discount"=>$discount,"coupon_id"=>$coupon_id,"cart_total"=>$cart_total,"total_item"=>$total_item,
+    "status"=>$status,"msg"=>$msg,"wallet"=>$amt_w,"min_cart"=>$min_cart_am
+    ]);
+   }
+  }else{
+    $status="error";
+    $msg="$coupon Not Found";
+  
+    return response()->json(["cart_promo"=>$cart_promo,"gst"=>$gst,"tax_value"=>$tax_value,
+    "COUPONCODE"=>$COUPONCODE,"delivery_charge"=>$delivery_charge,"final_price"=>$final_price,
+    "discount"=>$discount,"coupon_id"=>$coupon_id,"cart_total"=>$cart_total,"total_item"=>$total_item,
+    "status"=>$status,"msg"=>$msg,"wallet"=>$amt_w,"min_cart"=>$min_cart_am
+    ]);
+  }
+}
+public function thanks(Type $var = null)
+{
+   
+    if(session()->has('FRONT_USER_ID')){
+$user_id=session('FRONT_USER_ID');
+
+   $order_data=DB::table("carts")->where(["user_id"=>$user_id])->delete();
+$orders=DB::table('orders')->where(["orders.customer_id"=>$user_id])->
+   orderBy("orders.id","desc")->limit(1)->get();
+       foreach($orders as $order){
+         $result["order_details"]=DB::table("order_details")->
+         leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")->
+         leftJoin("colors","colors.id","=","product_attributes.color_id")->
+         leftJoin("sizes","sizes.id","=","product_attributes.size_id")
+         ->leftJoin("products","products.id","=","order_details.product_id")
+         ->leftJoin("brands","brands.id","=","products.brand_id")
+         ->leftJoin("categories","categories.id","=","products.category_id")
+         ->select("order_details.qty","order_details.price",
+         "colors.color_name","sizes.size_name","products.name",
+         "products.sub_category_id",
+         "products.image",
+         "brands.brands",
+         "categories.category_name"
+         )
+         ->where(["order_details.order_id"=>$order->id])->get();
+
+       }
+       $result["orders"]=$orders;
+
+return view("front_end.your_order_detail",$result);
+    }else{
+        return redirect('/');
+    }
+
+}
+public function invoice (Request $req ,$id)
+{
+
+    $orders=DB::table('orders')->where(["orders.id"=>$id])->
+       orderBy("orders.id","desc")->limit(1)->get();
+           foreach($orders as $order){
+             $result["order_details"]=DB::table("order_details")->
+             leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")->
+             leftJoin("colors","colors.id","=","product_attributes.color_id")->
+             leftJoin("sizes","sizes.id","=","product_attributes.size_id")
+             ->leftJoin("products","products.id","=","order_details.product_id")
+             ->leftJoin("brands","brands.id","=","products.brand_id")
+             ->leftJoin("categories","categories.id","=","products.category_id")
+             ->select("order_details.qty","order_details.price",
+             "colors.color_name","sizes.size_name","products.name",
+             "products.sub_category_id",
+             "products.image",
+             "brands.brands",
+             "categories.category_name"
+             )
+             ->where(["order_details.order_id"=>$order->id])->get();
+    
+           }
+
+   $link=$req->headers->get('referer');
+/*prx($result);
+   die();*/
+$result["orders"]=$orders;
+if($orders[0]->delivery_charge==0){
+    $delivery_charge="Free Delivery";
+}else{
+    $delivery_charge=$orders[0]->delivery_charge." Rs ";
+}
+if($orders[0]->customer_payment=="COD"){
+    $amount_due=$orders[0]->final_price." Rs ";
+}else{
+$amount_due="Payment Paid";
+}
+if($orders[0]->customer_payment=="COD"){
+    $payment_method="Cash On Delivery";
+}else{
+
+    $payment_method=$orders[0]->customer_payment;
+}   
+
+$result["payment_method"]=$payment_method;
+$result["cart_total"]=$orders[0]->total_price;
+$result["delivery_charge"]=$delivery_charge;
+$result["amount_due"]=$amount_due;
+$result["total_item"]=count($result['order_details']);
+
+/*$pdf = PDF::loadView('front_end.detail',$result)->setPaper('a4',"landscape");*/
+   $pdf = PDF::loadView('front_end.detail',$result);
+
+   return $pdf->download('invoice.pdf');
+   
+
 }
 
 }

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,11 +74,9 @@
                     
                   <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
                     
-  
+               
         @else
-        <ul class="nav navbar-nav">
-                  <li>Amount</li>
-                  </ul>
+             
                   <li><a href="{{url('/logout')}}">Logout</a></li>
           
               @endif
@@ -132,7 +129,6 @@
   </header>
   <!-- / header section -->
   <!-- menu -->
-
   <section id="menu">
     <div class="container">
       <div class="menu-area">
@@ -150,6 +146,7 @@
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
       <x-nav-bar/>
+
           </div><!--/.nav-collapse -->
         </div>
       </div>       

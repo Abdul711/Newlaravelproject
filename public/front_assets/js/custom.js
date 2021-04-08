@@ -238,7 +238,48 @@ jQuery(function($){
   /* ----------------------------------------------------------- */        
 
   
-   
+  jQuery(function(){
+    if($('body').is('.productPage')){
+     var skipSlider = document.getElementById('skipstep');
+
+     var filter_price_start=jQuery('#filter_price_start').val();
+     var filter_price_end=jQuery('#filter_price_end').val();
+     
+     if(filter_price_start=='' || filter_price_end==''){
+      var filter_price_start=100;
+      var filter_price_end=1700;
+     }
+
+      noUiSlider.create(skipSlider, {
+          range: {
+              'min': 0,
+              '10%': 100,
+              '20%': 300,
+              '30%': 500,
+              '40%': 700,
+              '50%': 900,
+              '60%': 1100,
+              '70%': 1300,
+              '80%': 1500,
+              '90%': 1700,
+              'max': 1900
+          },
+          snap: true,
+          connect: true,
+          start: [filter_price_start, filter_price_end]
+      });
+      // for value print
+      var skipValues = [
+        document.getElementById('skip-value-lower'),
+        document.getElementById('skip-value-upper')
+      ];
+
+      skipSlider.noUiSlider.on('update', function( values, handle ) {
+        skipValues[handle].innerHTML = values[handle];
+      });
+    }
+  });
+
 
     
   /* ----------------------------------------------------------- */
@@ -486,16 +527,19 @@ $("#password_reset").submit(function (e) {
          swal("Oop!","Invalid OTP! OTP Must Be Four Digit Number","error");
    return false;
  }
+ path=FRONT_PATH+"/passwordreset";
  jQuery.ajax({
-    url:"reset",
+    url:path,
     data:form_data,
     type:'post',
     success:function(result){
     alert(result);
     console.log(result);
-       if(result.status="success"){
+       if(result.status=="success"){
          swal("Congratulations",result.msg,result.status);
-         window.location.href="/";
+        
+       }else{
+          swal("Oops!",result.msg,result.status); 
        }  
 
     }
@@ -504,21 +548,52 @@ $("#password_reset").submit(function (e) {
 
 });
 function add_to_cart(){
-alert(FRONT_PATH);
+
 /*PRODUCT_IMAGE*/
 path=FRONT_PATH+"/add_cart";
-alert(path);
-form_data=$('#frmAddToCart').serialize();
 
+form_data=$('#frmAddToCart').serialize();
+var qty=$("#pqty").val();
+if(qty==""){
+  swal("OOps","Please Select Qty","error");
+  return false;
+}
 $.ajax({
   type: "post",
   url:path,
   data:form_data,
 
   success: function (response) {
- alert(response);    
+console.log(response);
+delivery_charge_text="";
+if(response.status=="error"){
+   swal("Oops! Something Went Wrong",response.msg,response.status);
+   $(".cart_total").html(response.cart_total+" Rs ");
+      $(".gst").html(response.gst+" Rs ");
+                 $(".gst").html(response.gst+" Rs ");
+
+           
+             $(".final").html(response.final_price+" Rs ");
+
+ 
+}else{
+  if(response.delivery_charge>0){
+delivery_charge_text=response.delivery_charge+" Rs ";
+
+  }else{
+delivery_charge_text="Free Delivery";
+  }
+  $(".delivery_charge").html(delivery_charge_text);
+  $(".cart_total").html(response.cart_total+" Rs ");
+  $(".gst").html(response.gst+" Rs ");
+  $(".final").html(response.final_price+" Rs ");
+add_detail();
+swal("Congratulations",response.msg,response.status);
+}
   }
 });
+
+
 
 
 
@@ -532,13 +607,13 @@ $("#qty").change(function(){
     $("#pqty").val(qty);
     alert(qty);
 });
-function change_product_color_image(color_id,product_id,price){
+function change_product_color_image(color_id,product_id){
 alert("color_id"+color_id+"product_id"+product_id);
 $("#color_id").val(color_id);
-$("#price").val(price);
+
 $("#product_id").val(product_id);
         
-$("#prod_attr").val(price);
+
   jQuery('.colors').css('border','0px solid black');
   jQuery('.color_'+color_id).css('border','3px solid black');
 
@@ -551,4 +626,227 @@ function showColor(size){
   jQuery('#size_'+size).css('border','1px solid black');
   $("#size_id").val(size);
 
+}
+
+function  add_detail() {  
+
+path=FRONT_PATH+"/cart_detail";
+  $.ajax({
+method:"get",
+url:path,
+success:function (param) {  
+
+
+     var html_cart='<ul>';
+total=param.total_item;
+
+if(total>0){
+$.each(param.data, function (arrKey,arrVal) { 
+ disc=arrVal.is_discounted;
+ if(disc==1){
+ disc_amount=(arrVal.discount_amount/100)*arrVal.product_price;
+ }else{
+   disc_amount=0;
+ }
+
+  price=arrVal.product_price-disc_amount;
+      
+   html_cart+='<li>';
+   html_cart+='<a class="aa-cartbox-img" href="#"><img src="'+PRODUCT_IMAGE+'/'+arrVal.product_image+'" alt="img"></a>';
+   html_cart+='<div class="aa-cartbox-info">';
+   html_cart+='<h4><a href="#">'+arrVal.name+'</a></h4><p><b>Color:</b><strong>'+arrVal.product_colors+'</strong></p><p><b>Size:</b><strong>'+arrVal.product_sizes+'</strong></p><p>'+arrVal.qty+' * Rs '+price+'</p></div></li>';
+});
+path=FRONT_PATH+"/cart";
+   html_cart+='<li><span   class="aa-cartbox-total-title">Total</span> <span class="aa-cartbox-total-price">Rs<span class="c_p">'+param.cart_total+'</span></span></li>';
+        html_cart+='</ul><a  class="aa-cartbox-checkout aa-primary-btn" href="'+path+'">Cart</a>';
+
+        $(".aa-cartbox-summary").html(html_cart);
+ 
+
+}else{
+  html_cart+='<li>No Item In Cart</li>';
+
+  $(".checkout").remove();
+  $(".aa-cartbox-summary").remove();
+  $("#no").show();
+
+}
+
+$(".aa-cart-notify").html(total);
+
+}
+  });
+
+
+}
+
+function updateCart(color_id,size_id,product_id,attr_id,price){
+/*add_to_cart()*/;
+
+qty=$('#qty'+attr_id).val();
+$("#pqty").val(qty);
+$("#size_id").val(size_id);
+$("#color_id").val(color_id);
+$("#product_id").val(product_id);
+if(qty==0){
+$("#box"+attr_id).remove();
+}
+
+add_to_cart();
+ add_detail();
+totalPrice=$(".c_p").html();
+
+$("#price"+attr_id).html('Rs'+qty*price);
+
+}
+function deleteCart(color_id,size_id,product_id,attribute_id){
+qty=0;
+$("#pqty").val(qty);
+$("#size_id").val(size_id);
+$("#color_id").val(color_id);
+$("#product_id").val(product_id);
+
+add_to_cart();
+$("#box"+attribute_id).remove();
+}
+function totalPrice(){
+alert("Hello");
+}
+$(".apply_coupon").click(function(e){
+  e.preventDefault();
+coupon_code=$("#coupon_code").val();
+if(coupon_code!=""){
+
+path=FRONT_PATH+"/place_coupon/"+coupon_code;
+
+$.ajax({
+   url:path,
+   method:"get",
+
+   success:function(res){
+        min_cart=parseInt(res.min_cart);
+
+         console.log(res);
+         if(res.status=="success"){
+         $(".cart_promo").removeClass('coupon_hide');
+$(".cart_promo").addClass('coupon_show');
+         $(".after_promo").html(res.cart_promo);
+             $(".discount").html(res.discount);
+             $("#coupon_value").val(res.discount);
+             $(".tax_per").html(res.tax_value);
+                  $(".tax_amt").html(res.gst);
+                  $("#gst").val(res.gst);
+                  $("#coupon_id").val(res.COUPONCODE);
+                      $("#final_price").val(res.final_price);
+                              $(".final_price").html(res.final_price);
+                              $(".couponcode").html(res.COUPONCODE);
+                             if(res.delivery_charge==0){
+delivery_charge_text="Free Delivery";
+                             }else{
+delivery_charge_text=res.delivery_charge+"Rs";
+                             }                           
+                             $(".delivery_charge").html(delivery_charge_text);
+                                        $("#delivery_charge").val(res.delivery_charge);
+         title_msg="Congratulations";
+         }else{
+                title_msg="Oops! Something Went Wrong";
+         }
+    
+         if(res.wallet>=res.final_price){
+ $(".wallet").prop("checked",true);
+            $(".wallet").prop("disabled",false);
+     $(".wallet_msg").text('');
+         
+              
+         }else{
+            $(".wallet").prop("checked",false);
+            $(".wallet").prop("disabled",true);
+                 $(".wallet_msg").text('Low Wallet');
+                 $(".wallet_msg").css('color',"red");
+         }
+        
+              swal(title_msg,res.msg,res.status);                       
+   }
+});
+}else{
+  swal("Oops!","Please Enter Coupon Code","error");
+
+}
+});
+$('.place_order').click(function(e){
+  e.preventDefault();
+ customer_name=$("#name").val();
+customer_email=$("#email").val();
+customer_phone=$("#phone").val();
+customer_address=$("#address").val();
+customer_dis=$("#dis").val();
+customer_city=$("#city").val();
+customer_zip=$("#zip").val();
+                customer_payment=$("input[name='optionsRadios']:checked").val();
+        if(customer_zip=="" || customer_dis=="" || customer_city=="0" ||customer_address=="" || customer_payment==""){
+swal("Opps!","Please Fill The Dispatched Order Form","error");
+return false;
+        }
+ $("#customer_name").val(customer_name);
+  $("#customer_email").val(customer_email);
+    $("#customer_phone").val(customer_phone);
+      $("#customer_address").val(customer_address);
+        $("#customer_city").val(customer_city);
+   $("#customer_dis").val(customer_dis);
+      $("#customer_zip").val(customer_zip);
+        $("#customer_payment").val(customer_payment);
+      form_data=$("#orderSubmit").serialize();
+      alert(form_data);
+path=FRONT_PATH+"/place_order";
+$.ajax({
+  url:path,
+  method:"post",
+  data:form_data,
+  success:function(response){
+    alert(response);
+        console.log(response);
+if(response.status=="error"){
+  swal("Oops!",response.msg,response.status);
+}else{
+    swal("Congratulations",response.msg,response.status);
+   window.location.href="/thank";
+}
+
+      
+  }
+});
+
+
+});
+function sizeSelect(size,product){
+  
+  $(".productColor").hide();
+  $('.ColorSize'+size).show();
+
+   jQuery('.size_link').css('border','2px solid grey');
+  jQuery('#size_'+size+product).css('border','2px solid black');
+  $("#size_id").val(size);
+
+}
+function selectColor(color,product){
+  
+
+
+
+  jQuery('#color_'+color+product).css('border','4px solid black');
+  $(".productColor").css('0px solid black');
+     
+  $("#color_id").val(color);
+
+}
+function qtyTake(productId){
+                         
+  qty=$("#qtyProduct").val();
+if(qty==""){
+  swal("Oops!","Select Qty","error");
+  return false;
+}
+  $("#pqty").val(qty);
+   $("#product_id").val(productId);
+   add_to_cart();
 }

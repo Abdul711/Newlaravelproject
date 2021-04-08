@@ -31,6 +31,9 @@ class CreateProductsTable extends Migration
             $table->longText('is_tranding')->nullable();
             $table->longText('warranty')->nullable();
             $table->integer('status')->nullable();
+            $table->string('delivery_charge')->nullable();
+            $table->string('tax_id')->nullable();
+
             $table->timestamps();
         });
     }
