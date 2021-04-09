@@ -29,13 +29,14 @@ Route::get('/', [FrontController::class,'index']);
 Route::get('/product/{id}', [FrontController::class,'view_product']);
 Route::get('/category/{id}', [FrontController::class,'view_product_by_cat']);
 Route::get('/sub_category/{id}', [FrontController::class,'view_product_by_sub']);
-
+Route::get('/pastOrder',[FrontController::class,'pastOrder']);
     Route::get('/send_invite', [FrontController::class,'invite_user']);
 Route::get('/customer_verify/{token?}',[FrontController::class,'customer_verify']);
 
 Route::get('/logout', function () {
     session()->forget('FRONT_USER_LOGIN','0');   
     session()->forget('FRONT_USER_ID','0');   
+    session()->forget('FRONT_USER_NAME','');
     return redirect('/');
 });
 Route::get('/my_account', function () {
@@ -52,6 +53,7 @@ Route::get('/my_contact', function () {
 
 Route::get('/print_invoice/{id}',[FrontController::class,"invoice"]);
 Route::get('/thank',[FrontController::class,"thanks"]);
+Route::get('/view_detail/{id}',[FrontController::class,"view_datail"]);
 Route::get('/cart_total',[FrontController::class,"cart_total"]);
 Route::get('/success', function () {
     return view('front_end.verify_success');
@@ -77,6 +79,10 @@ Route::get('admin',[AdminController::class,'index']);
 Route::get('admin/update/{id?}',[AdminController::class,'update_admin']);
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
 Route::group(['middleware'=>'admin_auth'],function(){
+
+    Route::get('admin/order',[AdminController::class,"orders_detail"]);
+    
+    Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
     Route::get('admin/manage',[AdminController::class,'manage_account']);
     Route::post('admin/manage_admin_process',[AdminController::class,'manage_admin_process'])->name('admin.manage_admin_process'); 

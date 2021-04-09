@@ -4353,6 +4353,9 @@ border:1px solid gray;
 color:red;
 font-weight:700;
 }
+.selected_color{
+  border:4px solid green;
+}
 .title-success{
   background:green;
   color:white;
@@ -4361,8 +4364,42 @@ padding:5px;
 border-radius:15%;
 box-sizing:border-box;
 }
+.aaa-logo a {
+  font-family: "Raleway", sans-serif;
+  font-size: 28px;
+}
+ .aaa-logo a:hover {  
+  color: #333;
+}
+ .aaa-logo a > span {
+  display: inline-block;
+  float: left;
+  font-size: 50px;
+  color:red;
+}
+ .aaa-logo a p {
+  display: inline-block;
+  float: left;
+  font-weight: bold;
+  margin-bottom: 0;
+  margin-left: 5px;
+  margin-top: -5px;
+}
+ .aaa-logo a p span {
+  display: block;
+  font-size: 12px;
+  font-weight: normal;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.aa-logo img{
+   color:red;
+}
 .nav_cat_active{
   color:red;
 }
-          
+.highest_total{
+  color:red;
+  background:yellow;
+}          
                                

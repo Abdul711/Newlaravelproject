@@ -20,5 +20,14 @@
            
               </li>
               @endforeach
+              @if(session()->has('FRONT_USER_LOGIN')!='0' && session()->has('FRONT_USER_ID')!='0')
+              <li><a href="{{url('/')}}">{{session('FRONT_USER_NAME')}}</a>
+                   <ul class="dropdown-menu">  
+                   <li><a href="{{url('/pastOrder')}}">Past Order</a></li>
+                   </ul>
+              </li>
+              @endif
                 </ul>
+          
+  
     <!-- People find pleasure in different ways. I find it in keeping my mind clear. - Marcus Aurelius -->

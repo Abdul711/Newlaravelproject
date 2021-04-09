@@ -222,15 +222,16 @@ function WalletAmt($user_id){
     return $in-$out;  
 
 }
- function ManageWallet($user_id,$amount,$msg,$type_trans)
+ function ManageWallet($user_id,$amount,$msg,$type_trans,$today)
 {
-    $today=date("Y-m-d H:i:s");
+   
     DB::table("wallet")->insert([
 "user_id"=>$user_id,
 "amount"=>$amount,
 "msg"=>$msg,
 "type_trans"=>$type_trans,
-"date"=>$today
+"created_at"=>$today
+
     ]);
 }
 function webSetting()

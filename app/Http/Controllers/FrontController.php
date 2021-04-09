@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 use \PDF;
-
+use Str;
 class FrontController extends Controller
 {
      
@@ -245,30 +245,71 @@ else{
             /* Check If The Record Of This Id Is present */
        
         }
-         public function view_product_by_cat($category_id)
+         public function view_product_by_cat( Request $req,$category_id)
         {
+            $sort="";
+            $color_sort="";
+            $sort_txt="";
+            $start_price="";
+            $end_price="";
+           if($req->get('sort')!=null){
+            $sort=$req->get('sort');
+           }if($req->get('color_id')!=null){
+               $color_sort=$req->get('color_id');
+           }
+ $color_sort;
+ if($req->get('filter_price_start')!=null && $req->get('filter_price_end')!=null){
+   $start_price=$req->get('filter_price_start');
+   $end_price=$req->get('filter_price_end');
+ }
+      $query=DB::table('products');
+      $query=$query->leftJoin("categories","categories.id","=","products.category_id");
+      $query=$query->leftJoin("brands","brands.id","=","products.brand_id");
+      $query=$query->leftJoin("product_attributes","product_attributes.product_id","=","products.id");
+      $query=$query->leftJoin("colors","colors.id","=","product_attributes.color_id");
 
-        $result['category_product']=DB::table('products')
-         ->leftJoin("categories","categories.id","=","products.category_id")
-         ->leftJoin("brands","brands.id","=","products.brand_id")
-         ->select("products.id",
-         "products.name",
-         "products.image",
-         "products.status",
-         "products.is_featured",
-         "products.is_tranding",
-         "products.is_discounted",
-         "products.lead_time",
-         "products.category_id",
-         "products.desc",
-         "categories.category_name",
-         "brands.brands",
-         "products.discount_amount"
-         
-         )
+    if($start_price!="" && $end_price!=""){
+        $query=$query->whereBetween('product_attributes.price',[$start_price,$end_price]);
+    }
 
-        ->where('products.status','=','1')->where(['products.category_id'=>$category_id])->get();
-             foreach ($result["category_product"] as $key => $value) {
+        if($sort==="name" && $sort!=""){
+            $query=$query->orderBy("products.name","desc");
+            $sort_txt="Product Name";
+        }
+        if($sort=="date" && $sort!=""){
+            $query=$query->orderBy("products.created_at","desc");
+            $sort_txt="Date";
+        }
+        if($sort=='price_desc'){
+            $query=$query->orderBy('product_attributes.price','desc');
+            $sort_txt="Price - DESC";
+        }if($sort=='price_asc'){
+            $query=$query->orderBy('product_attributes.price','asc');
+            $sort_txt="Price - ASC";
+        }if($color_sort!=""){
+$query=$query->where('colors.color_name','=',$color_sort);
+        }
+  
+if($color_sort!=""){
+$query=$query->where('colors.color_name','=',$color_sort);
+        }
+    
+        $query=$query->where('products.status','=','1');
+        $query=$query->where(['products.category_id'=>$category_id]);  
+
+        $query=$query->distinct()->select("products.*",
+  
+        "categories.category_name",
+        "brands.brands",
+        "products.discount_amount",
+        "products.created_at"
+        
+   );
+ 
+      
+    $query=$query->get();
+    $result['category_product']=$query;
+    foreach ($result["category_product"] as $key => $value) {
                  # code...
                  $result['category_product_attributes'][$value->id]=DB::table('product_attributes')
                  ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
@@ -289,7 +330,7 @@ else{
             get();
                
              }
-
+  
 $product_attributes=DB::table('product_attributes')->get();
 $result['product_attributes']=$product_attributes;
      foreach ($product_attributes as $key => $value) {
@@ -300,11 +341,15 @@ $result['product_attributes']=$product_attributes;
        
 
        $sizes= DB::table("sizes")->where(['status'=>1])->get();
-    
+   echo $req->get('filter_product');
        $result['categories']=$categories;
 $result["cat_id"]=$category_id;
-  /*prx($result);
-  die();*/
+$result["sort_txt"]=$sort_txt;
+$result["sort"]=$sort;
+$result["color_sort"]=$color_sort;
+$result["start_price"]=$start_price;
+$result["end_price"]=$end_price;
+  
   
 return view('front_end.product',$result);
     }
@@ -465,7 +510,8 @@ public function login_process(Request $reg)
                         }     
                         $reg->session()->put('FRONT_USER_LOGIN','1');   
                         $reg->session()->put('FRONT_USER_ID',$data_result[0]->id); 
-                        setcookie('CUSTOMER_ID',$data_result[0]->id,time()+60*60*2);  
+                        $reg->session()->put('FRONT_USER_NAME',$data_result[0]->customer_name); 
+                        setcookie('CUSTOMER_ID',$data_result[0]->id,time()+60*60*24*7);  
                        $ip=ip_address();
                        $user_type_old="Non-Reg";
                        $user_id_old=0;
@@ -718,18 +764,19 @@ $cart_data= userCart();
 public function PlaceOrder(Request $req)
 {
   
- 
+ $date_today=date("Y-m-d H:i:s");
    $webset=webSetting();
 $webset=json_decode($webset,true);
 extract($webset);
 extract($_POST);
 if($customer_payment=="Wallet"){
-    $user_id=$customer_id;
-    $amount=$final_price;
+
+
     $msg="Payment For Order";
     $type_trans="out";
-    ManageWallet($user_id,$amount,$msg,$type_trans);
+    ManageWallet($customer_id,$final_price,$msg,$type_trans,$date_today);
 }
+
 $data["customer_name"]=$customer_name;
 $data["customer_payment"]=$customer_payment;
 $data["customer_email"]=$customer_email;
@@ -862,7 +909,7 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
     ]);
   }
 }
-public function thanks(Type $var = null)
+public function thanks()
 {
    
     if(session()->has('FRONT_USER_ID')){
@@ -895,6 +942,38 @@ return view("front_end.your_order_detail",$result);
     }else{
         return redirect('/');
     }
+
+}
+public function view_datail($id)
+{
+   
+ 
+
+
+$orders=DB::table('orders')->where(["orders.id"=>$id])->
+   orderBy("orders.id","desc")->limit(1)->get();
+       foreach($orders as $order){
+         $result["order_details"]=DB::table("order_details")->
+         leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")->
+         leftJoin("colors","colors.id","=","product_attributes.color_id")->
+         leftJoin("sizes","sizes.id","=","product_attributes.size_id")
+         ->leftJoin("products","products.id","=","order_details.product_id")
+         ->leftJoin("brands","brands.id","=","products.brand_id")
+         ->leftJoin("categories","categories.id","=","products.category_id")
+         ->select("order_details.qty","order_details.price",
+         "colors.color_name","sizes.size_name","products.name",
+         "products.sub_category_id",
+         "products.image",
+         "brands.brands",
+         "categories.category_name"
+         )
+         ->where(["order_details.order_id"=>$order->id])->get();
+
+       }
+       $result["orders"]=$orders;
+
+return view("front_end.order_detail",$result);
+ 
 
 }
 public function invoice (Request $req ,$id)
@@ -934,6 +1013,12 @@ if($orders[0]->customer_payment=="COD"){
     $amount_due=$orders[0]->final_price." Rs ";
 }else{
 $amount_due="Payment Paid";
+
+}
+if($orders[0]->city==2){
+$cityName="Karachi";
+}else{
+    $cityName="Lahore";
 }
 if($orders[0]->customer_payment=="COD"){
     $payment_method="Cash On Delivery";
@@ -942,18 +1027,42 @@ if($orders[0]->customer_payment=="COD"){
     $payment_method=$orders[0]->customer_payment;
 }   
 
+$payment_method=Str::camel($payment_method);
+$result["cityname"]=$cityName;
 $result["payment_method"]=$payment_method;
 $result["cart_total"]=$orders[0]->total_price;
 $result["delivery_charge"]=$delivery_charge;
 $result["amount_due"]=$amount_due;
 $result["total_item"]=count($result['order_details']);
 
-/*$pdf = PDF::loadView('front_end.detail',$result)->setPaper('a4',"landscape");*/
-   $pdf = PDF::loadView('front_end.detail',$result);
+$pdf = PDF::loadView('front_end.detail',$result)->setPaper('a2',"portrait");
+  /* $pdf = PDF::loadView('front_end.detail',$result);*/
 
    return $pdf->download('invoice.pdf');
    
 
 }
+public function pastOrder(){
+    if(session()->has("FRONT_USER_ID")){
+        $id=session('FRONT_USER_ID');
+    }else{
+     $id=$_COOKIE["CUSTOMER_ID"];
+    }
 
+    $orders=DB::table('orders')->where(["customer_id"=>$id])->
+    orderBy("orders.id","asc")->get();
+
+
+
+
+$result["orders"]=$orders;
+$result["max_final"]=DB::table('orders')->where(["customer_id"=>$id])->max('orders.final_price');
+
+
+$result["class_ta"]="";
+
+ 
+
+return view('front_end.pastOrder',$result);
+}
 }

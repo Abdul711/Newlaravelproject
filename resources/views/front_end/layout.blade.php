@@ -77,15 +77,16 @@
                     
   
         @else
-        <ul class="nav navbar-nav">
-                  <li>Amount</li>
-                  </ul>
+ 
+     
+      
                   <li><a href="{{url('/logout')}}">Logout</a></li>
+                  Wallet:{{WalletAmt(session('FRONT_USER_ID'))}} Rs
+                  
+    
           
               @endif
-              @if(session()->has('FRONT_USER_LOGIN')!='0' && session()->has('FRONT_USER_LOGIN')!='0')
-             Wallet:{{WalletAmt(session('FRONT_USER_ID'))}} Rs
-              @endif
+        
                 </ul>
               </div>
             </div>
@@ -93,7 +94,6 @@
         </div>
       </div>
     </div>
-    <!-- / header top  -->
 
     <!-- start header bottom  -->
     <div class="aa-header-bottom">
@@ -118,8 +118,8 @@
               <!-- search box -->
               <div class="aa-search-box">
                 <form action="">
-                  <input type="text" name="" id="" placeholder="Search here ex. 'man' ">
-                  <button type="submit"><span class="fa fa-search"></span></button>
+                  <input type="text" name="" id="search_item" placeholder="Search here ex. 'man' ">
+                  <button type="submit" onclick="search_product()"><span class="fa fa-search"></span></button>
                 </form>
               </div>
               <!-- / search box -->             
@@ -162,6 +162,14 @@
   @show      
   
   <!-- footer -->  
+      <!-- / header top  -->
+<br>    <!-- / header top  -->
+<br>    <!-- / header top  -->
+<br>    <!-- / header top  -->
+<br>
+<hr>
+
+
   <footer id="aa-footer">
     <!-- footer bottom -->
     <div class="aa-footer-top">

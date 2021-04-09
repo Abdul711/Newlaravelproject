@@ -12,15 +12,34 @@
                   <div class="aa-product-catg-head-left">
                      <form action="" class="aa-sort-form">
                         <label for="">Sort by</label>
+               
                         <select name="" onchange="sort_by()" id="sort_by_value">
                            <option value="" selected="Default">Default</option>
-                           <option value="name">Name</option>
+                  
+                           @if($sort=="name")
+                           <option value="name" selected>Product Name</option>
+                           @else
+                           <option value="name">Product Name</option>
+                           @endif
+                           @if($sort=="price_desc")
+                           <option value="price_desc" selected>Price - Desc</option>
+                           @else
                            <option value="price_desc">Price - Desc</option>
+                           @endif
+                           @if($sort=="price_asc")
+                           <option value="price_asc" selected>Price - Asc</option>
+                           @else
                            <option value="price_asc">Price - Asc</option>
+                           @endif
+                        
+                           @if($sort=="date")
+                           <option value="date" selected>Date</option>
+                           @else
                            <option value="date">Date</option>
+                           @endif
                         </select>
                      </form>
-                
+                     {{$sort_txt}}
                   </div>
                   <div class="aa-product-catg-head-right">
                      <a id="grid-catg" href="#"><span class="fa fa-th"></span></a>
@@ -43,7 +62,9 @@
                     $discounted_price=($discount/100)*$p;
                   $discounted_price=$p-$discounted_price;
                   @endphp
+
                      <li>
+                     {{$product->id}}
                           <figure>
                             <a class="aa-product-img" href="{{url('product/'.$product->id)}}">
                             <img src="{{asset('storage/media/'.$product->image)}}" 
@@ -221,8 +242,9 @@
                      <form action="">
                         <div id="skipstep" class="noUi-target noUi-ltr noUi-horizontal noUi-background">
                         </div>
-                        <span id="skip-value-lower" class="example-val">30.00</span>
-                        <span id="skip-value-upper" class="example-val">100.00</span>
+                        <span id="skip-value-lower" class="example-val">{{$start_price}}</span>
+                        <span id="skip-value-upper" class="example-val">{{$end_price}}</span>
+                        <br>
                         <button class="aa-filter-btn" type="button" onclick="sort_price_filter()">Filter</button>
                      </form>
                   </div>
@@ -245,7 +267,16 @@
                
                    @if(count($colors_product)>0)
                    @foreach( $colors_product as $key=> $product)
-                    <a class="aa-color-{{strtolower($product)}}" href="#"></a>
+             
+@php
+if($color_sort==$product){
+  $class_product="selected_color";
+}else{
+  $class_product="";
+}
+@endphp
+                    <a id="product_color-{{$product}}" class="{{$class_product}} remain aa-color-{{strtolower($product)}} " onclick="ShowProduct('{{$product}}')" href="javascript:void(0)"></a>
+        
                     @endforeach
                    @endif
                   
@@ -261,16 +292,19 @@
 
 <input type="hidden" id="qty" value="1"/>
   <form id="frmAddToCart">
-    <input type="text" id="size_id" name="size_id"/>
-    <input type="text" id="color_id" name="color_id"/>
-    <input type="text" id="pqty" name="pqty"/>
-    <input type="text" id="product_id" name="product_id"/>           
+    <input type="hidden" id="size_id" name="size_id"/>
+    <input type="hidden" id="color_id" name="color_id"/>
+    <input type="hidden" id="pqty" name="pqty"/>
+    <input type="hidden" id="product_id" name="product_id"/>           
     @csrf
   </form>  
-
+  <form id="FilterProduct">
+    <input type="text" id="search_product" name="filter_product" value=""/>
+    </form>
   <form id="categoryFilter">
     <input type="hidden" id="sort" name="sort" value=""/>
-    <input type="hidden" id="filter_price_start" name="filter_price_start" value=""/>
-    <input type="hidden" id="filter_price_end" name="filter_price_end" value=""/>
+    <input type="hidden" id="colors_id" name="color_id" value=""/>
+    <input type="hidden" id="filter_price_start" name="filter_price_start" value="{{$start_price}}"/>
+    <input type="hidden" id="filter_price_end" name="filter_price_end" value="{{$end_price}}"/>
   </form> 
 @endsection

@@ -1,7 +1,5 @@
-
-  <!-- / menu -->  
-  @extends('front_end/layout')
-  @section('page_title','Thank You')
+@extends('front_end/layout')
+  @section('page_title','Order Detail')
 @section('container')
   <!-- catg header banner section -->
   
@@ -10,18 +8,32 @@
  <!-- Cart view section -->
 
  <section id="cart-view">
+ 
    <div class="container">
      <div class="row">
        <div class="col-md-12">
          <div class="cart-view-area">
+        <h1 style="text-align:center;">  Your Order Invoice</h1>
            <div class="cart-view-table">
              <form action="">
                <div class="table-responsive">
+            
                <diV>
+               <div class="aaa-logo">
+                <!-- Text based logo -->
+                <a href="{{url('/')}}">
+                  <span class="fa fa-shopping-cart"></span>
+                  <p>daily<strong>Shop</strong> <span>Your Shopping Partner</span></p>
+                </a>
+                <!-- img based logo -->
+                <!-- <a href="javascript:void(0)"><img src="img/logo.jpg" alt="logo img"></a> -->
+              </div>
+              <br><br><br>
          Customer Name: {{$orders[0]->customer_name}}<br>
          Customer Email: {{$orders[0]->customer_email}}<br>
          Customer Mobile: {{$orders[0]->customer_phone}}<br>
          Delivery Address: {{$orders[0]->customer_address}}<br>
+         Payment Method: {{$orders[0]->customer_payment}}<br>
          District: {{$orders[0]->district}}<br>
         Order Date:{{date("d-M-Y",strtotime($orders[0]->created_at))}}<br>
         Order Time:{{date("h:i a",strtotime($orders[0]->created_at))}}<br>
@@ -33,10 +45,11 @@
          }
          @endphp
          City:{{$city_name}}<br>
-         Order No: {{$orders[0]->id}}
+         Order No: {{$orders[0]->id}}<br>
+         <a href="{{url('/print_invoice/'.$orders[0]->id)}}" class="btn btn-primary m-5">Print Invoice </a>
          </div>
         
-                  Cart Details
+                <h1 style="text-align:center;">  Cart Details </h1>
                   <table class="table">
                     <thead>
                       <tr>
@@ -53,8 +66,9 @@
               @foreach($order_details as $order_detail)
             
                       <tr> 
-      
-                        <td><a href="#"><img src="{{asset('storage/media/'.$order_detail->image)}}" width="300" height="" alt="img"></a></td>
+                   
+
+                        <td ><a href="#"><img src="{{asset('storage/media/'.$order_detail->image)}}" width="300" height="" alt="img"></a></td>
                         <td><a class="aa-cart-title" href="#">{{$order_detail->name}}</a>
                         <p>
                <b>Color</b> :{{$order_detail->color_name}} <strong>  <br>
@@ -63,7 +77,7 @@
                         </p>
                         
                         </td>
-                         <td>Rs {{$order_detail->price}}  </td>  
+                         <td >Rs {{$order_detail->price}}  </td>  
                          <td>  {{$order_detail->qty}}  </td>
                          <td> <p > {{$order_detail->price * $order_detail->qty}} Rs</p></td>
                       </tr>
@@ -72,7 +86,6 @@
          
                       </tbody>
                   </table>
-                  <a href="{{url('/print_invoice/'.$orders[0]->id)}}" class="btn btn-primary m-5">Print Invoice </a>
                 </div>
              </form>
              <!-- Cart Total view -->
@@ -127,13 +140,13 @@ $delivery_charge_text="Free Delivery";
        </div>
      </div>
    </div>
+
  </section>
  <!-- / Cart view section -->
 
 
-<section>
 
-</section>
+
+
   <!-- / Subscribe section -->
 @endsection
-  <!-- footer -->  

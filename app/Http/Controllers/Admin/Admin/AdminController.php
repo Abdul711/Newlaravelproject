@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 class AdminController extends Controller
 {
     /**
@@ -243,5 +246,32 @@ $result['admin_role']=$admin_data[0]->role;
        $admin_model=Admin::find($id);
        print_r($admin_model);
      }
-    }   
+    }
+    
+    public function orders_detail (){
+ $result["orders"]=Order::paginate(5);
+ $result["totals"]=Order::count();
+ 
+      return view('admin.order.order',$result);
+    }
+    public function orders_view_detail ($order_id){
+  $result["page_title"]="Order Detail ($order_id)";
+  $result["order_detail"]=DB::table('orders')->where('orders.id','=',$order_id)->get();
+  $result["cart_detail"]=DB::table('order_details')
+->leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")
+->leftJoin("products","products.id","=","order_details.product_id")
+->leftJoin("colors","colors.id","=","product_attributes.color_id")
+->leftJoin("sizes","sizes.id","=","product_attributes.size_id")
+->select("order_details.price","order_details.qty",
+"products.name","products.image",
+"colors.color_name"
+,"sizes.size_name")
+  ->where('order_details.order_id','=',$order_id)
+
+  ->get();
+      prx($result);
+die();
+
+           return view('admin.order.manage_order',$result);
+         }
 }

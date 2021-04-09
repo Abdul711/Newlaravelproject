@@ -246,23 +246,23 @@ jQuery(function($){
      var filter_price_end=jQuery('#filter_price_end').val();
      
      if(filter_price_start=='' || filter_price_end==''){
-      var filter_price_start=100;
-      var filter_price_end=1700;
+      var filter_price_start=1000;
+      var filter_price_end=19000;
      }
 
       noUiSlider.create(skipSlider, {
           range: {
-              'min': 0,
-              '10%': 100,
-              '20%': 300,
-              '30%': 500,
-              '40%': 700,
-              '50%': 900,
-              '60%': 1100,
-              '70%': 1300,
-              '80%': 1500,
-              '90%': 1700,
-              'max': 1900
+              'min': 900,
+              '10%': 1000,
+              '20%': 3000,
+              '30%': 5000,
+              '40%': 7000,
+              '50%': 9000,
+              '60%': 11000,
+              '70%': 13000,
+              '80%': 15000,
+              '90%': 17000,
+              'max': 19000
           },
           snap: true,
           connect: true,
@@ -609,6 +609,8 @@ $("#qty").change(function(){
 });
 function change_product_color_image(color_id,product_id){
 alert("color_id"+color_id+"product_id"+product_id);
+$("#color_id").val('');
+$("#product_id").val('');
 $("#color_id").val(color_id);
 
 $("#product_id").val(product_id);
@@ -824,19 +826,50 @@ function sizeSelect(size,product){
   $('.ColorSize'+size).show();
 
    jQuery('.size_link').css('border','2px solid grey');
+       jQuery('#size_'+size+product).css('border','2px solid grey');
   jQuery('#size_'+size+product).css('border','2px solid black');
+
+    $("#size_id").val('');
   $("#size_id").val(size);
 
 }
+function sort_by(){
+$("#sort").val($("#sort_by_value").val());
+$("#categoryFilter").submit();
+}
+function ShowProduct(color){
+ 
+  $(".remain").css('border','0px solid green');
+  $("#product_color-"+color).css('border','4px solid green');
+  $("#colors_id").val(color);
+  $("#categoryFilter").submit();
+}
 function selectColor(color,product){
   
-
+  jQuery('#color_'+color+product).css('border','0px solid black');
 
 
   jQuery('#color_'+color+product).css('border','4px solid black');
   $(".productColor").css('0px solid black');
-     
+       $("#color_id").val('');
   $("#color_id").val(color);
+
+
+}
+function sort_price_filter(){
+  var low_value=$("#skip-value-lower").html();
+low_value=parseInt(low_value);
+  $("#filter_price_start").val(low_value);
+  var high_value=  $("#skip-value-upper").html();
+high_value=parseInt(high_value);
+  $("#filter_price_end").val(high_value);
+   $("#categoryFilter").submit();
+}
+ function search_product(){
+search_item=$("#search_item").val();
+ alert(search_item);
+ $("#search_product").val(search_item);
+ 
 
 }
 function qtyTake(productId){
