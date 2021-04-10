@@ -49,7 +49,7 @@
 <td>{{$keys+1}}
 <p>
 
-<a href="{{url('/print_invoice/'.$value->id)}}" class="btn btn-primary">Print Invoice </a>
+<a href="{{url('/print_invoice/'.$value->id)}}" class="btn btn-primary">Print And Eamil Invoice </a>
 </p>
 <p>
 
@@ -81,7 +81,9 @@
 @else
 <p>No Discount Applied</p>
 <p>No Coupon Code Applied</p>
+
 @endif
+<p>Final Price {{$value->final_price}} Rs</p>
 </td>
 <td>
 Date:{{ date("d-M-Y",strtotime($value->created_at))}}
@@ -95,9 +97,7 @@ Time:
 @elseif($value->orders_status==1)
 <td><a class="btn btn-success" href="{{url('admin/color/status')}}/{{$value->id}}/{{$value->orders_status}}">Active</a></td> 
 @endif
-<td>
-<a href="{{url('admin/view_detail/'.$value->id)}}" class="btn btn-warning">Update Detail
-                 </a>
+
 
                             
                  </tr>

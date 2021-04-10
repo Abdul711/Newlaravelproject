@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 use \PDF;
+use \FPDF;
 use Str;
 class FrontController extends Controller
 {
@@ -976,7 +977,7 @@ return view("front_end.order_detail",$result);
  
 
 }
-public function invoice (Request $req ,$id)
+public function invoice (Request $req ,$id )
 {
 
     $orders=DB::table('orders')->where(["orders.id"=>$id])->
@@ -1033,9 +1034,20 @@ $result["payment_method"]=$payment_method;
 $result["cart_total"]=$orders[0]->total_price;
 $result["delivery_charge"]=$delivery_charge;
 $result["amount_due"]=$amount_due;
+$result["final_price"]=$orders[0]->final_price;
 $result["total_item"]=count($result['order_details']);
 
+
 $pdf = PDF::loadView('front_end.detail',$result)->setPaper('a2',"portrait");
+  $users["to"]=$orders[0]->customer_email;
+Mail::send("front_end.invoice",$result,function($messages) use ($users,$pdf){
+    $messages->to($users["to"]);
+    $messages->subject("Order Invoice");
+    $messages->attachData($pdf->output(),"invoice.pdf");
+});
+
+
+
   /* $pdf = PDF::loadView('front_end.detail',$result);*/
 
    return $pdf->download('invoice.pdf');

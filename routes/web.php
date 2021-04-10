@@ -81,7 +81,7 @@ Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
 Route::group(['middleware'=>'admin_auth'],function(){
 
     Route::get('admin/order',[AdminController::class,"orders_detail"]);
-    
+    Route::get('admin/email_detail/{id}',[AdminController::class,"email_detail"]);
     Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
     Route::get('admin/manage',[AdminController::class,'manage_account']);

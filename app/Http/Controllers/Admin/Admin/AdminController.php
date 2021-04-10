@@ -257,7 +257,7 @@ $result['admin_role']=$admin_data[0]->role;
     public function orders_view_detail ($order_id){
   $result["page_title"]="Order Detail ($order_id)";
   $result["order_detail"]=DB::table('orders')->where('orders.id','=',$order_id)->get();
-  $result["cart_detail"]=DB::table('order_details')
+  $result["cart_details"]=DB::table('order_details')
 ->leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")
 ->leftJoin("products","products.id","=","order_details.product_id")
 ->leftJoin("colors","colors.id","=","product_attributes.color_id")
@@ -269,9 +269,14 @@ $result['admin_role']=$admin_data[0]->role;
   ->where('order_details.order_id','=',$order_id)
 
   ->get();
-      prx($result);
-die();
+     /* prx($result);
+die();*/
 
            return view('admin.order.manage_order',$result);
          }
+
+
+
+
+         
 }

@@ -5,8 +5,7 @@ namespace {{ namespace }};
 use {{ namespacedModel }};
 use {{ rootNamespace }}Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+
 class {{ class }} extends Controller
 {
     /**
@@ -38,18 +37,6 @@ class {{ class }} extends Controller
     public function store(Request $request)
     {
         //
-
-          $validator=  Validator::make($request->all(),[
-    
-             
-             
-              
-        ],[
-      
-       
-        ]); 
-      
-  
     }
 
     /**
@@ -92,8 +79,8 @@ class {{ class }} extends Controller
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-public function destroy($id)
+    public function destroy({{ model }} ${{ modelVariable }})
     {
-     
+        //
     }
 }

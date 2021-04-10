@@ -30,14 +30,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                
+                @foreach($cart_details as $key => $cart_detail)
    
-              
+              <tr>
+              <td>
+              {{$key+1}}
+              </td>
+      <td>
+      {{$cart_detail->name}}
+      <p>Color:{{$cart_detail->color_name}}</p>
+      <p>Size:{{$cart_detail->size_name}}</p>
+      <img src="{{asset('storage/media/'.$cart_detail->image)}}" width="150" height="150">
       
+      </td>
+      <td>{{$cart_detail->qty}}</td>
+      <td>{{$cart_detail->price}}Rs</td>
+      <td>{{$cart_detail->price * $cart_detail->qty}}Rs</td>
+      </tr>
            
              
   
-        
+        @endforeach
 
             
          
@@ -55,7 +68,7 @@
             <!-- END DATA TABLE-->
         </div>
     </div>
-
+</div>
 
 
  

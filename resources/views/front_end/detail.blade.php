@@ -116,9 +116,12 @@ border:1px solid green;
    margin-top:20px;
    margin-bottom:40px;
 }
+
 </style>
+<link href="{{public_path('front_assets/css/font-awesome.css')}}">
 @if($orders[0]->coupon_value!=0)
 <h1 class="ma"> Discounted Order</h1>
+<i class="fas fa-check-square"></i>
 @endif
 <div class="aa-logo">
                 <!-- Text based logo -->
@@ -144,6 +147,8 @@ border:1px solid green;
 <p class="coupon">Coupon Code:<span class="coupon_code">{{$orders[0]->coupon_code}}</span> </p>
 @endif
 <p class="amount_total "> Amount Due:<span class="final_p">{{$amount_due}}</span></p>
+  </p>
+  <p class="amount_total "> Final Amount :<span class="final_p">{{$final_price}} Rs</span></p>
   </p>
 </span>
 <p class="amount_total"> Payment Method :<span class="amount">{{$payment_method}}</span>
