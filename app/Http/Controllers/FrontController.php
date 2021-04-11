@@ -616,6 +616,7 @@ $data["name"]=$user_na;
 $data["token"]=$token;
 $data["otp"]=$otp;
  Mail::send("forget_mail",$data,function($messages) use ($users){
+   $messages->from("syedabdultechnicalcop@gmail.com"); 
     $messages->to($users["to"]);
     $messages->subject("Link For Reset Password");
 });
@@ -764,12 +765,38 @@ $cart_data= userCart();
 }
 public function PlaceOrder(Request $req)
 {
-  
+
  $date_today=date("Y-m-d H:i:s");
-   $webset=webSetting();
+ /*  $webset=webSetting();
 $webset=json_decode($webset,true);
-extract($webset);
+print_r($webset);*/
+/*return response()->json(["status"=>"success","msg"=>"Order Placed"]);*/
+
 extract($_POST);
+
+$resul=DB::table("web_setting")->get();
+if(isset($resul[0])){
+$min_cart_amt=$resul[0]->min_cart_amt;
+
+$web_status=$resul[0]->web_status;
+
+}else{
+    $min_cart_amt=0;   
+ 
+    $web_status=1;
+
+
+}
+if($web_status!=1){
+return response()->json(["status"=>"error","msg"=>"Website Is Closed"]);
+}
+if($total_price<$min_cart_amt){
+  return response()->json(["status"=>"error","msg"=>"$total_price Rs is Less To Place Order Min Cart Amount is $min_cart_amt Rs"]);
+}
+ 
+ 
+
+
 if($customer_payment=="Wallet"){
 
 
@@ -817,7 +844,7 @@ foreach($user_carts as $key=> $user_cart){
     $user_order_detail["order_id"]=$order_id;
     $user_order_detail["price"]=$price;
     $user_order_detail["product_id"]=$product_id;
-
+    $user_order_detail["user_id"]=$customer_id;
     $insert_id=DB::table("order_details")->insertGetId($user_order_detail);
 
 }
@@ -938,6 +965,41 @@ $orders=DB::table('orders')->where(["orders.customer_id"=>$user_id])->
 
        }
        $result["orders"]=$orders;
+$result["total_item"]=count($result["order_details"]);
+$result["cart_total"]=$orders[0]->total_price;
+if($orders[0]->customer_payment=="COD"){
+    $result["amount_due"]=$orders[0]->final_price." Rs ";
+}else{
+    $result["amount_due"]="Amount Paid";
+}
+$result["final_price"]=$orders[0]->final_price;
+    if($orders[0]->delivery_charge==0){
+        $result["delivery_charge"]="Free Delivery";
+
+
+    }else{
+        $result["delivery_charge"]=$orders[0]->delivery_charge." Rs ";
+    }
+    if($orders[0]->customer_payment=="COD"){
+        $payment_method="Cash On Delivery";
+    }else{
+        $payment_method=$orders[0]->customer_payment;
+    }
+    $result["payment_method"]=$payment_method;
+     $result["cityname"]="Karachi";
+     $users=["abdul.samad15@hotmail.com",$orders[0]->customer_email];
+       $pdf = PDF::loadView('front_end.detail',$result)->setPaper('a2',"portrait");
+Mail::send("front_end.invoice",$result,function($messages) use ($users,$pdf){
+    $messages->from("syedabdultechnicalcop@gamil.com","Daily Shop");
+    $messages->to($users);
+    $messages->subject("Order Invoice");
+    $messages->attachData($pdf->output(),"invoice.pdf");
+});
+
+
+
+
+
 
 return view("front_end.your_order_detail",$result);
     }else{
@@ -1040,11 +1102,11 @@ $result["total_item"]=count($result['order_details']);
 
 $pdf = PDF::loadView('front_end.detail',$result)->setPaper('a2',"portrait");
   $users["to"]=$orders[0]->customer_email;
-Mail::send("front_end.invoice",$result,function($messages) use ($users,$pdf){
+/*Mail::send("front_end.invoice",$result,function($messages) use ($users,$pdf){
     $messages->to($users["to"]);
     $messages->subject("Order Invoice");
     $messages->attachData($pdf->output(),"invoice.pdf");
-});
+});*/
 
 
 

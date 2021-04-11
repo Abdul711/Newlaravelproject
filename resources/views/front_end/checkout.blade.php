@@ -287,35 +287,44 @@ Color:<b>{{$cart_data["product_colors"]}}</b><br>
             <p class="checkout_box cart_price"> Delivery Charge :<span class="delivery_charge">{{$delivery_charge_text}}</span></p>
             <p class="checkout_box cart_price"> Final Total :<span class="final_price">{{$final_price}}</span>Rs</p>
                   </div>
+          <h4>Delivery Type</h4>
+                  <div class="aa-payment-method">       
+                               
+                  <label for="paypal"><input type="radio" id="scheduled" name="deliveryType" value="paypal"> Scheduled </label>
+                   
+                  <label for="paypal"><input type="radio" id="express" name="deliveryType" value="paypal"> Express </label>
+                        
+                  </div>
                   <h4>Payment Method</h4>
                   <div class="aa-payment-method">       
                                
-                    
+             
                    
-                  @php 
-                  if($final_price < $wallet_amt){
-                    $check="checked";
-                   $dis=""; 
-                   $msg="";
-                  }else{
-                    $check="";
-                    $dis="disabled";
-                    $msg="Low Wallet";
-                  }
-                  if($final_price > $wallet_amt){
-                    $checke="checked";
-                  }else{
-                    $checke="";
-                  }
-                  @endphp
-                  <label for="cashdelivery">
-                  <input type="radio" id="cashdelivery" name="optionsRadios" value="COD" {{$checke}}> Cash on Delivery </label>
-                    <label for="cashdelivery">
-                    <input type="radio" id="wallet" name="optionsRadios" class="wallet" value="Wallet" {{$check}} {{$dis}}> Wallet <span class="wallet">({{$wallet_amt}}</span> Rs) <span class="wallet_msg">{{$msg}}</span></label>
-                    <label for="paypal"><input type="radio" id="paypal" name="optionsRadios" value="paypal"> Via Paypal </label>
-                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">    
-                    <input type="submit" value="Place Order" class="aa-browse-btn place_order">                
-                  </div>
+                               @php 
+                               if($final_price < $wallet_amt){
+                                 $check="checked";
+                                $dis=""; 
+                                $msg="";
+                               }else{
+                                 $check="";
+                                 $dis="disabled";
+                                 $msg="Low Wallet";
+                               }
+                               if($final_price > $wallet_amt){
+                                 $checke="checked";
+                               }else{
+                                 $checke="";
+                               }
+                               @endphp
+                               <label for="cashdelivery">
+                               <input type="radio" id="cashdelivery" name="optionsRadios" value="COD" {{$checke}}> Cash on Delivery </label>
+                                 <label for="cashdelivery">
+                                 <input type="radio" id="wallet" name="optionsRadios" class="wallet" value="Wallet" {{$check}} {{$dis}}> Wallet <span class="wallet">({{$wallet_amt}}</span> Rs) <span class="wallet_msg">{{$msg}}</span></label>
+                                 <label for="paypal"><input type="radio" id="paypal" name="optionsRadios" value="paypal"> Via Paypal </label>
+                                 <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">    
+                                 <input type="submit" value="Place Order" class="aa-browse-btn place_order">                
+                               </div>
+
                 </div>
               </div>
             </div>

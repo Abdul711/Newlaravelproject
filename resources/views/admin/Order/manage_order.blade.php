@@ -17,6 +17,17 @@
     </button>
 </div>
 @endif 
+<div class="order_detail">
+<p>Total Item : {{$total_item}} </p>
+<p>Customer Name : {{$order_detail[0]->customer_name}}</p>
+<p>Customer Email: {{$order_detail[0]->customer_email}}</p>
+<p>Customer Mobile : {{$order_detail[0]->customer_phone}}</p>
+<p>Customer Address: {{$order_detail[0]->customer_address}}</p>
+<p>Order Date: {{date("d-M-Y",strtotime($order_detail[0]->created_at))}}</p>
+<p>Order Time: {{date("h:i a",strtotime($order_detail[0]->created_at))}}</p>
+</div>
+<a href="{{url('/print_invoice/'.$order_detail[0]->id)}}" class="btn btn-primary">Print Invoice </a>
+
       
             <div class="table-responsive m-b-40">
                 <table class="table table-borderless table-data3">
@@ -26,7 +37,7 @@
                             <th>Product Name</th>
                         <th>Qty</th>
                             <th> Prrice </th>
-                            <th colspan="3" class="text-center" > Total </th>
+                            <th> Total </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,6 +51,7 @@
       {{$cart_detail->name}}
       <p>Color:{{$cart_detail->color_name}}</p>
       <p>Size:{{$cart_detail->size_name}}</p>
+      <p>Brand:{{$cart_detail->brands}}</p>
       <img src="{{asset('storage/media/'.$cart_detail->image)}}" width="150" height="150">
       
       </td>
@@ -73,7 +85,62 @@
 
  
 
-
+<div class="top-campaign">
+                                    <h3 class="title-3 m-b-30">Cart Detail</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-top-campaign">
+                                            <tbody>
+                                            
+                                            
+                                          
+                                        
+                                                <tr>
+                                                    <td>Cart Total</td>
+                                                    <td>{{$order_detail[0]->total_price}} Rs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Delivery Charge</td>
+                                            
+                                                    @if($order_detail[0]->delivery_charge!=0)
+                                                    <td>{{$order_detail[0]->delivery_charge}} Rs</td>
+                                                    @else
+                                                    <td>Free Delivery</td>
+                                           
+                                                    @endif
+                                                </tr>
+                                                  
+                                                <tr>
+                                                    <td>Gst</td>
+                                                    <td>{{$order_detail[0]->gst}} Rs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Discount</td>
+                                            
+                                                    @if($order_detail[0]->coupon_value!=0)
+                                                    <td>{{$order_detail[0]->coupon_value}} Rs</td>
+                                                    @else
+                                                    <td>No Discount Applied</td>
+                                           
+                                                    @endif
+                                                </tr>
+                                                <tr>
+                                                    <td>Coupon Code</td>
+                                            
+                                                    @if($order_detail[0]->coupon_value!=0)
+                                                    <td>{{$order_detail[0]->coupon_code}} </td>
+                                                    @else
+                                                    <td>No Coupon Code Applied</td>
+                                           
+                                                    @endif
+                                                </tr>
+                                                <tr>
+                                                    <td>Final Price</td>
+                                                    <td>{{$order_detail[0]->final_price}} Rs</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
 
 

@@ -21,6 +21,7 @@ class CreateOrderDetailsTable extends Migration
             $table->string('attr_id')->nullable();
             $table->string('price')->nullable();
             $table->integer('qty')->nullable();
+            $table->integer('user_id')->nullable();
             $table->timestamps();
             
         });

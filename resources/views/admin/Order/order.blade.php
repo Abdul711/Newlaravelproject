@@ -49,7 +49,7 @@
 <td>{{$keys+1}}
 <p>
 
-<a href="{{url('/print_invoice/'.$value->id)}}" class="btn btn-primary">Print And Eamil Invoice </a>
+<a href="{{url('/print_invoice/'.$value->id)}}" class="btn btn-primary">Print  Invoice </a>
 </p>
 <p>
 
@@ -84,6 +84,7 @@
 
 @endif
 <p>Final Price {{$value->final_price}} Rs</p>
+<p> Payment Method {{$value->customer_payment}}</p>
 </td>
 <td>
 Date:{{ date("d-M-Y",strtotime($value->created_at))}}
@@ -92,10 +93,20 @@ Time:
 {{ date("h:i a",strtotime($value->created_at))}}
 </p>
 </td>
-@if($value->orders_status==0)
-<td><a class="btn btn-warning" href="{{url('admin/color/status')}}/{{$value->id}}/{{$value->orders_status}}">Deactive</a></td> 
-@elseif($value->orders_status==1)
-<td><a class="btn btn-success" href="{{url('admin/color/status')}}/{{$value->id}}/{{$value->orders_status}}">Active</a></td> 
+@if($value->orders_status==1)
+<td><a class="btn btn-warning" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Pending</a>
+<a class="btn btn-danger" href="{{url('admin/order_cancel/')}}/{{$value->id}}">Cancel</a>
+</td> 
+@elseif($value->orders_status==2)
+<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Under The Process</a></td>
+@elseif($value->orders_status==3) 
+<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Hand Over To Rider</a></td>
+@elseif($value->orders_status==4)
+<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Out For Delivery</a></td>
+@elseif($value->orders_status==5)
+<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Delivered</a></td>
+@elseif($value->orders_status==6)
+<td><a class="btn btn-danger" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Cancelled</a></td>
 @endif
 
 

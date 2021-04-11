@@ -250,8 +250,10 @@ $result['admin_role']=$admin_data[0]->role;
     
     public function orders_detail (){
  $result["orders"]=Order::paginate(5);
+     
+
  $result["totals"]=Order::count();
- 
+
       return view('admin.order.order',$result);
     }
     public function orders_view_detail ($order_id){
@@ -260,23 +262,74 @@ $result['admin_role']=$admin_data[0]->role;
   $result["cart_details"]=DB::table('order_details')
 ->leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")
 ->leftJoin("products","products.id","=","order_details.product_id")
+->leftJoin("brands","brands.id","=","products.brand_id")
 ->leftJoin("colors","colors.id","=","product_attributes.color_id")
 ->leftJoin("sizes","sizes.id","=","product_attributes.size_id")
 ->select("order_details.price","order_details.qty",
 "products.name","products.image",
 "colors.color_name"
-,"sizes.size_name")
+,"sizes.size_name","brands.brands")
   ->where('order_details.order_id','=',$order_id)
 
   ->get();
-     /* prx($result);
-die();*/
-
+$result["total_item"]=count($result["cart_details"]);
            return view('admin.order.manage_order',$result);
          }
 
 
+public function update_order_status($id,$status)
+{
+  echo $id;
+   $status;
+   if($status==1){
+     $new_status="Pending";
+     $new_state=2;
+   }
+   if($status==2){
+    $new_status="Under The Process";
+    $new_state=3;
+  }
+  if($status==3){
+    $new_status="Handover To Rider";
+    $new_state=4;
+  }
+  if($status==4){
+    $new_status="Out For Delivery";
+    $new_state=5;
+  }
+  if($status==5){
+    $new_status="Delivered";
+    $new_state=5;
+  }
+     $msg="Order is $new_status";
+    $order_model=Order::find($id);
+    $order_model->orders_status=$new_state;
+    $order_model->save();
+    session()->flash("message",$msg);
+    return redirect('admin/order');
+}
+public function order_cancel($id)
+{
+  $date_today=date("Y-m-d H:i:s");
+  $msg="Payment For Order";
+  $type_trans="out";
+ $model=Order::find($id);
 
+$payment=$model->customer_payment;
+$final_price=$model->final_price;
+$customer_id=$model->customer_id;
+$msg="Return Of Payment Due To Cancellation";
+$type_trans="in";
+if($payment=="Wallet"){
+ ManageWallet($customer_id,$final_price,$msg,$type_trans,$date_today);
+}
+$model->orders_status=6;
+$model->save(); 
+$message="Order is Cancelled";
+session()->flash("message",$message);
+return redirect('admin/order');
+}
+ 
 
          
 }

@@ -173,9 +173,7 @@ Delivery Address : <p class="delivery">{{$orders[0]->customer_address}}</p>
 <th>
 
 </th>
-<th>
 
-</th>
 <th>Qty</th>
 <th>Per Unit Price</th>
 <th>Total</th>
@@ -184,9 +182,10 @@ Delivery Address : <p class="delivery">{{$orders[0]->customer_address}}</p>
 <tbody>
 @foreach($order_details as $order_detail)
         <tr>
-      <td width="50%" class="image_product"><img src="{{$message->embed(public_path('storage/media/'.$order_detail->image))}}" width="150" height="150"></td>
+
         <td>
-        {{$order_detail->name}}
+     <!--   <img src="{{$message->embed(public_path('storage/media/'.$order_detail->image))}}" width="150" height="150">
+      --><p> {{$order_detail->name}}</p>
       @if($order_detail->color_name!="")
       <p>Color:{{$order_detail->color_name}}</p>
       @endif

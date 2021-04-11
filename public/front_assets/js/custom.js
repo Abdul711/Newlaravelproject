@@ -577,6 +577,7 @@ if(response.status=="error"){
 
  
 }else{
+  $('#frmAddToCart').trigger('reset');
   if(response.delivery_charge>0){
 delivery_charge_text=response.delivery_charge+" Rs ";
 
