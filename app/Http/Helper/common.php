@@ -8,6 +8,20 @@ function prx($arr){
 	echo"</pre>";
 
 }
+ function average_rating($id)
+{
+  # code...
+  $average_rating=number_format(DB::table("product_review")->where('product_id','=',$id)->avg('rating'),2);
+  
+   return $average_rating;
+}
+function total_rating($id)
+{
+  # code...
+  $average_rating=DB::table("product_review")->where('product_id','=',$id)->count('rating');
+  
+   return $average_rating;
+}
  function ip_address()
 {
 	$ip="::1";

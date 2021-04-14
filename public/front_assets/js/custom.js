@@ -776,6 +776,16 @@ delivery_charge_text=res.delivery_charge+"Rs";
 
 }
 });
+$(".delivery_type").change(function(e){
+alert($(this).val());
+var delivery_type=$(this).val();
+if(delivery_type=="scheduled"){
+  $(".delivery_select").show();
+}else{
+    $(".delivery_select").hide();
+}
+$("#delivery_type").val(delivery_type);
+}); 
 $('.place_order').click(function(e){
   e.preventDefault();
  customer_name=$("#name").val();
@@ -786,10 +796,28 @@ customer_dis=$("#dis").val();
 customer_city=$("#city").val();
 customer_zip=$("#zip").val();
                 customer_payment=$("input[name='optionsRadios']:checked").val();
-        if(customer_zip=="" || customer_dis=="" || customer_city=="0" ||customer_address=="" || customer_payment==""){
-swal("Opps!","Please Fill The Dispatched Order Form","error");
-return false;
-        }
+     deliveryType=$("input[name='deliveryType']:checked").val();
+    delivery_time=$("#delivery_ti").val();
+  alert(deliveryType);
+    if(deliveryType=="scheduled" && delivery_time==""){
+      swal("Oops!","Please Select Time For Scheduled Delivery","error");
+      return false;
+
+    }
+    if(deliveryType=="scheduled"){
+      delivery_tim=delivery_time;
+    }else{
+now=new Date();
+delivery_tim=now.getTime()+45*60*1000;
+    new_date=new Date(delivery_tim);
+    month=new_date.getMonth()+1;
+      dateToday=new_date.getDate();
+    alert(month+"date"+dateToday);
+    new_date=new_date.getFullYear()+"-"+"0"+month+"-"+dateToday+"T"+new_date.getHours()+":"+new_date.getMinutes();
+    alert(new_date);
+    delivery_tim=new_date;
+    }
+    $("#delivery_time").val(delivery_tim);
  $("#customer_name").val(customer_name);
   $("#customer_email").val(customer_email);
     $("#customer_phone").val(customer_phone);
@@ -798,9 +826,16 @@ return false;
    $("#customer_dis").val(customer_dis);
       $("#customer_zip").val(customer_zip);
         $("#customer_payment").val(customer_payment);
+            $("#delivery_type").val(deliveryType);
       form_data=$("#orderSubmit").serialize();
-      alert(form_data);
+    
 path=FRONT_PATH+"/place_order";
+        if(customer_zip=="" || customer_dis=="" || customer_city=="0" ||customer_address=="" || customer_payment==""){
+swal("Opps!","Please Fill The Dispatched Order Form","error");
+return false;
+        }
+
+
 $.ajax({
   url:path,
   method:"post",
@@ -937,7 +972,10 @@ todayDate=dateToday.toLocaleString("default",{month:"long"});
 todayweek=dateToday.toLocaleString("default",{weekday:"long"});
 
 newDate=todayDate+" "+dateToday.getDate()+" , "+" "+dateToday.getFullYear();
-
+total_review=$(".total_review").html();
+total_review=parseInt(total_review);
+total_review=total_review+1;
+$(".total_review").html(total_review);
 $("#r").val($("#message").val());
 $("#review_email").val(email);
 rating =$("#rating").val();

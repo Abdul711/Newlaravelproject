@@ -24,8 +24,7 @@
                         <tr>
                             <th>S.NO</th>
                             <th> Customer Detail</th>
-                        <th>Order Pricing</th>
-                            <th> Date/time </th>
+                             <th> Date/time </th>
                             <th colspan="3" class="text-center" > Action </th>
                         </tr>
                     </thead>
@@ -67,31 +66,10 @@
 <p>Email:{{$value->customer_email}}</p>
 <p>Delivery Address:{{$value->customer_address}}</p>
 </td>
-<td>
-<p>Cart Total:{{$value->total_price}} Rs </p>
-<p>Gst:{{$value->gst}} Rs </p>
-@if($value->delivery_charge!=0)
-<p>Delivery Charge:{{$value->delivery_charge}} Rs </p>
-@else
-<p>Free Home Delivery </p>
-@endif
-@if($value->coupon_value!=0)
-<p>Discount:{{$value->coupon_value}} Rs </p>
-<p>Coupon Code:{{$value->coupon_code}} </p>
-@else
-<p>No Discount Applied</p>
-<p>No Coupon Code Applied</p>
 
-@endif
-<p>Final Price {{$value->final_price}} Rs</p>
-<p> Payment Method {{$value->customer_payment}}</p>
-</td>
 <td>
-Date:{{ date("d-M-Y",strtotime($value->created_at))}}
-<p>
-Time:
-{{ date("h:i a",strtotime($value->created_at))}}
-</p>
+<p>{{date('d-M-Y',strtotime($value->created_at))}}</p>
+{{date('h:i a',strtotime($value->created_at))}}
 </td>
 @if($value->orders_status==1)
 <td><a class="btn btn-warning" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Pending</a>

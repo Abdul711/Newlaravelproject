@@ -59,6 +59,7 @@
                 <div class="col-md-7 col-sm-7 col-xs-12">
                   <div class="aa-product-view-content">
                     <h3>{{$product[0]->name}}</h3>
+               {{$average_rating}} <span class="fa fa-star"></span> ({{total_rating($product[0]->id)}})
                     @php
         
                    $p=$product_attributes[$product[0]->id][0]->price;
@@ -197,7 +198,7 @@
                 <div class="tab-pane fade " id="review">
                  <div class="aa-product-review-area">
                  @if(count($user_review)>0)
-                   <h4>{{count($user_review)+3}} Reviews for {{$product[0]->name}} </h4> 
+                   <h4><span class="total_review">{{count($user_review)+3}}</span> Reviews for {{$product[0]->name}} </h4> 
                    @endif
                    <ul class="aa-review-nav">
                     <div id="productR"></div>

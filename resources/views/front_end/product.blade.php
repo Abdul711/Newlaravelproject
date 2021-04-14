@@ -74,13 +74,14 @@
                             '','')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                             <figcaption>
                               <h4 class="aa-product-title"><a href="{{url('product/'.$product->id)}}">{{$product->name}}</a></h4>
-                        
+                            
                               @if($product->is_discounted=="1")
                               <span class="aa-product-price">Rs  {{$discounted_price}}</span>
                               <span class="aa-product-price"><del>Rs{{$category_product_attributes[$product->id][0]->price}}</del></span>
                           @else
                           <span class="aa-product-price">Rs{{$category_product_attributes[$product->id][0]->price}}</span>
                             @endif
+                            <p>{{average_rating($product->id)}}  <span class="fa fa-star"> ({{total_rating($product->id)}})</span></p>
                             </figcaption>
                           </figure>    
                           @if($product->is_discounted=="1")
@@ -154,6 +155,8 @@
                               @else
                               <span class="aa-product-view-price">Rs {{$category_product_attributes[$product->id][0]->price}}</span>
                               @endif
+                              <p>{{average_rating($product->id)}} <span class="fa fa-star"></span> ({{total_rating($product->id)}})</p>
+                           
                               <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
                             </div>
                             @if($product->is_discounted=="1")

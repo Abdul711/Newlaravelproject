@@ -34,6 +34,8 @@
          Customer Mobile: {{$orders[0]->customer_phone}}<br>
          Delivery Address: {{$orders[0]->customer_address}}<br>
          Payment Method: {{$orders[0]->customer_payment}}<br>
+         Delivery Method: {{$orders[0]->delivery_type}}<br>
+         Delivery Expected Time: {{date("d-F-Y h:i a",strtotime($orders[0]->delivery_expected_time))}}<br>
          District: {{$orders[0]->district}}<br>
         Order Date:{{date("d-M-Y",strtotime($orders[0]->created_at))}}<br>
         Order Time:{{date("h:i a",strtotime($orders[0]->created_at))}}<br>

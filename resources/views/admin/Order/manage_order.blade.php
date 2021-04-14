@@ -23,6 +23,9 @@
 <p>Customer Email: {{$order_detail[0]->customer_email}}</p>
 <p>Customer Mobile : {{$order_detail[0]->customer_phone}}</p>
 <p>Customer Address: {{$order_detail[0]->customer_address}}</p>
+<p>Expected Delivery Date: {{date("d-M-Y h:i a",strtotime($order_detail[0]->delivery_expected_time))}}</p>
+<p> Delivery Type: {{ucfirst($order_detail[0]->delivery_type)}}</p>
+<p>Payment Type: {{ucfirst($order_detail[0]->customer_payment)}}</p>
 <p>Order Date: {{date("d-M-Y",strtotime($order_detail[0]->created_at))}}</p>
 <p>Order Time: {{date("h:i a",strtotime($order_detail[0]->created_at))}}</p>
 </div>

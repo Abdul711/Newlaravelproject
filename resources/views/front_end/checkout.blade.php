@@ -290,10 +290,13 @@ Color:<b>{{$cart_data["product_colors"]}}</b><br>
           <h4>Delivery Type</h4>
                   <div class="aa-payment-method">       
                                
-                  <label for="paypal"><input type="radio" id="scheduled" name="deliveryType" value="paypal"> Scheduled </label>
+                  <label for="paypal"><input type="radio" class="delivery_type"  id="scheduled" name="deliveryType" value="scheduled">   Scheduled </label>
                    
-                  <label for="paypal"><input type="radio" id="express" name="deliveryType" value="paypal"> Express </label>
-                        
+                  <label for="paypal"><input type="radio" class="delivery_type"  id="express" name="deliveryType" value="express" checked="checked">  Express </label>
+                       <span class="delivery_select" style="display:none;">
+
+                        <input type="datetime-local" id="delivery_ti">
+                        </span>
                   </div>
                   <h4>Payment Method</h4>
                   <div class="aa-payment-method">       
@@ -352,6 +355,8 @@ Color:<b>{{$cart_data["product_colors"]}}</b><br>
   <input type="text" name="orders_status" value="1">
   <input type="text" name="gst" id="gst" value="{{$gst}}">
   <input type="text" name="delivery_charge" id="delivery_charge" value="{{$delivery_charge}}">  
+  <input type="text" name="delivery_type" id="delivery_type" value="">  
+  <input type="text" name="delivery_time" id="delivery_time" value="">  
   @csrf
   </form>
 @endsection

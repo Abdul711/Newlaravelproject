@@ -150,6 +150,8 @@ border:1px solid green;
 <p class="amount_total "> Amount Due: <span class="final_p"> {{$amount_due}} </span></p>
   </p>
   <p class="amount_total "> Final Amount : <span class="final_p"> {{$final_price}} Rs</span></p>
+ <p> Delivery Type: {{ucfirst($delivery_type)}}</p>
+   <p>Expected Delivery Time:{{date("d-M-Y h:i a",strtotime($delivery_time))}}</p>
   </p>
 </span>
 <p class="amount_total"> Payment Method : <span class="amount"> {{$payment_method}} </span>

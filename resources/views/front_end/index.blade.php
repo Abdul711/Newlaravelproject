@@ -125,6 +125,10 @@
                               <span class="aa-product-price">Rs {{$home_product_attributes[$productArr->id][0]->price}}
                               </span>
                                                            @endif
+                                                           <p>{{average_rating($productArr->id)}}<span class="fa fa-star">
+                                                           ({{total_rating($productArr->id)}})
+                                                           
+                                                           </span></p>                    
                             </figcaption>
                           </figure>   
                           <div class="aa-product-hvr-content">
@@ -188,6 +192,7 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                              @else
                              <span class="aa-product-view-price">Rs {{$home_product_attributes[$product->id][0]->price}}</price>
                               @endif
+                              <p>{{average_rating($product->id)}}<span class="fa fa-star"></span>({{total_rating($product->id)}})</p>
                               <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
                               @if($product->is_discounted=="1")
                               <span class="title-success" href="#">SALE {{$product->discount_amount}}%</span> 

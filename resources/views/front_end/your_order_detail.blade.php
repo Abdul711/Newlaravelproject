@@ -23,6 +23,8 @@
          Customer Mobile: {{$orders[0]->customer_phone}}<br>
          Delivery Address: {{$orders[0]->customer_address}}<br>
          District: {{$orders[0]->district}}<br>
+         Delivery Type: {{ucfirst($orders[0]->delivery_type)}}<br>
+         Expected Delivery Time:{{date("d-M-Y h:i a",strtotime($orders[0]->delivery_expected_time))}}<br>
         Order Date:{{date("d-M-Y",strtotime($orders[0]->created_at))}}<br>
         Order Time:{{date("h:i a",strtotime($orders[0]->created_at))}}<br>
          @php

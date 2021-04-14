@@ -136,8 +136,8 @@ class FrontController extends Controller
        where(["product_review.product_id"=>$id])->get();
  
        if(session()->has("FRONT_USER_ID")){
-        $id=session('FRONT_USER_ID');
-      $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$id)->get();
+        $user_id=session('FRONT_USER_ID');
+      $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$user_id)->get();
       $order_product=json_decode($order_product,true);
       foreach($order_product as $order_products){
         array_push($order_product,$order_products['product_id']);
@@ -146,7 +146,7 @@ class FrontController extends Controller
      $result["order_product"] = $order_product;
     }else{
      $id=$_COOKIE["CUSTOMER_ID"];
-     $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$id)->get();
+     $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$user_id)->get();
      $order_product=json_decode($order_product,true);
      
      foreach($order_product as $order_products){
@@ -159,8 +159,10 @@ class FrontController extends Controller
 
 
     $result["user_review"]=$review;
-
-
+    $result["average_rating"]=number_format(DB::table("product_review")->where('product_id','=',$id)->avg('rating'),2);
+   /* prx($result);      
+    die();
+*/
        return view('front_end.product-detail',$result);
       }
       function cart_total_user(){
@@ -180,7 +182,7 @@ $qty=$_POST["pqty"];
     
 
 $attr_data=DB::table("product_attributes")
-->select('product_attributes.id')
+->select('product_attributes.id','product_attributes.qty')
 ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
 ->leftJoin('colors','colors.id','=','product_attributes.color_id')
 ->where(["colors.color_name"=>$color_id])->
@@ -189,6 +191,10 @@ where(['sizes.size_name'=>$size_id])->where(["product_id"=>$product_id])->get();
 if(isset($attr_data[0])){
     $attr_id=$attr_data[0]->id;
  $ip=ip_address();
+ $attr_qty=$attr_data[0]->qty;
+ if($qty>$attr_qty){
+    return response()->json(["status"=>"error", "msg"=>"This Qty is Not Available"]);
+ }
  if(session()->has('FRONT_USER_ID')){
     $user_type="Reg";
   $user_id=session('FRONT_USER_ID');
@@ -836,7 +842,8 @@ if($customer_payment=="Wallet"){
     $type_trans="out";
     ManageWallet($customer_id,$final_price,$msg,$type_trans,$date_today);
 }
-
+$data["delivery_type"]=$delivery_type;
+$data["delivery_expected_time"]=$delivery_time;
 $data["customer_name"]=$customer_name;
 $data["customer_payment"]=$customer_payment;
 $data["customer_email"]=$customer_email;
@@ -1123,8 +1130,8 @@ $result["delivery_charge"]=$delivery_charge;
 $result["amount_due"]=$amount_due;
 $result["final_price"]=$orders[0]->final_price;
 $result["total_item"]=count($result['order_details']);
-
-
+$result["delivery_time"]=$orders[0]->delivery_expected_time;
+$result["delivery_type"]=$orders[0]->delivery_type;
 $pdf = PDF::loadView('front_end.detail',$result)->setPaper('a2',"portrait");
   $users["to"]=$orders[0]->customer_email;
 /*Mail::send("front_end.invoice",$result,function($messages) use ($users,$pdf){
@@ -1189,7 +1196,8 @@ return view('front_end.pastOrder',$result);
           "created_at"=>date("Y-m-d H:i:s")
       ]);
     }if($rating!=""){
-        DB::table('product_ratings')->insert([
+
+DB::table('product_ratings')->insert([
             "product_id"=>$pid,
             "rating"=>$rating,
             "user_id"=>$id,
