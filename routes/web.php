@@ -33,15 +33,17 @@ Route::get('/pastOrder',[FrontController::class,'pastOrder']);
     Route::get('/send_invite', [FrontController::class,'invite_user']);
 Route::get('/customer_verify/{token?}',[FrontController::class,'customer_verify']);
 
-Route::get('/logout', function () {
+Route::get('/logout', function (Request $request) {
+
     session()->forget('FRONT_USER_LOGIN','0');   
     session()->forget('FRONT_USER_ID','0');   
     session()->forget('FRONT_USER_NAME','');
-    return redirect('/');
+   return redirect('/');
 });
 Route::get('/my_account', function () {
     return view('front_end.account');
 });
+Route::post('/review_rating',[FrontController::class,'review_rating']);
 
 Route::get('/forget_password', function () {
     return view('front_end.forget_password');

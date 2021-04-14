@@ -5,6 +5,8 @@
 
    box-sizing:border-box;
    font-size:22px;
+   margin-left:2px;
+   margin-right:3px;
 }
 .order_detail{
    display:block;
@@ -17,12 +19,13 @@
 
 }
 .amount, .coupon{
-   font-weight:700;
+   font-weight:400;
    font-style:italic;
+   
 }
 .amount_total .final_p{
    color:red;
-   font-weight:800;
+   font-weight:500;
 }
 .coupon_code{
    color:red;
@@ -33,15 +36,13 @@
 clear:both;
 
 }
-.delivery{
-font-weight:800;
-}
+
 .order_title{
 font-size:32px;
 
 color:blue;
 background:red;
-font-weight:900;
+font-weight:400;
 font-variant:samll-caps;
 text-align:center;
 clear:both;
@@ -139,26 +140,26 @@ border:1px solid green;
 <h1 class="order_title"> Order No # {{$orders[0]->id}} </h1>
 <h3 class="order_title item"> Total Item:  {{$total_item}} </h3>
 <span class="order_detail">
-<p class="amount_total">  Cart Total :<span class="amount"> {{$cart_total}} Rs </span>  </p>
-<p class="amount_total"> Delivery Charge : {{$delivery_charge}} </p>
-<p class="amount_total"> Gst:{{$orders[0]->gst}} Rs </p>
+<p class="amount_total">  Cart Total : <span class="amount"> {{$cart_total}} Rs </span>  </p>
+<p class="amount_total"> Delivery Charge : <span class="amount">  {{$delivery_charge}} </span> </p>
+<p class="amount_total"> Gst: <span class="amount"> {{$orders[0]->gst}} </span> Rs </p>
 @if($orders[0]->coupon_value!=0)
-<p class="coupon"><span class="coupon_code">Discount: {{$orders[0]->coupon_value}} Rs </span></p>
-<p class="coupon">Coupon Code:<span class="coupon_code"> {{$orders[0]->coupon_code}} </span> </p>
+<p class="coupon"><span class="coupon_code">Discount: <span class="amount">{{$orders[0]->coupon_value}}</span> Rs </span></p>
+<p class="coupon">Coupon Code: <span class="coupon_code"> <span class="amount"> {{$orders[0]->coupon_code}}</span> </span> </p>
 @endif
-<p class="amount_total "> Amount Due:<span class="final_p"> {{$amount_due}} </span></p>
+<p class="amount_total "> Amount Due: <span class="final_p"> {{$amount_due}} </span></p>
   </p>
-  <p class="amount_total "> Final Amount :<span class="final_p"> {{$final_price}} Rs</span></p>
+  <p class="amount_total "> Final Amount : <span class="final_p"> {{$final_price}} Rs</span></p>
   </p>
 </span>
-<p class="amount_total"> Payment Method :<span class="amount"> {{$payment_method}} </span>
+<p class="amount_total"> Payment Method : <span class="amount"> {{$payment_method}} </span>
 <span class="user_info">
-<p class="amount_total"> City :<span class="amount"> {{$cityname}} </span>  </p>
-<p class="amount_total"> Customer Name :<span class="amount"> {{$orders[0]->customer_name}} </span>  </p>
-<p class="amount_total"> Customer Email :<span class="amount"> {{$orders[0]->customer_email}} </span>  </p>
-<p class="amount_total"> Customer Mobile :<span class="amount"> {{$orders[0]->customer_phone}} </span>  </p>
-<p class="amount_total"> Order Date :<span class="amount">{{date("d-M-Y",strtotime($orders[0]->created_at))}}</span>  </p>
-<p class="amount_total"> Order Time :<span class="amount">{{date("h:i a",strtotime($orders[0]->created_at))}}</span>  </p>
+<p class="amount_total"> City : <span class="amount"> {{$cityname}} </span>  </p>
+<p class="amount_total"> Customer Name : <span class="amount"> {{$orders[0]->customer_name}} </span>  </p>
+<p class="amount_total"> Customer Email : <span class="amount"> {{$orders[0]->customer_email}} </span>  </p>
+<p class="amount_total"> Customer Mobile : <span class="amount"> {{$orders[0]->customer_phone}} </span>  </p>
+<p class="amount_total"> Order Date : <span class="amount">{{date("d-M-Y",strtotime($orders[0]->created_at))}}</span>  </p>
+<p class="amount_total"> Order Time : <span class="amount">{{date("h:i a",strtotime($orders[0]->created_at))}}</span>  </p>
 
 </span>
 <br><br>

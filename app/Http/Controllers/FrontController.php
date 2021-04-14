@@ -81,6 +81,7 @@ class FrontController extends Controller
            return view('front_end.index',$result);
      }
       public function view_product ($id){
+   //this code should invalid. 
         $products=DB::table('products')->where(['id'=>$id])->get();
 
         $result['product']=
@@ -128,7 +129,38 @@ class FrontController extends Controller
        print_r($result);
        echo"</pre>";
        die('');*/
+       $review=DB::table("product_review")->
      
+       select('user_name','user_email','product_id','review','rating','product_review.created_at')->
+
+       where(["product_review.product_id"=>$id])->get();
+ 
+       if(session()->has("FRONT_USER_ID")){
+        $id=session('FRONT_USER_ID');
+      $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$id)->get();
+      $order_product=json_decode($order_product,true);
+      foreach($order_product as $order_products){
+        array_push($order_product,$order_products['product_id']);
+      }
+      
+     $result["order_product"] = $order_product;
+    }else{
+     $id=$_COOKIE["CUSTOMER_ID"];
+     $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$id)->get();
+     $order_product=json_decode($order_product,true);
+     
+     foreach($order_product as $order_products){
+  array_push($order_product,$order_products->product_id);
+}
+
+    $result["order_product"] = $order_product;
+    }
+
+
+
+    $result["user_review"]=$review;
+
+
        return view('front_end.product-detail',$result);
       }
       function cart_total_user(){
@@ -342,7 +374,7 @@ $result['product_attributes']=$product_attributes;
        
 
        $sizes= DB::table("sizes")->where(['status'=>1])->get();
-   echo $req->get('filter_product');
+    $req->get('filter_product');
        $result['categories']=$categories;
 $result["cat_id"]=$category_id;
 $result["sort_txt"]=$sort_txt;
@@ -350,7 +382,7 @@ $result["sort"]=$sort;
 $result["color_sort"]=$color_sort;
 $result["start_price"]=$start_price;
 $result["end_price"]=$end_price;
-  
+
   
 return view('front_end.product',$result);
     }
@@ -512,7 +544,7 @@ public function login_process(Request $reg)
                         $reg->session()->put('FRONT_USER_LOGIN','1');   
                         $reg->session()->put('FRONT_USER_ID',$data_result[0]->id); 
                         $reg->session()->put('FRONT_USER_NAME',$data_result[0]->customer_name); 
-                        setcookie('CUSTOMER_ID',$data_result[0]->id,time()+60*60*24*7);  
+                        setcookie('CUSTOMER_ID',$data_result[0]->id,time()+60*60*24*7*2);  
                        $ip=ip_address();
                        $user_type_old="Non-Reg";
                        $user_id_old=0;
@@ -988,13 +1020,6 @@ $result["final_price"]=$orders[0]->final_price;
     $result["payment_method"]=$payment_method;
      $result["cityname"]="Karachi";
      $users=["abdul.samad15@hotmail.com",$orders[0]->customer_email];
-       $pdf = PDF::loadView('front_end.detail',$result)->setPaper('a2',"portrait");
-Mail::send("front_end.invoice",$result,function($messages) use ($users,$pdf){
-    $messages->from("syedabdultechnicalcop@gamil.com","Daily Shop");
-    $messages->to($users);
-    $messages->subject("Order Invoice");
-    $messages->attachData($pdf->output(),"invoice.pdf");
-});
 
 
 
@@ -1138,5 +1163,39 @@ $result["class_ta"]="";
  
 
 return view('front_end.pastOrder',$result);
+
+}
+ public function review_rating(Request $req)
+{
+    if(session()->has("FRONT_USER_ID")){
+        $id=session('FRONT_USER_ID');
+    }else{
+     $id=$_COOKIE["CUSTOMER_ID"];
+    }
+    prx($_POST);
+
+    extract($_POST);
+    if($rating==''){
+        $rating=5;
+    }
+    if($review!="" && $review_name!="" && $review_email!=""){
+      DB::table('product_review')->insert([
+          "product_id"=>$pid,
+          "review"=>$review,
+          "user_email"=>$review_email,
+          "user_name"=>$review_name,
+          "user_id"=>$id,
+          "rating"=>$rating,
+          "created_at"=>date("Y-m-d H:i:s")
+      ]);
+    }if($rating!=""){
+        DB::table('product_ratings')->insert([
+            "product_id"=>$pid,
+            "rating"=>$rating,
+            "user_id"=>$id,
+            "created_at"=>date("Y-m-d H:i:s")
+        ]);
+    }
+ 
 }
 }

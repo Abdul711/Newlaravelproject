@@ -98,9 +98,11 @@ Time:
 <a class="btn btn-danger" href="{{url('admin/order_cancel/')}}/{{$value->id}}">Cancel</a>
 </td> 
 @elseif($value->orders_status==2)
-<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Under The Process</a></td>
+<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">
+Under The Process</a></td>
 @elseif($value->orders_status==3) 
-<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Hand Over To Rider</a></td>
+<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">
+Hand Over To Rider</a></td>
 @elseif($value->orders_status==4)
 <td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Out For Delivery</a></td>
 @elseif($value->orders_status==5)

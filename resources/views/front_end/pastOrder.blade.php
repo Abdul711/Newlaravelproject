@@ -76,9 +76,25 @@
                       <td class="{{$class_ta}}">
                       Pending
                       </td>
-                      @else
+                      @elseif($order->orders_status==2)
                       <td class="{{$class_ta}}">
-                   Other Status
+                    Under The Process
+                      </td>
+                      @elseif($order->orders_status==3)
+                      <td class="{{$class_ta}}">
+             Hand Over The Rider
+                      </td>
+                      @elseif($order->orders_status==4)
+                      <td class="{{$class_ta}}">
+  Out For Delivery
+                      </td>
+                      @elseif($order->orders_status==5)
+                      <td class="{{$class_ta}}">
+Delivered
+                      </td>
+                      @elseif($order->orders_status==6)
+                      <td class="{{$class_ta}}">
+Cancelled
                       </td>
                       @endif
      

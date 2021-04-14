@@ -173,7 +173,9 @@
                 <li><a href="#technical_specification" data-toggle="tab">Technical Specification</a></li>
                 <li><a href="#uses" data-toggle="tab">Uses</a></li>
                 <li><a href="#warranty" data-toggle="tab">Warranty</a></li>
-                <li><a href="#review" data-toggle="tab">Reviews</a></li>                
+
+                <li><a href="#review" data-toggle="tab">Reviews</a></li>     
+                 
               </ul>
 
               <!-- Tab panes -->
@@ -183,49 +185,161 @@
             {!!$product[0]->desc!!}
                 </div>
                 <div class="tab-pane fade" id="technical_specification">
-                {{$product[0]->desc}}
+                {!!$product[0]->desc!!}
                 </div>
                 <div class="tab-pane fade" id="uses">
-                {{$product[0]->desc}}
+                {!!$product[0]->desc!!}
                 </div>
                 <div class="tab-pane fade" id="warranty">
                 {{$product[0]->warranty}}
                 </div>
+            
                 <div class="tab-pane fade " id="review">
                  <div class="aa-product-review-area">
-                   <h4>2 Reviews for T-Shirt</h4> 
+                 @if(count($user_review)>0)
+                   <h4>{{count($user_review)+3}} Reviews for {{$product[0]->name}} </h4> 
+                   @endif
                    <ul class="aa-review-nav">
-
+                    <div id="productR"></div>
+                   
+                     @if(count($user_review)>0)
                      <li>
                         <div class="media">
                           <div class="media-left">
-                            <a href="#">
-                              <img class="media-object" src="img/testimonial-img-3.jpg" alt="girl image">
-                            </a>
+                    
                           </div>
                           <div class="media-body">
-                            <h4 class="media-heading"><strong>Marla Jobs</strong> - <span>March 26, 2016</span></h4>
+                          <h4 class="media-heading"><strong>Marla Jobs</strong> - <span>
+                          {{date('F d , Y',strtotime("-7 days"))}}  {{date('l',strtotime("-7 days"))}}
+           
+                   </span></h4>
                             <div class="aa-product-rating">
                               <span class="fa fa-star"></span>
                               <span class="fa fa-star"></span>
                               <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star-o"></span>
                               <span class="fa fa-star-o"></span>
                             </div>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                           </div>
                         </div>
                       </li>
-                      
+                      <li>
+                        <div class="media">
+                          <div class="media-left">
+                    
+                          </div>
+                          <div class="media-body">
+                          <h4 class="media-heading"><strong>Taha </strong> - <span>
+                          {{date('F d , Y',strtotime("-2 months"))}}  {{date('l',strtotime("-2 months"))}}
+           
+                   </span></h4>
+                            <div class="aa-product-rating">
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star-o"></span>
+                              <span class="fa fa-star-o"></span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="media">
+                          <div class="media-left">
+                    
+                          </div>
+                          <div class="media-body">
+                          <h4 class="media-heading"><strong>Taha Qadir </strong> - <span>
+                          {{date('F d , Y',strtotime("-2 years"))}}  {{date('l',strtotime("-2 years"))}}
+           
+                   </span></h4>
+                            <div class="aa-product-rating">
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star"></span>
+                              <span class="fa fa-star-o"></span>
+                              <span class="fa fa-star-o"></span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                          </div>
+                        </div>
+                      </li>
+                      @endif
+                      @if(count($user_review)>0)
+                     @foreach($user_review as $user_reviews)
+                      <li>
+                        <div class="media">
+                          <div class="media-left">
+                    
+                          </div>
+                          <div class="media-body">
+                          <h4 class="media-heading"><strong>{{$user_reviews->user_name}}</strong> - <span>
+                          {{date('F d , Y',strtotime($user_reviews->created_at))}}    {{date('l',strtotime($user_reviews->created_at))}}
+                  
+                   </span></h4>
+                   @php
+                $rated=$user_reviews->rating;
+                $remaining_rated=5-$user_reviews->rating;
+                 @endphp
+                            <div class="aa-product-rating">
+                            @for($i=1; $i<=$rated; $i++)
+                              <span class="fa fa-star"></span>
+                              @endfor
+                                @if($remaining_rated>0)
+                                @for($i=1; $i<=$remaining_rated; $i++)
+                              <span class="fa fa-star-o"></span>
+                              @endfor
+                              @endif
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <p>{{$user_reviews->review}}</p>
+                          </div>
+                        </div>
+                      </li>
+                      @endforeach
+                      @else
+                      <li>
+                        <div class="media">
+                          <div class="media-left">
+                    
+                          </div>
+                          <div class="media-body">
+                          <h4 class="media-heading"><strong></strong><span>
+                          No Review
+                      </div>
+                      </div>
+                  
+                   </span></h4>
+                     </li>       
+               
+@endif
                    </ul>
+                   @if(session()->has('FRONT_USER_ID')!=0 || isset($_COOKIE['CUSTOMER_ID']))
+                  @php
+
+            if(in_array($product[0]->id,$order_product)){
+            $found=1;
+       
+            }else{
+              $found=0;
+     
+            }
+      
+                  @endphp
+                @if($found==1)
                    <h4>Add a review</h4>
                    <div class="aa-your-rating">
                      <p>Your Rating</p>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
+                     @for($i=1; $i<=5; $i++)
+                     <a href="javascript:void(0)"><span id="{{$product[0]->id}}{{$i}}" class="product_rating fa fa-star-o" data-index="{{$i}}" 
+                     
+                     data-product_id="{{$product[0]->id}}"
+                     
+                     ></span></a>
+           
+                @endfor
                    </div>
                    <!-- review form -->
                    <form action="" class="aa-review-form">
@@ -242,8 +356,11 @@
                         <input type="email" class="form-control" id="email" placeholder="example@gmail.com">
                       </div>
 
-                      <button type="submit" class="btn btn-default aa-review-submit">Submit</button>
+                      <button type="submit"  class= "su btn btn-default aa-review-submit">Submit</button>
                    </form>
+      @endif
+            @endif
+          
                  </div>
                 </div>            
               </div>
@@ -315,11 +432,21 @@
     </div>
   </section>
   <form id="frmAddToCart">
-    <input type="text" id="size_id" name="size_id" value=""/>
-    <input type="text" id="color_id" name="color_id" value=""/>
-    <input type="text" id="pqty" name="pqty"/>
+    <input type="hidden" id="size_id" name="size_id" value=""/>
+    <input type="hidden" id="color_id" name="color_id" value=""/>
+    <input type="hidden" id="pqty" name="pqty"/>
 
-    <input type="text" id="product_id" name="product_id" value=""/>    
+    <input type="hidden" id="product_id" name="product_id" value=""/>    
+      
+    @csrf
+  </form>
+  <form id="ReviewAndRating">
+    <input type="text" id="rating" name="rating" value=""/>
+
+    <input type="text" id="r" name="review" value=""/>
+    <input type="text" id="review_name" name="review_name"/>
+    <input type="text" id="review_email" name="review_email"/>
+<input type="text" id="pid" name="pid"value="{{$product[0]->id}}">
       
     @csrf
   </form>

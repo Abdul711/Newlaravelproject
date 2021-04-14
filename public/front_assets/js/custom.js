@@ -884,3 +884,102 @@ if(qty==""){
    $("#product_id").val(productId);
    add_to_cart();
 }
+$('.product_rating').click(function(){
+rating=$(this).data('index');
+product_id=$(this).data('product_id');
+
+
+
+$("#rating").val('');
+$("#rating").val(rating);
+alert("product_id"+product_id+"rating"+rating);
+});
+
+
+
+
+
+
+
+ $('.product_rating').mouseenter(function(){
+    var index= $(this).data('index');
+    var product_id=$(this).data('product_id');
+    remove_background(product_id);
+   for(count=1; count<=index; count++){
+  $('#'+product_id+count).css('color','#ffcc00');
+    }
+              
+  });
+
+    function  remove_background(product_id){
+                  for(count=1; count<=5; count++){
+                  $('#'+product_id+count).css('color','#ccc');
+                  }
+              
+                }
+      $('.rating').mouseleave(function(){
+                  var index= $(this).data('index');
+                var product_id=$(this).data('product_id');
+                remove_background(product_id);
+                for(count=1; count<=index; count++){
+                  $('#'+product_id+count).css('color','#ccc');
+                }
+              
+                });
+
+$('.su').click(function(e){
+e.preventDefault();
+message=$('#message').val();
+name=$('#name').val();
+email=$('#email').val();
+dateToday=new Date();
+todayDate=dateToday.toLocaleString("default",{month:"long"});
+todayweek=dateToday.toLocaleString("default",{weekday:"long"});
+
+newDate=todayDate+" "+dateToday.getDate()+" , "+" "+dateToday.getFullYear();
+
+$("#r").val($("#message").val());
+$("#review_email").val(email);
+rating =$("#rating").val();
+    html_cart='';
+   html_cart+='<li>';
+    html_cart+='<div class="media">';
+   html_cart+='<div class="media-left">';
+        html_cart+='</div>';
+        html_cart+='<div class="media-body">';
+        html_cart+='<h4 class="media-heading"><strong>'+name+'</strong> - <span>';
+        html_cart+=newDate+' '+todayweek+'</span></h4>';
+           html_cart+='<div class="aa-product-rating">';
+           rated=rating;
+   
+           remaining=5-rated;
+           for(i=1; i<=rated; i++){
+                html_cart+='<span class="fa fa-star"></span>';
+           }
+           if(remaining>0){
+                  for(i=1; i<=remaining; i++){
+                html_cart+='<span class="fa fa-star-o"></span>';
+           }
+           }
+                   html_cart+='</div>';
+                         html_cart+='<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>';
+                         html_cart+='<p>'+$("#r").val()+"</p>";
+                           html_cart+='</div>';
+                       html_cart+='</div>';
+                     html_cart+='</li>';
+       $("#productR").append(html_cart);
+ 
+$("#review_name").val(name);
+
+
+path=FRONT_PATH+"/review_rating";
+product_id=$("#pid").val();
+$.ajax({
+url:path,
+data:$("#ReviewAndRating").serialize(),
+method:"post",
+success:function(response){
+
+}
+});
+});
