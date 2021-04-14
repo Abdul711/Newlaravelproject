@@ -300,6 +300,7 @@
                       </li>
                       @endforeach
                       @else
+                      <div class="no_review">
                       <li>
                         <div class="media">
                           <div class="media-left">
@@ -313,7 +314,7 @@
                   
                    </span></h4>
                      </li>       
-               
+               </div>
 @endif
                    </ul>
                    @if(session()->has('FRONT_USER_ID')!=0 || isset($_COOKIE['CUSTOMER_ID']))

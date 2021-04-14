@@ -974,12 +974,13 @@ $("#review_name").val(name);
 
 path=FRONT_PATH+"/review_rating";
 product_id=$("#pid").val();
+$(".no_review").hide();
 $.ajax({
 url:path,
 data:$("#ReviewAndRating").serialize(),
 method:"post",
 success:function(response){
-
+  swal("Dear User",response.message,response.status);
 }
 });
 });

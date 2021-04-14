@@ -1172,7 +1172,7 @@ return view('front_end.pastOrder',$result);
     }else{
      $id=$_COOKIE["CUSTOMER_ID"];
     }
-    prx($_POST);
+
 
     extract($_POST);
     if($rating==''){
@@ -1196,6 +1196,9 @@ return view('front_end.pastOrder',$result);
             "created_at"=>date("Y-m-d H:i:s")
         ]);
     }
- 
+ return response()->json([
+     "status"=>"success",
+     "message"=>"Rated Successfully With Review"
+ ]);
 }
 }
