@@ -571,13 +571,14 @@ if(response.status=="error"){
    $(".cart_total").html(response.cart_total+" Rs ");
       $(".gst").html(response.gst+" Rs ");
                  $(".gst").html(response.gst+" Rs ");
-
+$(".point").html(response.points);
            
              $(".final").html(response.final_price+" Rs ");
 
  
 }else{
   $('#frmAddToCart').trigger('reset');
+  $(".point").html(response.points);
   if(response.delivery_charge>0){
 delivery_charge_text=response.delivery_charge+" Rs ";
 

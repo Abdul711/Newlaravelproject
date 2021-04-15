@@ -30,6 +30,7 @@ Route::get('/product/{id}', [FrontController::class,'view_product']);
 Route::get('/category/{id}', [FrontController::class,'view_product_by_cat']);
 Route::get('/sub_category/{id}', [FrontController::class,'view_product_by_sub']);
 Route::get('/pastOrder',[FrontController::class,'pastOrder']);
+Route::get('/remdemPoint',[FrontController::class,'rad']);
     Route::get('/send_invite', [FrontController::class,'invite_user']);
 Route::get('/customer_verify/{token?}',[FrontController::class,'customer_verify']);
 

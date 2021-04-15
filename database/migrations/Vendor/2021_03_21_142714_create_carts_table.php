@@ -23,7 +23,7 @@ class CreateCartsTable extends Migration
             $table->integer("qty")->nullable();
             $table->longtext("ip_add")->nullable();
             $table->string("user_type")->nullable();
-
+            $table->string("point")->nullable();
 
             $table->timestamps();
             

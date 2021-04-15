@@ -70,7 +70,7 @@ function userCart(){
        ->leftJoin("taxes","taxes.id","=","products.tax_id")
 
     ->select(
-        "carts.qty","carts.id as cart_id","carts.attr_id as attribute_id","carts.product_id as cart_product_id",
+        "carts.qty","carts.id as cart_id","carts.attr_id as attribute_id","carts.product_id as cart_product_id","carts.point as cart_point",
     "product_attributes.price as product_price","product_attributes.mrp as product_market_price",
     "products.name","products.image as product_image","products.sub_category_id","products.is_discounted","products.discount_amount",
     "colors.color_name as product_colors", "colors.id as color_id",
@@ -252,5 +252,32 @@ function webSetting()
 {
 return  DB::table("web_setting")->where('id','=','1')->get();
 
+}
+function total_point(){
+ $user_carts= userCart();
+ $user_carts=json_decode($user_carts,true);
+ $user_cat_point=0;
+ foreach($user_carts as $user_cart){
+  $user_cat_point=$user_cat_point+($user_cart["qty"]*$user_cart["cart_point"]);
+ }
+ return $user_cat_point;
+}
+function user_total_point($user_id){
+ $user_point_data= DB::table("users_ppoint")->where(["user_id"=>$user_id])->get();
+ $user_point=$user_point_data;
+ $in_point=0;
+ $out_point=0;
+    foreach($user_point as $user_points){
+      if($user_points->type=="in"){
+        $in_point=$in_point+$user_points->point;
+      }
+      if($user_points->type=="out"){
+        $out_point=$out_point+$user_points->point;
+      }
+    }
+     $in_point;
+   $out_point;
+   $myPoint=$in_point-$out_point;
+ return $myPoint;
 }
 ?>

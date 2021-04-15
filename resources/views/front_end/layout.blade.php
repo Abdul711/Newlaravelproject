@@ -82,7 +82,7 @@
       
                   <li><a href="{{url('/logout')}}">Logout</a></li>
                   Wallet:{{WalletAmt(session('FRONT_USER_ID'))}} Rs
-                  
+              <p>    {{user_total_point(session('FRONT_USER_ID'))}} Points</p>
     
           
               @endif

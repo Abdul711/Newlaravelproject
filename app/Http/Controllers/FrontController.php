@@ -182,7 +182,7 @@ $qty=$_POST["pqty"];
     
 
 $attr_data=DB::table("product_attributes")
-->select('product_attributes.id','product_attributes.qty')
+->select('product_attributes.id','product_attributes.qty',"product_attributes.price")
 ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
 ->leftJoin('colors','colors.id','=','product_attributes.color_id')
 ->where(["colors.color_name"=>$color_id])->
@@ -192,6 +192,7 @@ if(isset($attr_data[0])){
     $attr_id=$attr_data[0]->id;
  $ip=ip_address();
  $attr_qty=$attr_data[0]->qty;
+
  if($qty>$attr_qty){
     return response()->json(["status"=>"error", "msg"=>"This Qty is Not Available"]);
  }
@@ -205,7 +206,8 @@ if(isset($attr_data[0])){
     $cart_data_query=DB::table("carts")->
     where(["product_id"=>$product_id])
     ->where(['ip_add'=>$ip])->where(['attr_id'=>$attr_id])->where(["user_type"=>$user_type])->get();
-
+    $price=$attr_data[0]->price;
+    $point=floor(0.20*$price);
 
 
 
@@ -215,6 +217,9 @@ if(isset($attr_data[0])){
         $cart_data["qty"]=$qty;
         $cart_data["product_id"]=$product_id;
         $cart_data["attr_id"]=$attr_id;
+        $cart_data["point"]=$point*$qty;
+     
+
       if(isset($cart_data_query[0])){
         $cart=cartTotal();    
         extract($cart);
@@ -231,8 +236,8 @@ if(isset($attr_data[0])){
              "gst"=>$gst,
              "delivery_charge"=>$delivery_charge,
              "final_price"=>$final_price,
-             "total_item"=>$total_item
-             
+             "total_item"=>$total_item,
+             "points"=>$points
              ]);
          }
 
@@ -244,14 +249,16 @@ if(isset($attr_data[0])){
       }
       $cart=cartTotal();    
       extract($cart);
+      
+      $points=total_point();
    return response()->json(["status"=>"success",
    "msg"=>"You Have $msg Product In Cart",
    "cart_total"=>$cart_total,
    "gst"=>$gst,
    "delivery_charge"=>$delivery_charge,
    "final_price"=>$final_price,
-   "total_item"=>$total_item
-   
+   "total_item"=>$total_item,
+   "points"=>$points
    ]);
 
 }
@@ -703,7 +710,7 @@ public function cart_view()
 {
     
 
-
+   $total_point=total_point();
     $ip=ip_address();
 $cart_data=userCart();
 $result["cart_datas"]=$cart_data;
@@ -712,6 +719,7 @@ $total_item=$cart["total_item"];
 $result["total_item"]=$cart["total_item"];   
 $result['cart_total']=$cart["cart_total"];
 $result["delivery_charge"]=$cart["delivery_charge"];
+$result["total_point"]=$total_point;
 if($total_item>0){
   
     return view('front_end.cart',$result);  
@@ -842,6 +850,14 @@ if($customer_payment=="Wallet"){
     $type_trans="out";
     ManageWallet($customer_id,$final_price,$msg,$type_trans,$date_today);
 }
+$points=total_point();
+$point_type="in";
+$date_today=date("Y-m-d H:i:s");
+$user_point["user_id"]=$customer_id;
+$user_point["point"]=$points;
+$user_point["type"]=$point_type;
+$user_point["created_at"]=$date_today;
+DB::table("users_ppoint")->insertGetId($user_point);
 $data["delivery_type"]=$delivery_type;
 $data["delivery_expected_time"]=$delivery_time;
 $data["customer_name"]=$customer_name;
@@ -1208,5 +1224,9 @@ DB::table('product_ratings')->insert([
      "status"=>"success",
      "message"=>"Rated Successfully With Review"
  ]);
+}
+public function rad(){
+    $result = array();
+    return view("front_end.point_redeem",$result);
 }
 }

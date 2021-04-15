@@ -24,6 +24,7 @@
               <li><a href="{{url('/')}}">{{session('FRONT_USER_NAME')}}</a>
                    <ul class="dropdown-menu">  
                    <li><a href="{{url('/pastOrder')}}">Past Order</a></li>
+                   <li><a href="{{url('/remdemPoint')}}">Reedom Point</a></li>
                    </ul>
               </li>
               @endif
