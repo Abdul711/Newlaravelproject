@@ -857,7 +857,8 @@ $user_point["user_id"]=$customer_id;
 $user_point["point"]=$points;
 $user_point["type"]=$point_type;
 $user_point["created_at"]=$date_today;
-DB::table("users_ppoint")->insertGetId($user_point);
+managePoint($customer_id,$point_type,$points);
+/*DB::table("users_ppoint")->insertGetId($user_point);*/
 $data["delivery_type"]=$delivery_type;
 $data["delivery_expected_time"]=$delivery_time;
 $data["customer_name"]=$customer_name;
@@ -1226,7 +1227,41 @@ DB::table('product_ratings')->insert([
  ]);
 }
 public function rad(){
-    $result = array();
+    if(session()->has('FRONT_USER_ID')){
+   
+   $point=user_total_point(session('FRONT_USER_ID'));
+            }else{
+              $point=0; 
+            }
+            $rewards=DB::table("rewards")->get();
+            $rewards=json_decode($rewards,true);
+           $result["points"]=$point;
+           $result["rewards"]=$rewards;
+ 
     return view("front_end.point_redeem",$result);
+
+
 }
+  public function redeem($id)
+  {
+
+    if(session()->has('FRONT_USER_ID')){
+
+     $user_id=session('FRONT_USER_ID');
+     $data=DB::table('rewards')->where('id','=',$id)->get();
+
+      $point=$data[0]->point;
+     $type="out";
+      $amount=$data[0]->reward;
+      $type_trans="in";
+      $msg="Reward Redeemed";
+  ManageWallet($user_id,$amount,$msg,$type_trans);
+  managePoint($user_id,$type,$point);
+    session()->flash("message","Reward Redeem Successfully");
+  return redirect('remdemPoint');
+  
+  
+
+    }
+  }
 }

@@ -236,9 +236,9 @@ function WalletAmt($user_id){
     return $in-$out;  
 
 }
- function ManageWallet($user_id,$amount,$msg,$type_trans,$today)
+ function ManageWallet($user_id,$amount,$msg,$type_trans)
 {
-   
+  $today=date("Y-m-d H:i:s");
     DB::table("wallet")->insert([
 "user_id"=>$user_id,
 "amount"=>$amount,
@@ -279,5 +279,15 @@ function user_total_point($user_id){
    $out_point;
    $myPoint=$in_point-$out_point;
  return $myPoint;
+}
+ function managePoint($user_id,$type,$point)
+{
+  
+  $date_today=date("Y-m-d H:i:s");
+  $user_point["point"]=$point;
+$user_point["user_id"]=$user_id;
+  $user_point["type"]=$type;
+  $user_point["created_at"]=$date_today;
+  DB::table("users_ppoint")->insert($user_point);
 }
 ?>

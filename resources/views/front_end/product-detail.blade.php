@@ -73,7 +73,7 @@
                   $discounted_price=$p-$discounted_price;
                    @endphp
                    @if($product[0]->is_discounted!=0)
-                    <div class="title-success" >SALE {{$product[0]->discount_amount}} %</div>      
+                    <div class="title-success">SALE{{$product[0]->discount_amount}}%</div>      
                                @endif
                                <div class="aa-price-block">
 

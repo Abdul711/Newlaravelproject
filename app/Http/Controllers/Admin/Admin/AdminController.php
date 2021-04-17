@@ -282,19 +282,19 @@ public function update_order_status($id,$status)
   echo $id;
    $status;
    if($status==1){
-     $new_status="Pending";
+     $new_status="Under The Process";
      $new_state=2;
    }
    if($status==2){
-    $new_status="Under The Process";
+    $new_status="Handover To Rider";
     $new_state=3;
   }
   if($status==3){
-    $new_status="Handover To Rider";
+    $new_status="Out For Delivery";
     $new_state=4;
   }
   if($status==4){
-    $new_status="Out For Delivery";
+    $new_status="Delivered";
     $new_state=5;
   }
   if($status==5){
