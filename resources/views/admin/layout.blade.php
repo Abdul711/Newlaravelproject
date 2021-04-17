@@ -132,6 +132,10 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <i class="fas fa-tachometer-alt"></i>Web Setting</a>
                         </li>
                         <li>
+                            <a href="{{url('admin/reward')}}">
+                                <i class="fas fa-tachometer-alt"></i>Manage Rewards</a>
+                        </li>
+                        <li>
                             <a href="{{url('admin/order')}}">
                                 <i class="fas fa-tachometer-alt"></i>Order Management</a>
                         </li>

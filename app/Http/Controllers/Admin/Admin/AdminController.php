@@ -329,7 +329,27 @@ $message="Order is Cancelled";
 session()->flash("message",$message);
 return redirect('admin/order');
 }
- 
+public function reward_detail()
+{
+$rewards=DB::table("rewards")->get();
+$result["rewards"]=$rewards;
+return view('admin.rewards.reward',$result);
+} 
+public function manage_reward(){
+  $result["points"]="";
+  $result["rewards"]="";
+  $result["page_title"]="Add Rewards";
+  $result["page_btn"]="Add Rewards";
+  return view('admin.rewards.manage_rewards',$result);
+}
+ public function manage_reward_process(Request $req)
+{
+  unset($_POST['_token']);
 
-         
+  $data=$_POST;
+  unset($data['_token']);
+  # code...
+  DB::table("rewards")->insert($data);
+  return redirect('admin/reward');
+}         
 }

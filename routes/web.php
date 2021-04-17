@@ -86,6 +86,7 @@ Route::group(['middleware'=>'admin_auth'],function(){
 Route::get('admin/order/status/{id}/{status}',[AdminController::class,'update_order_status']);
 Route::get('admin/order_cancel/{id}',[AdminController::class,'order_cancel']);
     Route::get('admin/order',[AdminController::class,"orders_detail"]);
+
     Route::get('admin/email_detail/{id}',[AdminController::class,"email_detail"]);
     Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
@@ -167,7 +168,10 @@ Route::get('admin/vendor/delete/{id}',[VendorController::class,'delete']);
 Route::get('admin/vendor/status/{status}/{id}',[VendorController::class,'status']);
 Route::get('admin/setting',[SettingWebsiteController::class,"index"]);  
 Route::post('admin/setting',[SettingWebsiteController::class,'manage_web_process'])->name('settingweb.manage_website_process');
-    Route::get('/admin/logout', function () {
+Route::post('admin/reward/manage_rewards',[AdminController::class,'manage_reward_process'])->name('reward.store');   
+Route::get('admin/reward/manage_rewards',[AdminController::class,'manage_reward']);     
+Route::get('admin/reward',[AdminController::class,"reward_detail"]);
+Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');
              session()->flash("session_logout","Logout Successfully");
