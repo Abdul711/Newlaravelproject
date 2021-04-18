@@ -156,8 +156,52 @@ class FrontController extends Controller
     $result["order_product"] = $order_product;
     }
 
+    foreach($result['product'] as $list1){
+      $result["related_product"]=DB::table('products')
+        ->leftJoin("categories","categories.id","=","products.category_id")
+        ->leftJoin("brands","brands.id","=","products.brand_id")
+        ->select(
+            "products.name",
+            "products.id",
+            "products.category_id",
+            "products.status","products.image",
+            "products.is_tranding",
+            "products.desc",
+            "products.lead_time",
+            "products.warranty",
+            "products.is_discounted",
+            "products.discount_amount",
+            "products.is_featured","products.is_discounted",
+            "categories.category_name",
+            "brands.brands as brand_name"
+            )
+        ->where(['products.status'=>1])
+        ->where('products.id','!=',$list1->id)
+        ->where("products.category_id",'=',$list1->category_id)
+        ->get();
 
+    }
+    foreach($result["related_product"] as $list2){
+   $data=DB::table('product_attributes')
+        ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
+        ->leftJoin('colors','colors.id','=','product_attributes.color_id')
+  
+        ->select(
+            'sizes.size_name',
+            'sizes.id as size_id',
+        'colors.color_name',
+        'colors.id as color_id',
+    
+        "product_attributes.price",
+        "product_attributes.mrp",
+        "product_attributes.qty",
+        "product_attributes.product_id",
+        )
+        ->where('product_attributes.product_id','=',$list2->id)->
+   get();
 
+   $result["product_related_attributes"][$list2->id]=$data; 
+    }
     $result["user_review"]=$review;
     $result["average_rating"]=number_format(DB::table("product_review")->where('product_id','=',$id)->avg('rating'),2);
    /* prx($result);      
@@ -182,9 +226,11 @@ $qty=$_POST["pqty"];
     
 
 $attr_data=DB::table("product_attributes")
-->select('product_attributes.id','product_attributes.qty',"product_attributes.price")
+
 ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
 ->leftJoin('colors','colors.id','=','product_attributes.color_id')
+->leftJoin('products','products.id','=','product_attributes.product_id')
+->select('product_attributes.id','product_attributes.qty',"product_attributes.price","products.is_discounted","products.discount_amount")
 ->where(["colors.color_name"=>$color_id])->
 where(['sizes.size_name'=>$size_id])->where(["product_id"=>$product_id])->get();   
    
@@ -206,8 +252,15 @@ if(isset($attr_data[0])){
     $cart_data_query=DB::table("carts")->
     where(["product_id"=>$product_id])
     ->where(['ip_add'=>$ip])->where(['attr_id'=>$attr_id])->where(["user_type"=>$user_type])->get();
-    $price=$attr_data[0]->price;
-    $point=floor(0.20*$price);
+        if($attr_data[0]->is_discounted=="1"){
+            $price_product=$attr_data[0]->price;
+            $discount=$attr_data[0]->discount_amount;
+            $discount=floor($discount/100*$price_product);
+            $price_product=$price_product-$discount;
+        }else{
+    $price_product=$attr_data[0]->price;
+        }
+    $point=floor(0.20*$price_product);
 
 
 
@@ -403,22 +456,27 @@ return view('front_end.product',$result);
 
 
 
-    public function view_product_by_sub($category_id)
+    public function view_product_by_sub(Request $req ,$category_id)
     {
-
+$result["start_price"]="";
+$result["end_price"]="";
+$result["category_id"]=$category_id;
+$category_data=DB::table("categories")->where('id','=',$category_id)->get();
+$result["page_title"]=$category_data[0]->category_name." Page";
     $result['category_product']=DB::table('products')
      ->leftJoin("categories","categories.id","=","products.category_id")
      ->leftJoin("brands","brands.id","=","products.brand_id")
+
      ->select("products.id",
      "products.name",
      "products.image",
      "products.status",
-     "products.featured",
-     "products.trending",
-     "products.discounted",
+     "products.is_featured",
+     "products.is_tranding",
+     "products.is_discounted",
      "products.lead_time",
      "products.category_id",
-     "products.availability",
+   "products.discount_amount",
      "categories.category_name",
      "brands.brands"
      
@@ -436,11 +494,11 @@ return view('front_end.product',$result);
                  'sizes.id as size_id',
              'colors.color_name',
              'colors.id as color_id',
-             "taxes.tax_value",
+         
              "product_attributes.price",
              "product_attributes.mrp",
              "product_attributes.qty",
-             "product_attributes.price_after_tax",
+          
              )
              ->where('product_id','=',$value->id)->
         get();
@@ -460,7 +518,7 @@ $result['product_attributes']=$product_attributes;
 
    $result['categories']=$categories;
 
- 
+
 return view('front_end.product-sub_category',$result);
 }
 
@@ -661,7 +719,7 @@ $data["name"]=$user_na;
 $data["token"]=$token;
 $data["otp"]=$otp;
  Mail::send("forget_mail",$data,function($messages) use ($users){
-   $messages->from("syedabdultechnicalcop@gmail.com"); 
+   $messages->from("syedabdultechnicalcop@gmail.com","Daily Shop"); 
     $messages->to($users["to"]);
     $messages->subject("Link For Reset Password");
 });
@@ -1263,5 +1321,54 @@ public function rad(){
   
 
     }
+  }
+  function search($item){
+    echo $item;
+    $search_item=DB::table("products");
+    $search_item=$search_item->where("products.status","=","1");
+    $search_item=$search_item->where("keywords","like","%$item%");
+    $search_item=$search_item->orwhere("name","like","%$item%");
+    $search_item=$search_item->orwhere("warranty","like","%$item%");
+    $search_item=$search_item->orwhere("short_desc","like","%$item%");
+    $search_item=$search_item->orwhere("desc","like","%$item%");
+ $search_item=$search_item->leftJoin("categories","categories.id","=","products.category_id");
+ $search_item=$search_item->leftJoin("brands","brands.id","=","products.brand_id");
+$search_item=$search_item->select(
+    "products.name",
+"products.is_discounted",
+"products.image",
+"products.desc",
+"products.short_desc"
+,"products.discount_amount"
+,"products.lead_time"
+,"products.id",
+"brands.brands",
+"categories.category_name"
+);
+
+    $search_item=$search_item->get();
+    $result["search_product"]=$search_item;
+    $result["sort"]="";
+    $result["sort_txt"]="";
+    $result["end_price"]="";
+    $result["start_price"]="";
+    $result["categories"]=array();
+    $result["product_attributes"]=array();
+    $result["colors_product"]=array();
+        foreach($result["search_product"] as $search_value){
+       $data=DB::table("product_attributes")->where("product_id","=",$search_value->id)
+       ->leftJoin("colors","colors.id","=","product_attributes.color_id")
+       ->leftJoin("sizes","sizes.id","=","product_attributes.size_id")
+       ->get();
+          $result["product_attributes"][$search_value->id]=$data;
+
+
+        
+        }
+
+        $data_banner=DB::table('banners')->where(['status'=>'1'])->get();
+        $result['banners']=$data_banner;
+       return view("front_end.search_item",$result);
+      
   }
 }

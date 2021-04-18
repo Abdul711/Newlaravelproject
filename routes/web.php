@@ -54,7 +54,7 @@ Route::get('/my_contact', function () {
     return view('front_end.contact');
 });
 
-
+Route::get('/search_item/{id}',[FrontController::class,"search"]);
 Route::get('/print_invoice/{id}',[FrontController::class,"invoice"]);
 Route::get('/thank',[FrontController::class,"thanks"]);
 Route::get('/view_detail/{id}',[FrontController::class,"view_datail"]);

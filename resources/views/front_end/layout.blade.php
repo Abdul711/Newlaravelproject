@@ -118,8 +118,8 @@
               <!-- search box -->
               <div class="aa-search-box">
                 <form action="">
-                  <input type="text" name="" id="search_item" placeholder="Search here ex. 'man' ">
-                  <button type="submit" onclick="search_product()"><span class="fa fa-search"></span></button>
+                  <input type="text" name="" id="search_product" placeholder="Search here ex. 'man' ">
+                  <button type="submit" id="sear_pro"><span class="fa fa-search"></span></button>
                 </form>
               </div>
               <!-- / search box -->             

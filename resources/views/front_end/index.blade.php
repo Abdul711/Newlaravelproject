@@ -128,7 +128,8 @@
                                                            <p>{{average_rating($productArr->id)}}<span class="fa fa-star">
                                                            ({{total_rating($productArr->id)}})
                                                            
-                                                           </span></p>                    
+                                                           </span></p>        
+                                                           <p>You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>            
                             </figcaption>
                           </figure>   
                           <div class="aa-product-hvr-content">
@@ -197,6 +198,7 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                               @if($product->is_discounted=="1")
                               <span class="title-success" href="#">SALE {{$product->discount_amount}}%</span> 
                               @endif   
+                              <p>You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>
                               <p> <h4>Brands</h4> <p>
                               <p> <h1 class="text-danger">{{$product->brands}}</h1> <p>
                               <p> <h4>Delivery Span</h4> <p>
@@ -283,6 +285,8 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
     </div>
   </section>
   <!-- / Products section -->
+ 
+
   <!-- banner section -->
   <section id="aa-banner">
     <div class="container">

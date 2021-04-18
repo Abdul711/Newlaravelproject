@@ -64,7 +64,7 @@
                   @endphp
 
                      <li>
-                     {{$product->id}}
+               
                           <figure>
                             <a class="aa-product-img" href="{{url('product/'.$product->id)}}">
                             <img src="{{asset('storage/media/'.$product->image)}}" 
@@ -82,6 +82,7 @@
                           <span class="aa-product-price">Rs{{$category_product_attributes[$product->id][0]->price}}</span>
                             @endif
                             <p>{{average_rating($product->id)}}  <span class="fa fa-star"> ({{total_rating($product->id)}})</span></p>
+                            <p> You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>
                             </figcaption>
                           </figure>    
                           @if($product->is_discounted=="1")

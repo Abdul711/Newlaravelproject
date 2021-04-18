@@ -905,10 +905,19 @@ high_value=parseInt(high_value);
  function search_product(){
 search_item=$("#search_item").val();
  alert(search_item);
- $("#search_product").val(search_item);
+
  
 
 }
+$("#sear_pro").click(function(e){
+  e.preventDefault();
+ var ser=$("#search_product").val();
+ alert(ser);
+ if(ser!=""){
+   window.location.href=FRONT_PATH+"/search_item/"+ser;
+ }
+  
+});
 function qtyTake(productId){
                          
   qty=$("#qtyProduct").val();

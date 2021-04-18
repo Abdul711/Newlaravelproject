@@ -85,6 +85,7 @@
                      <span class="aa-product-view-price">Rs {{$product_attributes[$product[0]->id][0]->price}}</span>
                        @endif
                       <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
+                      <p>You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>
                  <p>  Brand: {{$product[0]->brand_name}}</p>
                    
                        <p class="lead_time">
@@ -374,49 +375,66 @@
                
               @if(isset($related_product[0]))
                     @foreach($related_product as $productArr)
+                    @php
+                  $product_price=$product_related_attributes[$productArr->id][0]->price;
+                     if($productArr->is_discounted=="1" && $productArr->discount_amount!=""){
+                       $discount=floor(($productArr->discount_amount/100)*$product_price);
+                     }else{
+                       $discount=0;
+                     }
+                     $discounted_price=$product_price-$discount;
+                    @endphp
                     <li>
                         <figure>
                         <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}"><img src="{{asset('storage/media/'.$productArr->image)}}" alt="{{$productArr->name}}"></a>
                         <a class="aa-add-card-btn" href="{{url('product/'.$productArr->id)}}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                         <figcaption>
-                            <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">
+                      <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">
                             {{$productArr->name}}</a></h4>
-                            <span class="aa-product-price">
-                            Rs {{$product_related_attributes[$productArr->id][0]->price}}
-  </span>
+
   @if($productArr->is_discounted==1)
   <span class="aa-product-price">
-  <del>Rs {{$product_related_attributes[$productArr->id][0]->mrp}}</del>
+ Rs {{$discounted_price}}
+                        </span>
+  <span class="aa-product-price">
+ <del> Rs {{$product_related_attributes[$productArr->id][0]->price}} </del>
+  </span>
+  @else
+  <span class="aa-product-price">
+  Rs {{$product_related_attributes[$productArr->id][0]->price}} 
   </span>
   @endif
+  <p>  You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>
+                       <div>{{average_rating($productArr->id)}}  <span class="fa fa-star"> ({{total_rating($productArr->id)}})</span>
+    <p> </div>
                         </figcaption>
                         </figure>       
                         @if($productArr->is_discounted==1)
                           @php
 
-                          if($product_related_attributes[$productArr->id][0]->price_after_tax!='')
-                          {
-                            $pricesell=$product_related_attributes[$productArr->id][0]->price_after_tax;
-                       
-                          }else{
-                            $price_after_tax=0;
-                            $pricesell=$product_related_attributes[$productArr->id][0]->price;
-                          }
+                    
 
-                        $mrtp=$product_related_attributes[$productArr->id][0]->mrp;
                        
-                            $dis=$mrtp-$pricesell;
-                            $dicount_per=($dis/$mrtp)*100;
-                            $dicount_per=ceil($dicount_per);
+                       
+                        
+                        
                               @endphp
-                          <span class="aa-badge aa-sale" href="#">    SALE {{$dicount_per}} % Off</span>
-                          @endif
+                
+                          <span class="aa-badge aa-sale" href="#">SALE {{$productArr->discount_amount}} %</span>   
+                   @endif
+                          
+                   <div class="aa-product-hvr-content">
 
+<a href="#" data-toggle2="tooltip" data-placement="top" 
+data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span class="fa fa-search"></span></a>
+</div>
 
 
 
                     </li>  
                     @endforeach    
+
+
                     @else
                     <li>
                         <figure>
@@ -427,6 +445,114 @@
                 
                                  
               </ul>
+  
+              @foreach($related_product as $productArr)
+                  <div class="modal fade" id="quick-view-modal-{{$productArr->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">                      
+                    <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <div class="row">
+                        <!-- Modal view slider -->
+                        <div class="col-md-6 col-sm-6 col-xs-12">                              
+                          <div class="aa-product-view-slider">                                
+                            <div class="simpleLens-gallery-container" id="demo-1">
+                     
+                              <div class="simpleLens-thumbnails-container">
+                                  <a href="#" class="simpleLens-thumbnail-wrapper"
+                                     data-lens-image="{{asset('storage/media/'.$productArr->image)}}"
+                                     data-big-image="{{asset('storage/media/'.$productArr->image)}}">
+                                      <img src="{{asset('storage/media/'.$productArr->image)}}" width="260px">
+                                  </a>                                    
+                              
+                               
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Modal view content -->
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <div class="aa-product-view-content">
+                            <h3>{{$productArr->name}}</h3>
+                            <div class="aa-price-block">
+                            @php
+                     $price_product=$product_related_attributes[$productArr->id][0]->price;
+                   if($productArr->is_discounted=="1"){
+                     $discount=floor(($productArr->discount_amount/100)*$price_product);
+                   }else{
+                     $discount=0;
+                   }
+                      $discount;
+$discount_price=$price_product-$discount;
+                     @endphp
+                     <div>
+    Point You Will Earn {{@floor(0.2*$discount_price)}} Points
+                     </div>
+                     @if($productArr->is_discounted=="1")
+                     <span class="aa-product-view-price">Rs {{$discount_price}}</span>
+                
+                           <del>   <span class="aa-product-view-price">Rs {{$product_related_attributes[$productArr->id][0]->price}}</span></del>
+                              @else
+                              <span class="aa-product-view-price">Rs {{$product_related_attributes[$productArr->id][0]->price}}</span>
+@endif
+
+<p>{{average_rating($productArr->id)}}  <span class="fa fa-star"> ({{total_rating($productArr->id)}})</span></p>
+                              <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
+                            </div>
+  @if($productArr->is_discounted=="1")
+                            <span class="title-success" href="#">SALE {{$productArr->discount_amount}} %</span>    
+           @endif
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis animi, veritatis quae repudiandae quod nulla porro quidem, itaque quis quaerat!</p>
+                            <h4>Size</h4>
+                            <div class="aa-prod-view-size">
+                               
+                                
+                            @foreach($product_related_attributes[$productArr->id] as $size)
+                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$productArr->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$productArr->id}}"> {{$size->size_name}}</a>
+                                 @endforeach
+
+                              
+                            </div>
+                            <h4>Color</h4>
+                            <div class="aa-prod-view-color">
+                              
+                            @foreach($product_related_attributes[$productArr->id] as $color)
+                                 <a   href="javascript:void(0)"  id="color_{{$color->color_name}}{{$productArr->id}}" class="productColor  
+                                  ColorSize{{$color->size_name}} aa-col-{{strtolower($color->color_name)}}" onclick="selectColor('{{$color->color_name}}','{{$productArr->id}}')"   ></a>
+                                 @endforeach
+                           
+                              
+                            </div>
+                            <div class="aa-prod-quantity">
+                              <form action="">
+                                <select name="" id="qtyProduct">
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                </select>
+                              </form>
+                              <p class="aa-prod-category">
+                                Category: <a href="#">Polo T-Shirt</a>
+                              </p>
+                            </div>
+                           <div class="aa-prod-view-bottom">
+                            <a href="javascript:void(0)" class="aa-add-to-cart-btn" onclick="qtyTake('{{$productArr->id}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                           
+                            </div>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>                        
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div>
+@endforeach
+
+
             </div>  
           </div>
         </div>
