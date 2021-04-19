@@ -877,7 +877,13 @@ print_r($webset);*/
 /*return response()->json(["status"=>"success","msg"=>"Order Placed"]);*/
 
 extract($_POST);
-
+$delivery_time;
+if($delivery_type=="scheduled"){
+   $data_count=DB::table("orders")->where('delivery_expected_time','=',$delivery_time)->count();
+    if($data_count>=2){
+    return response()->json(["status"=>"error","msg"=>"Slot is Booked"]);    
+    }
+}
 $resul=DB::table("web_setting")->get();
 if(isset($resul[0])){
 $min_cart_amt=$resul[0]->min_cart_amt;
@@ -972,6 +978,35 @@ if($order_id>0 && $insert_id>0){
   
 return response()->json(["status"=>"success","msg"=>"Order Placed"]);
 }
+}
+ public function remove_coupon()
+{
+   
+    if(session()->has('FRONT_USER_ID')){
+    $user_id=session('FRONT_USER_ID');
+    $amt_w=WalletAmt($user_id);
+        }else{
+          $amt_w=0; 
+        }
+        if(session()->has("COUPONCODE")){
+            session()->forget('COUPONCODE');
+        session()->forget('COUPONVALUE');
+        session()->forget('COUPONID');    
+        }
+        $cart_total=cartTotal();
+    extract($cart_total);
+    $status="success";
+    if(session()->has("COUPONCODE")){
+        $coupon_code=session("COUPONCODE");
+    }else{
+        $coupon_code="";
+    }
+    $msg="Coupon Code $coupon_code Removed";
+    return response()->json(["cart_promo"=>$cart_promo,"gst"=>$gst,"tax_value"=>$tax_value,
+    "COUPONCODE"=>$COUPONCODE,"delivery_charge"=>$delivery_charge,"final_price"=>$final_price,
+    "discount"=>$discount,"coupon_id"=>$coupon_id,"cart_total"=>$cart_total,"total_item"=>$total_item,
+    "status"=>$status,"msg"=>$msg,"wallet"=>$amt_w
+    ]);
 }
  public function apply_coupon($coupon)
 {
@@ -1323,7 +1358,7 @@ public function rad(){
     }
   }
   function search($item){
-    echo $item;
+
     $search_item=DB::table("products");
     $search_item=$search_item->where("products.status","=","1");
     $search_item=$search_item->where("keywords","like","%$item%");
@@ -1345,7 +1380,7 @@ $search_item=$search_item->select(
 "brands.brands",
 "categories.category_name"
 );
-
+/*php artisan serve --host=192.168.1.101*/
     $search_item=$search_item->get();
     $result["search_product"]=$search_item;
     $result["sort"]="";

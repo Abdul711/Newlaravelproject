@@ -27,11 +27,28 @@
                           </a>
                         </h4>
                       </div>
-                      <div id="collapseOne" class="panel-collapse collapse in">
+                      <div id="collapseOne" class="panel-collapse collapse in" >
                         <div class="panel-body">
-                          <input type="text" placeholder="Coupon Code" class="aa-coupon-code" id="coupon_code">
+@php
+                        if(isset($_SESSION['COUPONCODE'])){
+                        
+                  
+                 
+                        
+                     
+                        }
+                        @endphp
+                        <div class="apply_coupon_box  ">
+                          <input type="text" placeholder="Coupon Code" class=" aa-coupon-code" id="coupon_code">
                           <input type="submit" value="Apply Coupon" class="aa-browse-btn apply_coupon" >
+                          </div>
+                        
+                          <div class="applied_coupon_box show_coupon_box"> 
+                       <span style="color:red; font-weight:800">Coupon {{session('COUPONCODE')}} Applied Successfully<span>
+                       <span class='fa fa-times' onclick='remove_coupon()'></span>
+                          </div>
                         </div>
+
                       </div>
                     </div>
                     <!-- Login section -->

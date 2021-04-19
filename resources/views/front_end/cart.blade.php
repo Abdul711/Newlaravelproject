@@ -42,7 +42,8 @@
               $price=$cart_data->product_price-$dis;
               @endphp
                       <tr id="box{{$cart_data->attribute_id}}"> 
-                        <td><a class= href="javascript:void(0)">  <fa class="fa fa-close"></fa></a></td>
+                      
+                        <td><a class="remove" href="javascript:void(0)" onclick="deleteCart('{{$cart_data->product_colors}}','{{$cart_data->product_sizes}}','{{$cart_data->cart_product_id}}','{{$cart_data->attribute_id}}')">  <fa class="fa fa-close"></fa></a></td>
                         <td><a href="#"><img src="{{asset('storage/media/'.$cart_data->product_image)}}" alt="img"></a></td>
                         <td><a class="aa-cart-title" href="#">{{$cart_data->name}}</a>
                         <p>

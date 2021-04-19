@@ -639,7 +639,7 @@ path=FRONT_PATH+"/cart_detail";
 method:"get",
 url:path,
 success:function (param) {  
-
+console.log(param);
 
      var html_cart='<ul>';
 total=param.total_item;
@@ -654,7 +654,7 @@ $.each(param.data, function (arrKey,arrVal) {
  }
 
   price=arrVal.product_price-disc_amount;
-      
+  
    html_cart+='<li>';
    html_cart+='<a class="aa-cartbox-img" href="#"><img src="'+PRODUCT_IMAGE+'/'+arrVal.product_image+'" alt="img"></a>';
    html_cart+='<div class="aa-cartbox-info">';
@@ -683,11 +683,21 @@ $(".aa-cart-notify").html(total);
 
 
 }
+function deleteCart(color_id,size_id,product_id,attr_id){
 
+qty=0;
+$("#pqty").val(qty);
+$("#size_id").val(size_id);
+$("#color_id").val(color_id);
+$("#product_id").val(product_id);
+
+$("#box"+attr_id).remove();
+
+}
 function updateCart(color_id,size_id,product_id,attr_id,price){
-/*add_to_cart()*/;
 
 qty=$('#qty'+attr_id).val();
+qty=parseInt(qty);
 $("#pqty").val(qty);
 $("#size_id").val(size_id);
 $("#color_id").val(color_id);
@@ -695,26 +705,65 @@ $("#product_id").val(product_id);
 if(qty==0){
 $("#box"+attr_id).remove();
 }
-
 add_to_cart();
- add_detail();
+ 
 totalPrice=$(".c_p").html();
 
 $("#price"+attr_id).html('Rs'+qty*price);
 
 }
-function deleteCart(color_id,size_id,product_id,attribute_id){
-qty=0;
-$("#pqty").val(qty);
-$("#size_id").val(size_id);
-$("#color_id").val(color_id);
-$("#product_id").val(product_id);
 
-add_to_cart();
-$("#box"+attribute_id).remove();
-}
 function totalPrice(){
 alert("Hello");
+}
+function remove_coupon(){
+  alert("Coupon Removed");
+ $(".applied_coupon_box").hide();
+  $(".apply_coupon_box").show();
+           $(".cart_promo").addClass('coupon_hide');
+$(".cart_promo").removeClass('coupon_show');
+$.ajax({
+  url:FRONT_PATH+"/remove_coupon",
+  method:"get",
+  success:function(res){
+    alert(res);
+    console.log(res);
+
+    
+        
+             $(".tax_per").html(res.tax_value);
+                  $(".tax_amt").html(res.gst);
+                  $("#gst").val(res.gst);
+                  $("#coupon_id").val(res.COUPONCODE);
+                      $("#final_price").val(res.final_price);
+                              $(".final_price").html(res.final_price);
+                              $(".couponcode").html(res.COUPONCODE);
+                          
+            $("#coupon_value").val(res.discount);
+                          
+                             if(res.delivery_charge==0){
+delivery_charge_text="Free Delivery";
+                             }else{
+delivery_charge_text=res.delivery_charge+"Rs";
+                             }                           
+                             $(".delivery_charge").html(delivery_charge_text);
+                                        $("#delivery_charge").val(res.delivery_charge);
+         title_msg="Congratulations";
+
+
+         $(".tax_per").html(res.tax_value);
+                  $(".tax_amt").html(res.gst);
+                  $("#gst").val(res.gst);
+                  $("#coupon_id").val(res.COUPONCODE);
+                      $("#final_price").val(res.final_price);
+                            $("#coupon_id").val(res.COUPONCODE);
+                      $("#final_price").val(res.final_price);
+                              $(".final_price").html(res.final_price);
+                              $(".couponcode").html(res.COUPONCODE);
+                                 $(".apply_coupon_box").addClass('show_coupon_box');
+                                  $(".applied_coupon_box").addClass('hide_coupon_box');
+  }
+})
 }
 $(".apply_coupon").click(function(e){
   e.preventDefault();
@@ -732,6 +781,7 @@ $.ajax({
 
          console.log(res);
          if(res.status=="success"){
+           $(".apply_coupon_box").hide();
          $(".cart_promo").removeClass('coupon_hide');
 $(".cart_promo").addClass('coupon_show');
          $(".after_promo").html(res.cart_promo);
@@ -744,6 +794,10 @@ $(".cart_promo").addClass('coupon_show');
                       $("#final_price").val(res.final_price);
                               $(".final_price").html(res.final_price);
                               $(".couponcode").html(res.COUPONCODE);
+                              $(".applied_coupon_box").html("Coupon  "+res.COUPONCODE+" Applied Successfully <span class='fa fa-times' onclick='remove_coupon()'></span>");
+                           $(".applied_coupon_box").css("color","red");
+                               $(".applied_coupon_box").css("fontWeight","800");
+                                $(".applied_coupon_box").css('display','block');
                              if(res.delivery_charge==0){
 delivery_charge_text="Free Delivery";
                              }else{

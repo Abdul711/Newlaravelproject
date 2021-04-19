@@ -32,6 +32,7 @@ Route::get('/sub_category/{id}', [FrontController::class,'view_product_by_sub'])
 Route::get('/pastOrder',[FrontController::class,'pastOrder']);
 Route::get('/remdemPoint',[FrontController::class,'rad']);
 Route::get('/redeem/{id}',[FrontController::class,'redeem']);
+Route::get('/remove_coupon',[FrontController::class,'remove_coupon']);
     Route::get('/send_invite', [FrontController::class,'invite_user']);
 Route::get('/customer_verify/{token?}',[FrontController::class,'customer_verify']);
 

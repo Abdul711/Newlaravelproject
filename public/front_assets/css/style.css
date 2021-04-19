@@ -4402,4 +4402,15 @@ box-sizing:border-box;
   color:red;
   background:yellow;
 }          
-                               
+.show_coupon_box{
+  display:block;
+}            
+.hide_coupon_box{
+    display:none;
+}      
+.show_coupon_box2{
+  display:none;
+}            
+.hide_coupon_box2{
+    display:block;
+}          

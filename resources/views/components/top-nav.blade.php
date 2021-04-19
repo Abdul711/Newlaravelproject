@@ -17,25 +17,26 @@
                   @foreach($cart_datas as $cart_data)
 
                   @php
-              if($cart_data['is_discounted']=="1"){
-             $dis=(($cart_data['discount_amount']/100)*$cart_data['product_price']);
+              if($cart_data->is_discounted=="1"){
+             $dis=(($cart_data->discount_amount/100)*$cart_data->product_price);
               }
               else{
                 $dis=0;
               }
-              $price=$cart_data['product_price']-$dis;
+              $price=$cart_data->product_price-$dis;
               @endphp
 
                     <li>
-                      <a class="aa-cartbox-img" href="#"><img src="{{asset('storage/media/'.$cart_data['product_image'])}}" alt="img"></a>
+
+                      <a class="aa-cartbox-img" href="#"><img src="{{asset('storage/media/'.$cart_data->product_image)}}" alt="img"></a>
                       <div class="aa-cartbox-info">
-                        <h4><a href="#">{{$cart_data['name']}}</a></h4>
+                        <h4><a href="#">{{$cart_data->name}}</a></h4>
                         <p>
-                  <b>Color</b> : <strong>  {{$cart_data['product_colors']}}</strong><br>
-                  <b>Size</b> : <strong>  {{$cart_data['product_sizes']}}</strong><br>
+                  <b>Color</b> : <strong>  {{$cart_data->product_colors}}</strong><br>
+                  <b>Size</b> : <strong>  {{$cart_data->product_sizes}}</strong><br>
    
                         </p>
-                        <p>{{$cart_data['qty']}} * Rs {{$price}}</p>
+                        <p>{{$cart_data->qty}} * Rs {{$price}}</p>
                       </div>
                     </li>
                     @endforeach
@@ -65,3 +66,4 @@
                 </div>
            
               </div>
+  

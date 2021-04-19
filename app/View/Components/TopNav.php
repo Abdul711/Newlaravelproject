@@ -58,7 +58,7 @@ class TopNav extends Component
         $cart_total+=$data['product_price']*$data["qty"];
         }
         $cart_data=userCart();
-        $cart_data=json_decode($cart_data,true);
+  
         $result["cart_datas"]=$cart_data;
         $cart=cartTotal();
         $result["total_item"]=$cart["total_item"];   
