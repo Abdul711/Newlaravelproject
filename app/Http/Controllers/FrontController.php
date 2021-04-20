@@ -145,7 +145,7 @@ class FrontController extends Controller
       
      $result["order_product"] = $order_product;
     }else{
-     $id=$_COOKIE["CUSTOMER_ID"];
+     $user_id=$_COOKIE["CUSTOMER_ID"];
      $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$user_id)->get();
      $order_product=json_decode($order_product,true);
      
@@ -214,110 +214,78 @@ class FrontController extends Controller
         return $total;
       }
      function add_to_cart(Request $req){
- 
-    
-  
- $size_id=$_POST["size_id"];
-$color_id=$_POST["color_id"];
-$product_id=$_POST["product_id"];
+
+ extract($_POST);
  $ip=ip_address();
-$qty=$_POST["pqty"];
-  
-    
-
-$attr_data=DB::table("product_attributes")
-
-->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
-->leftJoin('colors','colors.id','=','product_attributes.color_id')
-->leftJoin('products','products.id','=','product_attributes.product_id')
-->select('product_attributes.id','product_attributes.qty',"product_attributes.price","products.is_discounted","products.discount_amount")
-->where(["colors.color_name"=>$color_id])->
-where(['sizes.size_name'=>$size_id])->where(["product_id"=>$product_id])->get();   
-   
-if(isset($attr_data[0])){
-    $attr_id=$attr_data[0]->id;
- $ip=ip_address();
- $attr_qty=$attr_data[0]->qty;
-
- if($qty>$attr_qty){
-    return response()->json(["status"=>"error", "msg"=>"This Qty is Not Available"]);
- }
  if(session()->has('FRONT_USER_ID')){
     $user_type="Reg";
   $user_id=session('FRONT_USER_ID');
      }else{
             $user_type="Non-Reg";   
             $user_id=0;
-        }
-    $cart_data_query=DB::table("carts")->
-    where(["product_id"=>$product_id])
-    ->where(['ip_add'=>$ip])->where(['attr_id'=>$attr_id])->where(["user_type"=>$user_type])->get();
-        if($attr_data[0]->is_discounted=="1"){
-            $price_product=$attr_data[0]->price;
-            $discount=$attr_data[0]->discount_amount;
-            $discount=floor($discount/100*$price_product);
-            $price_product=$price_product-$discount;
-        }else{
-    $price_product=$attr_data[0]->price;
-        }
-    $point=floor(0.20*$price_product);
+     }
+ $product_attribute=DB::table("product_attributes")->
+ leftJoin("sizes","sizes.id","=","product_attributes.size_id")->
+ leftJoin("colors","colors.id","=","product_attributes.color_id")->
+ leftJoin("products","products.id","=","product_attributes.product_id")->
+ select('product_attributes.qty as product_qty','product_attributes.product_id',#
+ 'product_attributes.id as attribute_id',
+ 'product_attributes.price','products.is_discounted','products.discount_amount')->
+ where('size_name','=',$size_id)->
+ where('color_name','=',$color_id)->
+ where('product_id','=',$product_id)->
+ get();
 
-
-
-    $cart_data['user_id']=$user_id;
-        $cart_data['user_type']=$user_type;
-        $cart_data['ip_add']=$ip;
-        $cart_data["qty"]=$qty;
-        $cart_data["product_id"]=$product_id;
-        $cart_data["attr_id"]=$attr_id;
-        $cart_data["point"]=$point*$qty;
-     
-
-      if(isset($cart_data_query[0])){
-        $cart=cartTotal();    
-        extract($cart);
-      /*  prx($cart);
-      
-        die();*/
-       $cart_id=$cart_data_query[0]->id;
-         if($qty==0){
-             DB::table("carts")->where(["id"=>$cart_id])->delete();
-             return response()->json([
-                 "status"=>"success",
-             "msg"=>"You Have Deleted Product From Cart",
-             "cart_total"=>$cart_total,
-             "gst"=>$gst,
-             "delivery_charge"=>$delivery_charge,
-             "final_price"=>$final_price,
-             "total_item"=>$total_item,
-             "points"=>$points
-             ]);
+      if(isset($product_attribute[0])){
+   $price=$product_attribute[0]->price;
+   $attr_id=$product_attribute[0]->attribute_id;
+   $product_id=$product_attribute[0]->product_id;
+   $is_discounted=$product_attribute[0]->is_discounted;
+   $product_qty=$product_attribute[0]->product_qty;
+    if($product_qty<$pqty){
+        return response()->json(["status","error","msg"=>"Qty For This Product Not Available"]);       
+    }
+   if($is_discounted=="1"){
+      $discount_amount=$product_attribute[0]->discount_amount;
+         if($discount_amount!="" && $discount_amount>0){
+             $discount=($discount_amount/100)*$price;
+         }else{
+             $discount=0;
          }
-
-       DB::table("carts")->where(["id"=>$cart_id])->update($cart_data);
-       $msg="updated";
-      }else{
-        DB::table("carts")->insertGetId($cart_data);
-        $msg="inserted";
-      }
-      $cart=cartTotal();    
-      extract($cart);
       
-      $points=total_point();
-   return response()->json(["status"=>"success",
-   "msg"=>"You Have $msg Product In Cart",
-   "cart_total"=>$cart_total,
-   "gst"=>$gst,
-   "delivery_charge"=>$delivery_charge,
-   "final_price"=>$final_price,
-   "total_item"=>$total_item,
-   "points"=>$points
-   ]);
+   }else{
+       $discount=0;
+   }
+   $price=$price-$discount;
+   $price=floor($price);
+  $point=floor(0.2*$price);
 
+$user_cart["attr_id"]=$attr_id;
+$user_cart["user_id"]=$user_id;
+$user_cart["qty"]=$pqty;
+$user_cart["point"]=$point*$pqty;
+$user_cart["ip_add"]=$ip;
+$user_cart["user_type"]=$user_type;
+$user_cart["product_id"]=$product_id;
+$user_cart_data=DB::table("carts")->where('product_id','=',$product_id)->
+where('attr_id','=',$attr_id)->
+where('user_id','=',$user_id)->
+where('user_type','=',$user_type)->
+where('ip_add','=',$ip)->
+get();
+$total_record=count($user_cart_data);
+if($total_record<=0){
+DB::table("carts")->insert($user_cart);
+}else{
+    $cart_id=$user_cart_data[0]->id;
+    DB::table("carts")->where('id','=',$cart_id)->update($user_cart);
 }
-else{
-    return response()->json(["status"=>"error", "msg"=>"No Product"]);
-}
+  return response()->json(["status","success","msg"=>"Product Successfully"]);
+      }else{
+        return response()->json(["status","error","msg"=>"Product Not Exist With Given Attribute"]);
+      }
+ 
+
  
      }
          public function store(Request $request){
@@ -1025,13 +993,14 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
   
   $coupons=DB::table('coupons')->where(["coupon_code"=>$coupon])->get();
   $cart_total=cartTotal();
+  extract($cart_total);
   if(session()->has('FRONT_USER_ID')){
   $user_id=session('FRONT_USER_ID');
   $amt_w=WalletAmt($user_id);
       }else{
         $amt_w=0; 
       }
-  extract($cart_total);
+ 
   if(isset($coupons[0])){
   
   
@@ -1059,7 +1028,8 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
     $status="success";
     $msg="$coupon Applied";
     $cart_total=cartTotal();
-  extract($cart_total);  
+extract($cart_total);
+
     return response()->json(["cart_promo"=>$cart_promo,"gst"=>$gst,"tax_value"=>$tax_value,
     "COUPONCODE"=>$COUPONCODE,"delivery_charge"=>$delivery_charge,"final_price"=>$final_price,
     "discount"=>$discount,"coupon_id"=>$coupon_id,"cart_total"=>$cart_total,"total_item"=>$total_item,

@@ -565,9 +565,10 @@ $.ajax({
 
   success: function (response) {
 console.log(response);
+alert(response);
 delivery_charge_text="";
 if(response.status=="error"){
-   swal("Oops! Something Went Wrong",response.msg,response.status);
+  
    $(".cart_total").html(response.cart_total+" Rs ");
       $(".gst").html(response.gst+" Rs ");
                  $(".gst").html(response.gst+" Rs ");
@@ -590,7 +591,7 @@ delivery_charge_text="Free Delivery";
   $(".gst").html(response.gst+" Rs ");
   $(".final").html(response.final_price+" Rs ");
 add_detail();
-swal("Congratulations",response.msg,response.status);
+
 }
   }
 });
