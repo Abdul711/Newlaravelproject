@@ -274,13 +274,30 @@ where('user_type','=',$user_type)->
 where('ip_add','=',$ip)->
 get();
 $total_record=count($user_cart_data);
+$cart_total=cartTotal();
+extract($cart_total);
+$point=total_point();
 if($total_record<=0){
 DB::table("carts")->insert($user_cart);
+$msg="Added";
 }else{
     $cart_id=$user_cart_data[0]->id;
+    if($pqty==0){
+        $msg="Deleted From Cart";
+        DB::table("carts")->where('id','=',$cart_id)->delete();
+        return response()->json(["status","success","msg"=>"Product $msg Successfully ","cart_total"=>$cart_total,
+        "final_price"=>$final_price,"gst"=>$gst,"delivery_charge"=>$delivery_charge,
+        "points"=>$point]);
+    }
     DB::table("carts")->where('id','=',$cart_id)->update($user_cart);
+    $msg="Updated";
 }
-  return response()->json(["status","success","msg"=>"Product Successfully"]);
+$cart_total=cartTotal();
+extract($cart_total);
+
+  return response()->json(["status","success","msg"=>"Product $msg Successfully ","cart_total"=>$cart_total,
+  "final_price"=>$final_price,"gst"=>$gst,"delivery_charge"=>$delivery_charge,
+  "points"=>$point]);
       }else{
         return response()->json(["status","error","msg"=>"Product Not Exist With Given Attribute"]);
       }
@@ -1375,5 +1392,36 @@ $search_item=$search_item->select(
         $result['banners']=$data_banner;
        return view("front_end.search_item",$result);
       
-  }
+  #
+
+}
+function readd($id){
+$id;
+if(session()->has('FRONT_USER_ID')){
+    $user_type="Reg";
+  $user_id=session('FRONT_USER_ID');
+     }else{
+            $user_type="Non-Reg";   
+            $user_id=0;
+     }
+    $ip_add=ip_address();
+    DB::table("carts")->where("user_id",'=',$user_id)->delete();
+$data=DB::table("order_details")->where(['order_id'=>$id])->get();
+        foreach($data as $d){
+            $point=floor(0.2*$d->price);
+             $product_id=$d->product_id;
+            $qty=$d->qty;
+            $point=$point*$qty;
+             $attr_id=$d->attr_id;
+             $user_cart["attr_id"]=$attr_id;
+             $user_cart["qty"]=$qty;
+             $user_cart["product_id"]=$product_id;
+             $user_cart["user_id"]=$user_id;
+             $user_cart["user_type"]=$user_type;
+             $user_cart["point"]=$point;
+             $user_cart["ip_add"]=$ip_add;
+            DB::table("carts")->insert($user_cart);
+        }
+
+}
 }

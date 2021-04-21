@@ -52,11 +52,12 @@
                       
                       
                       
-                      ORD-{{$order->id}}
+                     <p> ORD-{{$order->id}}</p>
                       
                       <a href="{{url('/print_invoice/'.$order->id)}}" class="btn btn-primary m-5">Print Invoice </a>
                       <a href="{{url('/view_detail/'.$order->id)}}" class="btn btn-warning m-5">View Detail
                  </a>
+                <a href="javascript:void()" class="btn btn-primary" onclick="readd('{{$order->id}}')"><span class="fa fa-shopping-cart"></span> Add To Cart </a> 
                       
                       </td>
                       <td class="{{$class_ta}}">{{$order->final_price}} Rs </td>

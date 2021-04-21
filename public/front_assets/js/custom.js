@@ -568,24 +568,26 @@ console.log(response);
 alert(response);
 delivery_charge_text="";
 if(response.status=="error"){
-  
+  swal("Oops!",response.msg,"error");
    $(".cart_total").html(response.cart_total+" Rs ");
       $(".gst").html(response.gst+" Rs ");
                  $(".gst").html(response.gst+" Rs ");
-$(".point").html(response.points);
+$(".point").html(response.cart_point);
            
              $(".final").html(response.final_price+" Rs ");
 
  
 }else{
+  swal("Congratulations",response.msg,"success");
   $('#frmAddToCart').trigger('reset');
-  $(".point").html(response.points);
+ 
   if(response.delivery_charge>0){
 delivery_charge_text=response.delivery_charge+" Rs ";
 
   }else{
 delivery_charge_text="Free Delivery";
   }
+  $(".point").html(response.cart_point);
   $(".delivery_charge").html(delivery_charge_text);
   $(".cart_total").html(response.cart_total+" Rs ");
   $(".gst").html(response.gst+" Rs ");
@@ -672,8 +674,8 @@ path=FRONT_PATH+"/cart";
   html_cart+='<li>No Item In Cart</li>';
 
   $(".checkout").remove();
-  $(".aa-cartbox-summary").remove();
-  $("#no").show();
+ /* $(".aa-cartbox-summary").remove();
+  $("#no").show();*/
 
 }
 
@@ -693,7 +695,7 @@ $("#color_id").val(color_id);
 $("#product_id").val(product_id);
 
 $("#box"+attr_id).remove();
-
+add_to_cart();
 }
 function updateCart(color_id,size_id,product_id,attr_id,price){
 
@@ -706,12 +708,22 @@ $("#product_id").val(product_id);
 if(qty==0){
 $("#box"+attr_id).remove();
 }
-add_to_cart();
- 
-totalPrice=$(".c_p").html();
 
 $("#price"+attr_id).html('Rs'+qty*price);
+add_to_cart();
+if(response.delivery_charge>0){
+  delivery_charge_text=response.delivery_charge+" Rs ";
+  
+    }else{
+  delivery_charge_text="Free Delivery";
+    }
+    $(".point").html(response.cart_point);
+    $(".delivery_charge").html(delivery_charge_text);
+    $(".cart_total").html(response.cart_total+" Rs ");
+    $(".gst").html(response.gst+" Rs ");
+    $(".final").html(response.final_price+" Rs ");
 
+_
 }
 
 function totalPrice(){
@@ -730,7 +742,7 @@ $.ajax({
     alert(res);
     console.log(res);
 
-    
+    swal("Congratulations","Coupon Removed","success");
         
              $(".tax_per").html(res.tax_value);
                   $(".tax_amt").html(res.gst);
@@ -795,7 +807,7 @@ $(".cart_promo").addClass('coupon_show');
                       $("#final_price").val(res.final_price);
                               $(".final_price").html(res.final_price);
                               $(".couponcode").html(res.COUPONCODE);
-                              $(".applied_coupon_box").html("Coupon  "+res.COUPONCODE+" Applied Successfully <span class='fa fa-times' onclick='remove_coupon()'></span>");
+                              $(".applied_coupon_box").html("Coupon Code "+res.COUPONCODE+" Applied Successfully <span class='fa fa-times' onclick='remove_coupon()'></span>");
                            $(".applied_coupon_box").css("color","red");
                                $(".applied_coupon_box").css("fontWeight","800");
                                 $(".applied_coupon_box").css('display','block');
@@ -1087,3 +1099,19 @@ success:function(response){
 }
 });
 });
+function readd(id){
+add_detail();
+alert(FRONT_PATH+"/readd/"+id);
+
+$.ajax({
+url:FRONT_PATH+"/readd/"+id,
+method:"get",
+success:function(response){
+  add_detail();
+  alert(response);
+  console.log(response);
+alert(FRONT_PATH+"/readd/"+id);
+
+}
+});
+}

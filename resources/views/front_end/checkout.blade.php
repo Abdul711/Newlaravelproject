@@ -30,21 +30,25 @@
                       <div id="collapseOne" class="panel-collapse collapse in" >
                         <div class="panel-body">
 @php
-                        if(isset($_SESSION['COUPONCODE'])){
-                        
-                  
-                 
+                    if(session()->has('COUPONCODE')){
+                        $class_box1="hide_coupon_box";
+                        $class_box2="show_coupon_box";
+     
                         
                      
+                        }else{
+                          $class_box1="show_coupon_box";
+                        $class_box2="hide_coupon_box";
+                    
                         }
                         @endphp
-                        <div class="apply_coupon_box  ">
-                          <input type="text" placeholder="Coupon Code" class=" aa-coupon-code" id="coupon_code">
+                        <div class="apply_coupon_box {{$class_box1}} ">
+                          <input type="text" placeholder="Coupon Code" class="  aa-coupon-code" id="coupon_code">
                           <input type="submit" value="Apply Coupon" class="aa-browse-btn apply_coupon" >
                           </div>
                         
-                          <div class="applied_coupon_box show_coupon_box"> 
-                       <span style="color:red; font-weight:800">Coupon {{session('COUPONCODE')}} Applied Successfully<span>
+                          <div class="applied_coupon_box {{$class_box2}} "> 
+                       <span style="color:red; font-weight:800">Coupon Code {{session('COUPONCODE')}} Applied Successfully<span>
                        <span class='fa fa-times' onclick='remove_coupon()'></span>
                           </div>
                         </div>
