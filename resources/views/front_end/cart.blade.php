@@ -17,7 +17,7 @@
              <form action="">
                <div class="table-responsive">
                   <table class="table">
-                  You Will Earn <span class="point">{{$total_point}}</span> Points
+        
                     <thead>
                       <tr>
                         <th></th>

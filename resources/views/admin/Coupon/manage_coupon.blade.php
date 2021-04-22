@@ -44,6 +44,10 @@
                                                 <p class="text-danger"> @error('cart_min_value'){{$message}}@enderror</p>
                                             </div>
                                             <div class="form-group">
+                                            <label for="cc-payment" class="control-label mb-1">Expiry Date </label>
+                                            <input id="cc-pament" name="expiry_date" type="datetime-local" class="form-control" aria-required="true" aria-invalid="false" value="{{$expiry_date}}">
+                                            </div>
+                                            <div class="form-group">
                                             <label for="cc-payment" class="control-label mb-1">Select Coupon Type </label>
                                             <select name="coupon_type">
                                             <option value="">Select Coupon Type</option>

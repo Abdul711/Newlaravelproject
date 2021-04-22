@@ -340,13 +340,33 @@ public function manage_reward(){
   $result["rewards"]="";
   $result["page_title"]="Add Rewards";
   $result["page_btn"]="Add Rewards";
+
   return view('admin.rewards.manage_rewards',$result);
+}
+public function reward_status($id){
+  echo $id;
+$reward_status=DB::table('rewards')->select('status')->where('id','=',$id)->get();
+prx($reward_status);
+$st=$reward_status[0]->status;
+
+if($st==1){
+  $new_state="Deactive";
+  $new_status=0;
+}else{
+  $new_state="Active";
+  $new_status=1;
+}
+$reward_status=DB::table('rewards')->select('status')->where('id','=',$id)->update([
+  'status'=>$new_status
+]);
+return redirect('admin/reward');
 }
  public function manage_reward_process(Request $req)
 {
   unset($_POST['_token']);
 
   $data=$_POST;
+  $data["status"]="1";
   unset($data['_token']);
   # code...
   DB::table("rewards")->insert($data);

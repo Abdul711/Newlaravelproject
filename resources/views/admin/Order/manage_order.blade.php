@@ -28,6 +28,12 @@
 <p>Payment Type: {{ucfirst($order_detail[0]->customer_payment)}}</p>
 <p>Order Date: {{date("d-M-Y",strtotime($order_detail[0]->created_at))}}</p>
 <p>Order Time: {{date("h:i a",strtotime($order_detail[0]->created_at))}}</p>
+
+@if($order_detail[0]->payment_status==1)
+<p>Payment Status : Success </p>
+@else
+<p>Payment Status : Pending </p>
+@endif
 </div>
 <a href="{{url('/print_invoice/'.$order_detail[0]->id)}}" class="btn btn-primary">Print Invoice </a>
 

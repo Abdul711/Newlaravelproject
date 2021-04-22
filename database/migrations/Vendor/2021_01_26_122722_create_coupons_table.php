@@ -19,6 +19,7 @@ class CreateCouponsTable extends Migration
             $table->string('coupon_value');
             $table->string('coupon_type');
             $table->string('cart_min_value');
+            $table->string('expiry_date');
             $table->string('status');
             $table->timestamps();
         });

@@ -572,8 +572,15 @@ if(response.status=="error"){
    $(".cart_total").html(response.cart_total+" Rs ");
       $(".gst").html(response.gst+" Rs ");
                  $(".gst").html(response.gst+" Rs ");
-$(".point").html(response.cart_point);
-           
+$(".points").html(response.cart_point);
+
+  if(response.delivery_charge>0){
+delivery_charge_text=response.delivery_charge+" Rs ";
+
+  }else{
+delivery_charge_text="Free Delivery";
+  }  
+   $(".delivery_charge").html(delivery_charge_text);         
              $(".final").html(response.final_price+" Rs ");
 
  
@@ -587,7 +594,7 @@ delivery_charge_text=response.delivery_charge+" Rs ";
   }else{
 delivery_charge_text="Free Delivery";
   }
-  $(".point").html(response.cart_point);
+  $(".points").html(response.cart_point);
   $(".delivery_charge").html(delivery_charge_text);
   $(".cart_total").html(response.cart_total+" Rs ");
   $(".gst").html(response.gst+" Rs ");
@@ -711,17 +718,7 @@ $("#box"+attr_id).remove();
 
 $("#price"+attr_id).html('Rs'+qty*price);
 add_to_cart();
-if(response.delivery_charge>0){
-  delivery_charge_text=response.delivery_charge+" Rs ";
-  
-    }else{
-  delivery_charge_text="Free Delivery";
-    }
-    $(".point").html(response.cart_point);
-    $(".delivery_charge").html(delivery_charge_text);
-    $(".cart_total").html(response.cart_total+" Rs ");
-    $(".gst").html(response.gst+" Rs ");
-    $(".final").html(response.final_price+" Rs ");
+
 
 _
 }

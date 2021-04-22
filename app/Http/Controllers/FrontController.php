@@ -908,6 +908,12 @@ $user_point["type"]=$point_type;
 $user_point["created_at"]=$date_today;
 managePoint($customer_id,$point_type,$points);
 /*DB::table("users_ppoint")->insertGetId($user_point);*/
+if($customer_payment=="COD"){
+    $payment_status=0;
+}else{
+    $payment_status=1;
+}
+$data["payment_status"]=$payment_status;
 $data["delivery_type"]=$delivery_type;
 $data["delivery_expected_time"]=$delivery_time;
 $data["customer_name"]=$customer_name;
@@ -1020,16 +1026,25 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
  
   if(isset($coupons[0])){
   
-  
-   
-
+    $expiry_date=$coupons[0]->expiry_date;
+      $time1=strtotime($expiry_date);
+      $time2=strtotime(date("Y-M-d h:i:s"));
+      if($time2>$time1){
+    $status="error";
+    $msg="$coupon Expired";
+    return response()->json(["cart_promo"=>$cart_promo,"gst"=>$gst,"tax_value"=>$tax_value,
+    "COUPONCODE"=>$COUPONCODE,"delivery_charge"=>$delivery_charge,"final_price"=>$final_price,
+    "discount"=>$discount,"coupon_id"=>$coupon_id,"cart_total"=>$cart_total,"total_item"=>$total_item,
+    "status"=>$status,"msg"=>$msg,"wallet"=>$amt_w,"min_cart"=>$min_cart_am
+    ]);   
+      }
    $type=$coupons[0]->coupon_type;
       if($cart_total > $coupons[0]->cart_min_value){
      if($type=="Fixed"){
          $coupon_discount=$coupons[0]->coupon_value;
      }
      if($type=="Percentage"){
-        $coupon_discount=(($coupons[0]->coupon_value)/100)*$cart_total;
+        $coupon_discount=floor((($coupons[0]->coupon_value)/100)*$cart_total);
 
     }
     if($coupons[0]->max_discount<$coupon_discount){
@@ -1313,7 +1328,7 @@ public function rad(){
             }else{
               $point=0; 
             }
-            $rewards=DB::table("rewards")->get();
+            $rewards=DB::table("rewards")->where('status','=',1)->get();
             $rewards=json_decode($rewards,true);
            $result["points"]=$point;
            $result["rewards"]=$rewards;

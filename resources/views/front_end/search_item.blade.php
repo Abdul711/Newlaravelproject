@@ -53,7 +53,7 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                         @else
                         <li>
                           <figure>
-                            No data found
+                            No Product Found
                           <figure>
                         <li>
                         @endif

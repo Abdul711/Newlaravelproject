@@ -65,6 +65,7 @@ class CouponController extends Controller
         $result['coupon_id']=$arr['0']->id;
         $result['coupon_type']=$arr['0']->coupon_type;
         $result["coupon_max_discount"]=$arr['0']->max_discount;
+        $result["expiry_date"]=$arr['0']->expiry_date;
     }else{
         $result['coupon_name']='';
         $result['coupon_btn']="Add Coupon Code";
@@ -74,6 +75,7 @@ class CouponController extends Controller
         $result['coupon_cart']="";
         $result['coupon_type']="";
         $result["coupon_max_discount"]="";
+        $result["expiry_date"]="";
     }
     /*
     prx($result);
@@ -172,12 +174,14 @@ class CouponController extends Controller
              if ($validator->fails()) {
              return redirect($link)->withErrors($validator)->withInput();
             }else{
+           
                $coupon_code= $request->post('coupon_code');
                $coupon_code_value= $request->post('coupon_code_value');
                $cart_min_value= $request->post('cart_min_value');
                $coupon_type= $request->post('coupon_type');
                $coupon_id=$request->post('coupon_id');
                $max_discount=$request->post('coupon_max_discount');
+               $expiry_date=$request->post('expiry_date');
                if($coupon_type==="Percentage"){
                 if($coupon_code_value >= 100){
                     $coupon_code_value==55;
@@ -200,6 +204,7 @@ class CouponController extends Controller
                $model->coupon_type=$coupon_type;
                $model->cart_min_value=$cart_min_value;
                $model->max_discount=$max_discount;
+               $model->expiry_date=$expiry_date;
                $model->save();
             
                $request->session()->flash("message","$message");

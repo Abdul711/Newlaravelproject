@@ -17,6 +17,7 @@ class CreateRewardsTable extends Migration
             $table->id();
             $table->string('point');
             $table->string('reward');
+            $table->string('status');
             $table->timestamps();
         });
     }

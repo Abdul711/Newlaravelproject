@@ -32,6 +32,7 @@
                         <th>Payment Method</th>
                         <th>Discount</th>
                         <th>Date/Time</th>
+                        <th>Payment Status</th>
                         <th>Status</th>
                       </tr>
                     </thead>
@@ -65,13 +66,20 @@
                     @if($order->coupon_value>0)
                       <td class="{{$class_ta}}">
                    <p> Discount {{$order->coupon_value}} Rs </p>
-                   <p> Coupon: {{$order->coupon_code}} </p>  
+                   <p> Coupon: <p>{{$order->coupon_code}}</p> </p>  
                       </td>
                       @else
                            <td class="{{$class_ta}}">No Discount Applied</td>           
                       @endif
                       <td class="{{$class_ta}}">{{date('d-M-Y',strtotime($order->created_at))}}
                       <p>{{date('h:i a',strtotime($order->created_at))}}</p>
+                      </td>
+                      <td>
+                      @if($order->payment_status==1)
+                  <p>Payment Paid</p>
+                     @else
+                     <a>Pay Now </a>
+                      @endif
                       </td>
                      @if($order->orders_status==1)
                       <td class="{{$class_ta}}">

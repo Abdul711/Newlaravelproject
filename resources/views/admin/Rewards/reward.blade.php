@@ -29,7 +29,7 @@
                             <th>S.NO</th>
                             <th>Point</th>
                              <th> Rewards </th>
-                          
+                             <th> Action </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +47,15 @@
                     @endphp 
                   
 @foreach($rewards as $keys => $value)
-
+@php
+if($value->status==1){
+$btn_class="btn btn-success";
+$btn_text="Active";
+}else{
+    $btn_class="btn btn-danger";
+$btn_text="Deactive";
+}
+@endphp
              <tr>
 <td>{{$keys+1}}
 
@@ -59,7 +67,9 @@
 <td>
 {{$value->reward}} Rs
 </td>
-
+<td>
+<a href="{{url('admin/reward/status/'.$value->id)}}" class="{{$btn_class}}">{{$btn_text}}</a>
+</td>
 
 
 

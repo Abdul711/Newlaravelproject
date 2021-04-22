@@ -173,6 +173,7 @@ Route::post('admin/setting',[SettingWebsiteController::class,'manage_web_process
 Route::post('admin/reward/manage_rewards',[AdminController::class,'manage_reward_process'])->name('reward.store');   
 Route::get('admin/reward/manage_rewards',[AdminController::class,'manage_reward']);     
 Route::get('admin/reward',[AdminController::class,"reward_detail"]);
+Route::get('admin/reward/status/{id}',[AdminController::class,"reward_status"]);
 Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');

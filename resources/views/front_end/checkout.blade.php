@@ -247,7 +247,7 @@
                 <div class="checkout-right">
                   <h4>Order Summary</h4>
                   <div class="aa-order-summary-area">
-               
+               You  Will Earn  {{total_point()}}  Points
             
                   @foreach($cart_datas as $cart_data)
                   @php
