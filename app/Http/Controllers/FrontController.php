@@ -510,12 +510,16 @@ return view('front_end.product-sub_category',$result);
 
  function registration_process(Request $reg)
 {
+
 $user_name=$reg->post('user_name');
 $user_email=$reg->post('user_email');
 $user_mobile=$reg->post('user_mobile');
 $user_password=$reg->post('user_password');
+$user_referal_code=$reg->post('user_referral_code');
 $user_password=Hash::make($user_password);
 $user_status=1;      
+ $referal_code=Str::random(6);
+ 
 
 $mr=mt_rand(1000,9999);
 $mrt=mt_rand(1,9999999);
@@ -533,11 +537,14 @@ if($data_result>0){
     $users["to"]="syedabdultechnicalcop@gmail.com";
     $data["name"]=$user_name;
     $template_name="mail";
-     Mail::send($template_name,$data,function($messages) use ($users){
+   /*  Mail::send($template_name,$data,function($messages) use ($users){
         $messages->to($users["to"]);
         $messages->subject("Thank for Registration");
-    });
+    });*/
 $mr="";
+
+
+
      $insert_user_arr=[
          "customer_name"=>$user_name,
          "customer_email"=>$user_email,
@@ -546,13 +553,43 @@ $mr="";
          "customer_otp"=>$mr,
          "customer_verified"=>"0",
          "customer_rand_str"=>$mrt,
-         "customer_status"=>"1"
+         "customer_status"=>"1",
+         "customer_status"=>"1",
+   "customer_referral"=>$referal_code
      ];
 /*print_r($insert_user_arr);*/
-DB::table("customers")->insert($insert_user_arr);
-
-
-
+$customer_id=DB::table("customers")->insertGetId($insert_user_arr);
+$date_today=date("Y-m-d H:i:s");
+$resul=DB::table("web_setting")->get();
+if(isset($resul[0])){
+    $referral_amount=$resul[0]->referral_amount;
+    $sign_up_reward=$resul[0]->sign_up_reward;
+    }else{
+        $referral_amount=0;   
+         $sign_up_reward=0;
+    }
+if($user_referal_code!=""){
+ 
+    $user_referal_code_data=DB::table("customers")->where("customer_referral",'=',$user_referal_code)->get();
+    if(isset($user_referal_code_data[0])){
+        $refer_amount=$referral_amount;
+        $user_referal_code_data=DB::table("customers")->where("id",'=',$customer_id)->update(
+            [
+                'customer_from_referral'=>$user_referal_code
+            ]
+            );
+    }else{
+        $refer_amount=0;
+        $user_referal_code_data=DB::table("customers")->where("id",'=',$customer_id)->delete();
+        return response()->json(['status'=>"error",'msg'=>"Invalid Referral Code"]);
+    }
+}else{
+    $refer_amount=0;
+}
+$amount_to=$sign_up_reward+$referral_amount;
+  $msg="Sign Up Reward";
+        $type_trans="in";
+        ManageWallet($customer_id,$amount_to,$msg,$type_trans,$date_today);
 
 
   return response()->json(['status'=>"success",'msg'=>"User Register"]);  
@@ -856,6 +893,7 @@ public function PlaceOrder(Request $req)
 {
 
  $date_today=date("Y-m-d H:i:s");
+ $resul=DB::table("web_setting")->get();
  /*  $webset=webSetting();
 $webset=json_decode($webset,true);
 print_r($webset);*/
@@ -869,7 +907,7 @@ if($delivery_type=="scheduled"){
     return response()->json(["status"=>"error","msg"=>"Slot is Booked"]);    
     }
 }
-$resul=DB::table("web_setting")->get();
+
 if(isset($resul[0])){
 $min_cart_amt=$resul[0]->min_cart_amt;
 

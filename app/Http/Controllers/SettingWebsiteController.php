@@ -22,15 +22,20 @@ class SettingWebsiteController extends Controller
         $result["web_status"]=$resul[0]->web_status;
         $result["discount_on_first"]=$resul[0]->discount_on_first;
         $result["no_of_order"]=$resul[0]->no_of_order;
+        $result["point_reward_per"]=$resul[0]->point_reward_per;
+        $result["sign_up_reward"]=$resul[0]->sign_up_reward;
+        $result["referral_amount"]=$resul[0]->referral_amount;
       }else{
         $result["min_cart_amt"]="";
         $result["free_delivery_cart"]="";
         $result["web_status"]="";
         $result["discount_on_first"]="";
         $result["no_of_order"]="";
-      
+        $result["point_reward_per"]="";
+        $result["sign_up_reward"]="";
+        $result["referral_amount"]="";
     }
-
+    
         return view('admin.web_set',$result);
     }
 

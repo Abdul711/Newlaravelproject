@@ -412,6 +412,7 @@ $("#register_user").submit(function (e) {
     console.log(result);
   if(result.status=="success"){
     swal("Congratulations!",result.msg,result.status);
+    window.location.href=FRONT_PATH+"/register_success";
   }
     if(result.status=="error"){
     swal("Oops!",result.msg,result.status);

@@ -23,7 +23,9 @@ class CreateCustomersTable extends Migration
             $table->string('customer_rand_str')->nullable();
             $table->string('customer_mobile')->nullable();
             $table->string('customer_verified')->nullable();
-     
+            $table->string('customer_referral')->nullable();
+            $table->string('customer_from_referral')->nullable();
+ 
             $table->timestamps();
             
         });

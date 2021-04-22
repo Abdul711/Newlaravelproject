@@ -31,6 +31,7 @@ Route::get('/category/{id}', [FrontController::class,'view_product_by_cat']);
 Route::get('/sub_category/{id}', [FrontController::class,'view_product_by_sub']);
 Route::get('/pastOrder',[FrontController::class,'pastOrder']);
 Route::get('/remdemPoint',[FrontController::class,'rad']);
+
 Route::get('/redeem/{id}',[FrontController::class,'redeem']);
 Route::get('/remove_coupon',[FrontController::class,'remove_coupon']);
 Route::get('/readd/{id}',[FrontController::class,"readd"]);
@@ -46,6 +47,9 @@ Route::get('/logout', function (Request $request) {
 });
 Route::get('/my_account', function () {
     return view('front_end.account');
+});
+Route::get('/register_success', function () {
+    return view('front_end.register_success');
 });
 Route::post('/review_rating',[FrontController::class,'review_rating']);
 

@@ -58,6 +58,31 @@
                                                  #aria-required="true" aria-invalid="false" value="{{$no_of_order}}" required="true">
                                              
                                             </div>
+                                                
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Referal Amount</label>
+                                                <input id="cc-pament" 
+                                                required name="referral_amount"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$referral_amount}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">First Time Sign Up Reward</label>
+                                                <input id="cc-pament" 
+                                                required name="sign_up_reward"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$sign_up_reward}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1"> Reward Percentage</label>
+                                                <input id="cc-pament" 
+                                                required name="point_reward_per"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$point_reward_per}}" required="true">
+                                             
+                                            </div>
                                             <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1">Web Status</label>
                                                <select name="web_status">

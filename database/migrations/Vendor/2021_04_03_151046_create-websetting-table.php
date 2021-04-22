@@ -21,6 +21,10 @@ class CreateWebsettingTable extends Migration
             $table->string('discount_on_first')->nullable();
             $table->string('no_of_order')->nullable();
             $table->integer('web_status')->nullable();
+            $table->integer('referral_amount')->nullable();
+            $table->integer('sign_up_reward')->nullable();
+            $table->integer('point_reward_per')->nullable();
+           
             $table->timestamps();
             
         });
