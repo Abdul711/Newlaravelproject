@@ -28,9 +28,8 @@
                         <tr>
                             <th>S.NO</th>
                             <th>Coupon Code</th>
-                            <th>Coupon Value </th>
-                            <th>Cart Min Value </th>
-                            <th>Coupon Type </th>
+                      
+                   
                             <th> Added On </th>
                             <th colspan="3"> Action </th>
                         </tr>
@@ -44,15 +43,13 @@
                  
                             
                         <tr>
-                        <td>{{$keys+1}}</td>
+                        <td>{{$keys+1}}
+                    <a class="btn btn-outline-secondary" href="{{url('admin/coupon/view_detail')}}/{{$category['id']}}">View Detail</a>
+                        </td>
                             <td>{{$category['coupon_code']}}</td>
-                            @if($category['coupon_type']=="Fixed")
-                            <td>{{$category['coupon_value']}} Rs</td>
-                            @elseif($category['coupon_type']=="Percentage")
-                            <td>{{$category['coupon_value']}} %</td>
-                            @endif
-                            <td>{{$category['cart_min_value']}}RS</td>
-                            <td>{{$category['coupon_type']}}</td>
+                     
+                        
+                   
                             <td>{{ date("d-M-Y H:i:s",strtotime($category['created_at']))}}</td>
                             @if($category['status']==0)
                              <td><a class="btn btn-warning" href="{{url('admin/coupon/status')}}/{{$category['id']}}/{{$category['status']}}">Deactive</a></td> 

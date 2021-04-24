@@ -89,9 +89,40 @@ class CouponController extends Controller
      * @param  \App\Models\Coupon  $coupon
      * @return \Illuminate\Http\Response
      */
-    public function edit(Coupon $coupon)
+    public function view_coupon_detail($id)
     {
-        //
+
+       $coupon_data= DB::table("coupons")->where('id','=',$id)->get();
+       $coupon_code=$coupon_data[0]->coupon_code;
+       $coupon_type=$coupon_data[0]->coupon_type;
+       if($coupon_type=="Fixed"){
+           $coupon_value=$coupon_data[0]->coupon_value." Rs ";
+       }else{
+        $coupon_value=$coupon_data[0]->coupon_value." % ";
+       }
+        $result["page_title"]="Coupon Detail ($coupon_code)";
+        $result["coupon_value"]=$coupon_value;
+
+   
+
+      $expiry_date=$coupon_data[0]->expiry_date;
+      $time1=strtotime($coupon_data[0]->expiry_date);
+      $time2=strtotime(date("Y-M-d h:i:s"));
+     
+
+  if($time2>$time1){
+    $expired="Yes";   
+  }else{
+      $expired="No";
+  }
+  $result["coupon_code"]=$coupon_code;   
+        $result["expired"]=$expired;
+        $result["expiry_date"]=$expiry_date;
+        $result["coupon_type"]=$coupon_type;
+        $result["cart_min_value"]=$coupon_data[0]->cart_min_value." Rs ";
+        $result["max_discount"]=$coupon_data[0]->max_discount." Rs ";
+        $result["register_date"]=date("d-F-Y",strtotime($coupon_data[0]->created_at));
+        return view('admin.coupon.coupon_detail',$result);
     }
 
     /**

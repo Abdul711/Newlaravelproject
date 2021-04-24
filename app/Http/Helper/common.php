@@ -290,4 +290,12 @@ $user_point["user_id"]=$user_id;
   $user_point["created_at"]=$date_today;
   DB::table("users_ppoint")->insert($user_point);
 }
+function NumberOfOrder ($id)
+{
+  $total_order=DB::table("orders")->where("customer_id",'=',$id)->count();
+  $total_amount_expand=DB::table("orders")->where("customer_id",'=',$id)->sum('final_price');
+  $total_array["total_order"]=$total_order;
+  $total_array["total_amount_expand"]=$total_amount_expand;
+return $total_array;
+}
 ?>

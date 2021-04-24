@@ -71,6 +71,7 @@ Route::get('/success', function () {
 Route::get('/failure', function () {
     return view('front_end.verify_failure');
 });
+Route::get('admin/customer_pdf',[FrontController::class,'customer_laravel_pdf']);
 Route::get('/cart',[FrontController::class,'cart_view']);
 Route::get('/place_coupon/{c}',[FrontController::class,'apply_coupon']);
 Route::get('/checkout',[FrontController::class,'checkout']);
@@ -128,6 +129,8 @@ Route::get('admin/coupon/delete/{id}',[CouponController::class,'destroy']);
 Route::get('admin/coupon/status/{id}/{status}',[CouponController::class,'update_status']);
 
 Route::get('admin/coupon/manage_coupon/{id?}',[CouponController::class,'manage']);
+
+Route::get('admin/coupon/view_detail/{id?}',[CouponController::class,'view_coupon_detail']);
 Route::post('admin/coupon/manage_coupon',[CouponController::class,'manage_coupon_process'])->name('coupon.store');
 
 /* Crud Operation Route For Color */
@@ -178,6 +181,8 @@ Route::post('admin/reward/manage_rewards',[AdminController::class,'manage_reward
 Route::get('admin/reward/manage_rewards',[AdminController::class,'manage_reward']);     
 Route::get('admin/reward',[AdminController::class,"reward_detail"]);
 Route::get('admin/reward/status/{id}',[AdminController::class,"reward_status"]);
+
+
 Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 use \PDF;
+use \PDF2;
 use \FPDF;
 use Str;
 class FrontController extends Controller
@@ -1476,5 +1477,57 @@ $data=DB::table("order_details")->where(['order_id'=>$id])->get();
             DB::table("carts")->insert($user_cart);
         }
 
-}
+
+    }
+   function  customer_laravel_pdf(){
+  
+
+
+
+   /* PDF2::SetTitle('Customer');
+    PDF2::SetAutoPageBreak(true,10);
+    PDF2::SetMargins(PDF_MARGIN_LEFT,'5',PDF_MARGIN_RIGHT);
+    PDF2::AddPage();*/
+    $content="";
+    $content="<style>th
+    {background-color:blue;
+    color:yellow;
+    text-align:center;
+    }
+    td{
+        text-align:center;
+    }
+
+    </style>";
+$customer_datas=DB::table('customers')->get();
+    $content.='<h1>Customer Data</h1>';
+    $content.='<table>';
+    $content.='<tr>';
+    $content.='<th>Name</th>';
+    $content.='<th>Mobile Number</th>';
+    $content.='<th>Email</th>';
+    $content.='<th>No Of Order</th>';
+    $content.='<th>Amount</th>';
+    $content.='</tr>';
+    foreach($customer_datas as $customer_data){
+    $total_orders=NumberOfOrder($customer_data->id);
+    $total_order=$total_orders["total_order"];
+    $total_amount_expand=$total_orders["total_amount_expand"];
+    $content.='<tr>';
+    $content.='<td>'.$customer_data->customer_name.'</td>';
+
+  
+    $content.='<td>'.$customer_data->customer_mobile.'</td>';
+    $content.='<td>'.$customer_data->customer_email.'</td>';
+    $content.='<td>'.$total_order.'</td>';
+    $content.='<td>'.$total_amount_expand.' Rs </td>';
+    $content.='</tr>';
+    }
+    $content.='</table>';
+ /*     PDF2::writeHTML($content);
+      PDF2::Output('hello_world.pdf');*/
+     $pdf = PDF::loadHTML($content);
+
+   return $pdf->download('invoice.pdf');
+    }
 }
