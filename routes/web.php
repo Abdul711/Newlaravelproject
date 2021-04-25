@@ -38,7 +38,7 @@ Route::get('/readd/{id}',[FrontController::class,"readd"]);
     Route::get('/send_invite', [FrontController::class,'invite_user']);
 Route::get('/customer_verify/{token?}',[FrontController::class,'customer_verify']);
 
-Route::get('/logout', function (Request $request) {
+Route::get('/logout', function () {
 
     session()->forget('FRONT_USER_LOGIN','0');   
     session()->forget('FRONT_USER_ID','0');   
@@ -71,7 +71,7 @@ Route::get('/success', function () {
 Route::get('/failure', function () {
     return view('front_end.verify_failure');
 });
-Route::get('admin/customer_pdf',[FrontController::class,'customer_laravel_pdf']);
+
 Route::get('/cart',[FrontController::class,'cart_view']);
 Route::get('/place_coupon/{c}',[FrontController::class,'apply_coupon']);
 Route::get('/checkout',[FrontController::class,'checkout']);
@@ -140,6 +140,8 @@ Route::get('admin/color/delete/{id}',[ColorController::class,'destroy']);
 Route::get('admin/color/manage_color/{id?}',[ColorController::class,'manage']);
 Route::post('admin/color/manage_color',[ColorController::class,'manage_color_process'])->name('color.store');
 Route::get('admin/color/status/{id}/{status}',[ColorController::class,'update_status']);
+Route::get('admin/customers',[AdminController::class,'customers']);
+Route::get('admin/customers/customer_pdf',[FrontController::class,'customer_laravel_pdf']);
 /* Crud Operation Route For Size */
 Route::get('admin/size',[SizeController::class,'show']);
 Route::get('admin/size/delete/{id}',[SizeController::class,'destroy']);

@@ -139,6 +139,14 @@ ADMIN_PATH="{{url('/admin')}}";
                             <a href="{{url('admin/order')}}">
                                 <i class="fas fa-tachometer-alt"></i>Order Management</a>
                         </li>
+                        <li>
+                            <a href="{{url('admin/customers')}}">
+                                <i class="fas fa-tachometer-alt"></i>Customers</a>
+                        </li>
+                        <li>
+                            <a href="{{url('admin/order')}}">
+                                <i class="fas fa-tachometer-alt"></i>Inventory System</a>
+                        </li>
                     </ul>
                 </nav>
             </div>

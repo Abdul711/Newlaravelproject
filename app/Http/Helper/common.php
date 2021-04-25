@@ -298,4 +298,19 @@ function NumberOfOrder ($id)
   $total_array["total_amount_expand"]=$total_amount_expand;
 return $total_array;
 }
+function order_detail($id){
+  $total_order=DB::table("orders")->where("id",'=',$id)->get();
+  return $total_order;
+}
+function customer_detail($customer_id){
+  $total_order=DB::table("customers")->where("id",'=',$customer_id)->get();
+  return $total_order;
+}
+function id_from_refer($customer_from_referral){
+  $customer_detail=	DB::table('customers')->where('customer_referral','=',$customer_from_referral)->get();
+ return $customer_detail[0]->id;
+}
+function order_point($id){
+  
+}
 ?>

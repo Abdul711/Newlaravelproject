@@ -249,7 +249,7 @@ $result['admin_role']=$admin_data[0]->role;
     }
     
     public function orders_detail (){
- $result["orders"]=Order::paginate(5);
+ $result["orders"]=Order::all();
      
 
  $result["totals"]=Order::count();
@@ -279,7 +279,22 @@ $result["total_item"]=count($result["cart_details"]);
 
 public function update_order_status($id,$status)
 {
-  echo $id;
+   $id;
+ $order_detail=order_detail($id);
+ $order_detail=json_decode($order_detail,true);
+  $customer_id=$order_detail[0]["customer_id"];
+ $customer_detail=customer_detail($customer_id);
+ $customer_detail=json_decode($customer_detail,true);
+ $customer_from_referral=$customer_detail[0]['customer_from_referral']; 
+ if($customer_from_referral!=""){
+   $id=id_from_refer($customer_from_referral);
+   $web=webSetting();
+ echo $web[0]->point_reward_per;
+ 
+
+ }
+
+ die();
    $status;
    if($status==1){
      $new_status="Under The Process";
@@ -371,5 +386,12 @@ return redirect('admin/reward');
   # code...
   DB::table("rewards")->insert($data);
   return redirect('admin/reward');
-}         
+
+} 
+public function customers(){
+  $result["customers"]=DB::table('customers')->paginate(5);
+ return view('admin/customers',$result);
+
+}
+
 }

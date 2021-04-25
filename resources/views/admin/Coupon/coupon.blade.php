@@ -44,7 +44,8 @@
                             
                         <tr>
                         <td>{{$keys+1}}
-                    <a class="btn btn-outline-secondary" href="{{url('admin/coupon/view_detail')}}/{{$category['id']}}">View Detail</a>
+                        <p>
+                    <a class="btn btn-outline-secondary" href="{{url('admin/coupon/view_detail')}}/{{$category['id']}}">View Detail</a></p>
                         </td>
                             <td>{{$category['coupon_code']}}</td>
                      

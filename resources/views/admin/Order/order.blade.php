@@ -99,10 +99,8 @@ Hand Over To Rider</a></td>
                         <td colspan='5' class="text-center text-danger">No Color Found In store</td>
                         </tr>
                         @endif
-                        <tr>
-                        <td colspan='7' >
-                        {{$orders->links('pagination::bootstrap-4')}}
-                        </td>
+                     
+                     
                  </tbody>
                 </table>
             </div>
