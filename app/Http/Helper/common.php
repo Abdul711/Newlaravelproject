@@ -311,6 +311,14 @@ function id_from_refer($customer_from_referral){
  return $customer_detail[0]->id;
 }
 function order_point($id){
-  
+ $points=DB::table('order_details')->where('order_id','=',$id)->get();
+ $total_point=0;
+foreach($points as $point){
+$price=$point->price;
+ $point=floor(0.2*$price);
+ $total_point= $total_point+$point;
+}
+ $total_point;
+  return $total_point;
 }
 ?>

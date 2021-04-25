@@ -1503,17 +1503,20 @@ $customer_datas=DB::table('customers')->get();
     $content.='<h1>Customer Data</h1>';
     $content.='<table>';
     $content.='<tr>';
+    $content.='<th>#</th>';
     $content.='<th>Name</th>';
     $content.='<th>Mobile Number</th>';
     $content.='<th>Email</th>';
-    $content.='<th>No Of Order</th>';
+    $content.='<th>Orders</th>';
     $content.='<th>Amount</th>';
     $content.='</tr>';
-    foreach($customer_datas as $customer_data){
+    foreach($customer_datas as $key=> $customer_data){
     $total_orders=NumberOfOrder($customer_data->id);
+    $key=$key+1;
     $total_order=$total_orders["total_order"];
     $total_amount_expand=$total_orders["total_amount_expand"];
     $content.='<tr>';
+    $content.='<td>'.$key.'</td>';
     $content.='<td>'.$customer_data->customer_name.'</td>';
 
   
@@ -1528,6 +1531,6 @@ $customer_datas=DB::table('customers')->get();
       PDF2::Output('hello_world.pdf');*/
      $pdf = PDF::loadHTML($content);
 
-   return $pdf->download('invoice.pdf');
+   return $pdf->download('customer_data.pdf');
     }
 }

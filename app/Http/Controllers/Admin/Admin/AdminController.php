@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Order;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\CustomersExport;
+use Excel;
 class AdminController extends Controller
 {
     /**
@@ -249,7 +252,7 @@ $result['admin_role']=$admin_data[0]->role;
     }
     
     public function orders_detail (){
- $result["orders"]=Order::all();
+ $result["orders"]=DB::table('orders')->orderBy('id','desc')->get();
      
 
  $result["totals"]=Order::count();
@@ -279,23 +282,10 @@ $result["total_item"]=count($result["cart_details"]);
 
 public function update_order_status($id,$status)
 {
-   $id;
- $order_detail=order_detail($id);
- $order_detail=json_decode($order_detail,true);
-  $customer_id=$order_detail[0]["customer_id"];
- $customer_detail=customer_detail($customer_id);
- $customer_detail=json_decode($customer_detail,true);
- $customer_from_referral=$customer_detail[0]['customer_from_referral']; 
- if($customer_from_referral!=""){
-   $id=id_from_refer($customer_from_referral);
-   $web=webSetting();
- echo $web[0]->point_reward_per;
- 
+  
 
- }
 
- die();
-   $status;
+
    if($status==1){
      $new_status="Under The Process";
      $new_state=2;
@@ -309,8 +299,24 @@ public function update_order_status($id,$status)
     $new_state=4;
   }
   if($status==4){
-    $new_status="Delivered";
-    $new_state=5;
+     $new_status="Delivered";
+     $new_state=5;
+    $order_detail=order_detail($id);
+ $customer_id=$order_detail[0]->customer_id;
+$customer_detail=customer_detail($customer_id);
+ $web=webSetting();
+$per=$web[0]->point_reward_per;
+$points=order_point($id);
+$type="in";
+$point=floor(($per/100)*$points);
+$customer_from_referral=$customer_detail[0]->customer_from_referral;
+if($customer_from_referral!=''){
+$user_id=id_from_refer($customer_from_referral);
+}else{
+  $user_id=0;
+}
+managePoint($user_id,$type,$point);
+
   }
   if($status==5){
     $new_status="Delivered";
@@ -322,6 +328,7 @@ public function update_order_status($id,$status)
     $order_model->save();
     session()->flash("message",$msg);
     return redirect('admin/order');
+    
 }
 public function order_cancel($id)
 {
@@ -393,5 +400,11 @@ public function customers(){
  return view('admin/customers',$result);
 
 }
+public function customer_laravel_excel()
+{
+return Excel::download(new CustomersExport,'users.xls');
 
+/*
+php artisan make:export CustomersExport --model=Customer*/
+}
 }

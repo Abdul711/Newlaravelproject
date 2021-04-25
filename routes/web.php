@@ -142,6 +142,7 @@ Route::post('admin/color/manage_color',[ColorController::class,'manage_color_pro
 Route::get('admin/color/status/{id}/{status}',[ColorController::class,'update_status']);
 Route::get('admin/customers',[AdminController::class,'customers']);
 Route::get('admin/customers/customer_pdf',[FrontController::class,'customer_laravel_pdf']);
+Route::get('admin/customers/customer_excel',[AdminController::class,'customer_laravel_excel']);
 /* Crud Operation Route For Size */
 Route::get('admin/size',[SizeController::class,'show']);
 Route::get('admin/size/delete/{id}',[SizeController::class,'destroy']);
