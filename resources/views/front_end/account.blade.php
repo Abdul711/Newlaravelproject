@@ -54,7 +54,7 @@
                     <label for="">Mobile<span>*</span></label>
                     <input type="text" id="user_mobile_reg"   name="user_mobile" placeholder="Mobile">
                     <label for="">Referal Code<span>(Optional)</span></label>
-                    <input type="text"    name="user_referral_code" placeholder="Mobile">
+                    <input type="text"    name="user_referral_code" placeholder="Referal Code">
                     <button type="submit" id="register" class="aa-browse-btn">Register</button>   
 
                     @csrf                 

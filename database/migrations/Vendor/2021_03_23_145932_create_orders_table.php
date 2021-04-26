@@ -35,6 +35,8 @@ class CreateOrdersTable extends Migration
             $table->string('delivery_type')->nullable();
             $table->string('delivery_expected_time')->nullable();
             $table->string('payment_status')->nullable();
+
+            $table->string('order_date')->nullable();
             $table->timestamps();
             
         });

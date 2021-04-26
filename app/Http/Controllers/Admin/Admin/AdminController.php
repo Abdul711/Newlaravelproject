@@ -407,4 +407,11 @@ return Excel::download(new CustomersExport,'users.xls');
 /*
 php artisan make:export CustomersExport --model=Customer*/
 }
+public function inventory(){
+$detail=order_detail_by_date();
+$result['order_dates']=$detail;
+
+return view('admin.inventory',$result);
+}
+
 }

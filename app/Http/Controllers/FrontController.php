@@ -146,15 +146,19 @@ class FrontController extends Controller
       
      $result["order_product"] = $order_product;
     }else{
-     $user_id=$_COOKIE["CUSTOMER_ID"];
+        if(isset($_COOKIE["CUSTOMER_ID"])){
+      $user_id=$_COOKIE["CUSTOMER_ID"];
+        
+
      $order_product=DB::table('order_details')->select('product_id')->where('user_id','=',$user_id)->get();
      $order_product=json_decode($order_product,true);
-     
+    
      foreach($order_product as $order_products){
-  array_push($order_product,$order_products->product_id);
+  array_push($order_product,$order_products['product_id']);
 }
 
     $result["order_product"] = $order_product;
+}
     }
 
     foreach($result['product'] as $list1){
@@ -972,6 +976,7 @@ $data["zipcode"]=$zipcode;
 $data["city"]=$city;
 $data["district"]=$district;
 $data["created_at"]=date("Y-m-d H:i:s");
+$data["order_date"]=date("Y-m-d");
 $user_carts=userCartTo();
 $user_carts=json_decode($user_carts,true);
 

@@ -321,4 +321,16 @@ $price=$point->price;
  $total_point;
   return $total_point;
 }
+function order_detail_by_date(){
+return DB::table('orders')->distinct()->select('order_date')->get();
+}
+function order_detail_by_date_no($date_t){
+ return DB::table('orders')->where('order_date','=',$date_t)->count();
+
+}
+function amount_earned($date_t){
+  return DB::table('orders')->where('order_date','=',$date_t)->where('orders_status','=','5')->sum('final_price');
+ 
+ }
+
 ?>
