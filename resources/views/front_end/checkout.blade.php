@@ -325,7 +325,7 @@ Color:<b>{{$cart_data["product_colors"]}}</b><br>
              
                    
                                @php 
-                               if($final_price < $wallet_amt){
+                               if($final_price < $wallet_amt && $wallet_amt > 0 ){
                                  $check="checked";
                                 $dis=""; 
                                 $msg="";

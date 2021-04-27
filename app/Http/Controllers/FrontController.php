@@ -936,11 +936,23 @@ if($total_price<$min_cart_amt){
 
 
 if($customer_payment=="Wallet"){
-
-
+    $payment_status=1;
     $msg="Payment For Order";
     $type_trans="out";
-    ManageWallet($customer_id,$final_price,$msg,$type_trans,$date_today);
+    $date_today=date("Y-m-d H:i:s");
+
+
+  $amt_w=WalletAmt($customer_id);
+     if($final_price > $amt_w){
+     $remaining_amount=$final_price-$amt_w;
+     $amount=$amt_w;
+     }else{
+        $remaining_amount=0;
+        $amount=$final_price;
+     }
+ 
+  ManageWallet($customer_id,$amount,$msg,$type_trans);
+  
 }
 $points=total_point();
 $point_type="in";
@@ -953,9 +965,15 @@ managePoint($customer_id,$point_type,$points);
 /*DB::table("users_ppoint")->insertGetId($user_point);*/
 if($customer_payment=="COD"){
     $payment_status=0;
-}else{
+    $remaining_amount=$final_price;
+
+}if($customer_payment=="paypal"){
     $payment_status=1;
+    $remaining_amount=0;
+   
 }
+
+$data["remaining_amount"]=$remaining_amount;
 $data["payment_status"]=$payment_status;
 $data["delivery_type"]=$delivery_type;
 $data["delivery_expected_time"]=$delivery_time;

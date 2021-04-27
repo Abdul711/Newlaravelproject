@@ -18,7 +18,7 @@
 </div>
 @endif 
 <a href="{{url('admin/customers/customer_pdf')}}">Print Out Report(PDF)</a>
-<a href="{{url('admin/customers/customer_excel')}}">Print Out Report(Excel)</a>
+<a href="{{url('admin/customers/inventory_excel')}}">Print Out Report(Excel)</a>
             <div class="table-responsive m-b-40">
                 <table class="table table-borderless table-data3">
                     <thead>
@@ -27,7 +27,7 @@
                             <th> Date </th>
                         <th>Number Of Order </th>
                             <th>Amount Earned </th>
-                            <th>Average Amount Per Order </th>
+                     
                         </tr>
                     </thead>
                     <tbody>
@@ -57,7 +57,7 @@ $total_amount=array();
 <td>{{date("d-F-Y",strtotime($customer->order_date))}}</td>
 <td>{{$number_of}}</td>
 <td> {{$amount_gain}} Rs </td>
-<td> {{$amount_ratio}} </td>
+
 </tr>
 
 

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\CustomersExport;
+use App\Exports\Inventory;
 use Excel;
 class AdminController extends Controller
 {
@@ -403,6 +404,13 @@ public function customers(){
 public function customer_laravel_excel()
 {
 return Excel::download(new CustomersExport,'users.xls');
+
+/*
+php artisan make:export CustomersExport --model=Customer*/
+}
+public function inventory_laravel_excel()
+{
+return Excel::download(new Inventory,'inventory.xls');
 
 /*
 php artisan make:export CustomersExport --model=Customer*/

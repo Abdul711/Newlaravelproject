@@ -60,7 +60,9 @@
                 
                 <!-- start cellphone -->
                 <div class="cellphone hidden-xs">
-                  <p><span class="fa fa-phone"></span>00-62-658-658</p>
+                  <p><span class="fa fa-phone"></span>00-62-658-658
+                <span class="fa fa-envelope p-1"></span>abdulsamadahsan@gmail.com</p>
+              
                 </div>
                 <!-- / cellphone -->
               </div>
