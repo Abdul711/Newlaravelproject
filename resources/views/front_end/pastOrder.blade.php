@@ -33,7 +33,7 @@
                         <th>Discount</th>
                         <th>Date/Time</th>
                         <th>Payment Status</th>
-                        <th>Status</th>
+                
                       </tr>
                     </thead>
                              
@@ -41,9 +41,15 @@
                  
                     
                     @foreach($orders as $key => $order)
+@php
 
-       
-
+                $payment=$order->customer_payment;
+                if($payment=="Wallet" && 	$order->remaining_amount>0){
+                  $payment_method="COD & Wallet";
+                }else{
+                  $payment_method=$payment;
+                }
+@endphp
                     
                        
                       <tr>
@@ -62,7 +68,7 @@
                       
                       </td>
                       <td class="{{$class_ta}}">{{$order->final_price}} Rs </td>
-                      <td class="{{$class_ta}}">{{$order->customer_payment}}</td>
+                      <td class="{{$class_ta}}">{{$payment_method}}</td>
                     @if($order->coupon_value>0)
                       <td class="{{$class_ta}}">
                    <p> Discount {{$order->coupon_value}} Rs </p>
@@ -74,13 +80,7 @@
                       <td class="{{$class_ta}}">{{date('d-M-Y',strtotime($order->created_at))}}
                       <p>{{date('h:i a',strtotime($order->created_at))}}</p>
                       </td>
-                      <td>
-                      @if($order->payment_status==1)
-                  <p>Payment Paid</p>
-                     @else
-                     <a>Pay Now </a>
-                      @endif
-                      </td>
+                 
                      @if($order->orders_status==1)
                       <td class="{{$class_ta}}">
                       Pending
@@ -105,6 +105,7 @@ Delivered
                       <td class="{{$class_ta}}">
 Cancelled
                       </td>
+           
                       @endif
      
      </tr>        

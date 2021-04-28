@@ -821,7 +821,7 @@ delivery_charge_text=res.delivery_charge+"Rs";
                 title_msg="Oops! Something Went Wrong";
          }
     
-         if(res.wallet>=res.final_price && res.wallet>0){
+         if(res.wallet>0){
  $(".wallet").prop("checked",true);
             $(".wallet").prop("disabled",false);
      $(".wallet_msg").text('');

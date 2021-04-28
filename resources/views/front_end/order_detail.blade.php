@@ -33,7 +33,15 @@
          Customer Email: {{$orders[0]->customer_email}}<br>
          Customer Mobile: {{$orders[0]->customer_phone}}<br>
          Delivery Address: {{$orders[0]->customer_address}}<br>
-         Payment Method: {{$orders[0]->customer_payment}}<br>
+               @php
+              $payment=$orders[0]->customer_payment;
+              if($payment=="Wallet" && $orders[0]->remaining_amount>0){
+                $payment_method="COD & Wallet";
+              }else{
+                $payment_method=$payment;
+              }
+               @endphp
+         Payment Method: {{$payment_method}}<br>
          Delivery Method: {{$orders[0]->delivery_type}}<br>
          Delivery Expected Time: {{date("d-F-Y h:i a",strtotime($orders[0]->delivery_expected_time))}}<br>
          District: {{$orders[0]->district}}<br>
@@ -47,6 +55,11 @@
          }
          @endphp
          City:{{$city_name}}<br>
+         @if($orders[0]->payment_status==0)
+         <p><a>Payment Pending</a> PayNow</p>
+@else
+<a>Payment Paid</a><br>
+         @endif
          Order No: {{$orders[0]->id}}<br>
          <a href="{{url('/print_invoice/'.$orders[0]->id)}}" class="btn btn-primary m-5">Print Invoice </a>
          </div>

@@ -278,6 +278,10 @@ function user_total_point($user_id){
      $in_point;
    $out_point;
    $myPoint=$in_point-$out_point;
+      if($myPoint<=0){
+        $myPoint=0;
+      }
+
  return $myPoint;
 }
  function managePoint($user_id,$type,$point)
