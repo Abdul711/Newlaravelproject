@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Exports\CustomersExport;
 use App\Exports\Inventory;
 use Excel;
+use \PDF;
 class AdminController extends Controller
 {
     /**
@@ -421,5 +422,59 @@ $result['order_dates']=$detail;
 
 return view('admin.inventory',$result);
 }
+function  inventory_laravel_pdf(){
+  
 
+
+
+  /* PDF2::SetTitle('Customer');
+   PDF2::SetAutoPageBreak(true,10);
+   PDF2::SetMargins(PDF_MARGIN_LEFT,'5',PDF_MARGIN_RIGHT);
+   PDF2::AddPage();*/
+   $content="";
+   $content="<style>th
+   {background-color:blue;
+   color:yellow;
+   text-align:center;
+   }
+   td{
+       text-align:center;
+   }
+
+   </style>";
+$customer_datas=order_detail_by_date();
+   $content.='<h1>Inventory Data</h1>';
+   $content.='<table>';
+   $content.='<tr>';
+   $content.='<th>#</th>';
+   $content.='<th>Order Date</th>';
+   $content.='<th>Number Of Order</th>';
+   $content.='<th>Amount Earned</th>';
+   $content.='<th>Total Item (Sold)</th>';
+   $content.='<th>Total Qty (Sold)</th>';
+   $content.='<th>Total Product (Sold)</th>';
+   $content.='</tr>';
+   foreach($customer_datas as $key=> $customer_data){
+     $key=$key+1;
+    $amount_gain=amount_earned($customer_data->order_date);
+    $number_of_order=order_detail_by_date_no($customer_data->order_date);
+    $total_item=total_item($customer_data->order_date);
+    $total_qty=total_qty($customer_data->order_date);
+   $content.='<tr>';
+   $content.='<td>'.$key.'</td>';
+   $content.='<td>'.date("d-F-Y",strtotime($customer_data->order_date)).'</td>';
+   $content.='<td>'.$number_of_order.'</td>';
+   $content.='<td>'.$amount_gain.' Rs </td>';
+   $content.='<td>'.$total_item.'</td>';
+   $content.='<td>'.$total_qty.'</td>';
+   $content.='<td>'.$total_item*$total_qty.'</td>';
+    $content.='</tr>';
+   }
+   $content.='</table>';
+/*     PDF2::writeHTML($content);
+     PDF2::Output('hello_world.pdf');*/
+    $pdf = PDF::loadHTML($content)->setPaper('a3',"portrait");
+
+  return $pdf->download('inven_data.pdf');
+   }
 }

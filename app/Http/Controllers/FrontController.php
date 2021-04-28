@@ -936,7 +936,7 @@ if($total_price<$min_cart_amt){
 
 
 if($customer_payment=="Wallet"){
-    $payment_status=1;
+  
     $msg="Payment For Order";
     $type_trans="out";
     $date_today=date("Y-m-d H:i:s");
@@ -946,9 +946,11 @@ if($customer_payment=="Wallet"){
      if($final_price > $amt_w){
      $remaining_amount=$final_price-$amt_w;
      $amount=$amt_w;
+     $payment_status=0;
      }else{
         $remaining_amount=0;
         $amount=$final_price;
+        $payment_status=1;
      }
  
   ManageWallet($customer_id,$amount,$msg,$type_trans);
@@ -1278,12 +1280,7 @@ if($orders[0]->delivery_charge==0){
 }else{
     $delivery_charge=$orders[0]->delivery_charge." Rs ";
 }
-if($orders[0]->customer_payment=="COD"){
-    $amount_due=$orders[0]->final_price." Rs ";
-}else{
-$amount_due="Payment Paid";
 
-}
 if($orders[0]->city==2){
 $cityName="Karachi";
 }else{
@@ -1292,10 +1289,18 @@ $cityName="Karachi";
 if($orders[0]->customer_payment=="COD"){
     $payment_method="Cash On Delivery";
 }else{
-
-    $payment_method=$orders[0]->customer_payment;
+$payment_method=$orders[0]->customer_payment;
 }   
-
+ if($payment_method=="Wallet" && $orders[0]->remaining_amount>0){
+     $amount_due= $orders[0]->remaining_amount." Rs ";
+     $payment_method="Cash On Delivery & Wallet";
+ }
+ if($payment_method=="Wallet" && $orders[0]->remaining_amount==0 || $payment_method=="paypal"){
+    $amount_due="Payment Paid";
+ }
+ if($payment_method=="Cash On Delivery"){
+    $amount_due=$orders[0]->final_price." Rs ";
+ }
 $payment_method=Str::camel($payment_method);
 $result["cityname"]=$cityName;
 $result["payment_method"]=$payment_method;
@@ -1306,6 +1311,7 @@ $result["final_price"]=$orders[0]->final_price;
 $result["total_item"]=count($result['order_details']);
 $result["delivery_time"]=$orders[0]->delivery_expected_time;
 $result["delivery_type"]=$orders[0]->delivery_type;
+$result["remaining"]=$orders[0]->remaining_amount;
 $pdf = PDF::loadView('front_end.detail',$result)->setPaper('a2',"portrait");
   $users["to"]=$orders[0]->customer_email;
 /*Mail::send("front_end.invoice",$result,function($messages) use ($users,$pdf){

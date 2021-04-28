@@ -332,9 +332,25 @@ function order_detail_by_date_no($date_t){
  return DB::table('orders')->where('order_date','=',$date_t)->count();
 
 }
+function order_complete($date_t){
+  return DB::table('orders')->where('order_date','=',$date_t)->where('orders_status','=','5')->count();
+ 
+ }
+ function order_cancel($date_t){
+  return DB::table('orders')->where('order_date','=',$date_t)->where('orders_status','=','6')->count();
+ 
+ }
 function amount_earned($date_t){
   return DB::table('orders')->where('order_date','=',$date_t)->where('orders_status','=','5')->sum('final_price');
  
  }
-
+ function total_item($date_t){
+  return DB::table('orders')->leftJoin('order_details','order_details.order_id','=','orders.id')->
+  where('orders.order_date','=',$date_t)->where('orders.orders_status','=','5')->distinct()->count();
+ 
+ }
+ function total_qty($date_t){
+  return DB::table('orders')->leftJoin('order_details','order_details.order_id','=','orders.id')->
+  where('orders.order_date','=',$date_t)->where('orders.orders_status','=','5')->sum('order_details.qty');
+ }
 ?>

@@ -17,8 +17,8 @@
     </button>
 </div>
 @endif 
-<a href="{{url('admin/customers/customer_pdf')}}">Print Out Report(PDF)</a>
-<a href="{{url('admin/customers/inventory_excel')}}">Print Out Report(Excel)</a>
+<a href="{{url('admin/inventory/inventory_pdf')}}">Print Out Report(PDF)</a>
+<a href="{{url('admin/inventory/inventory_excel')}}">Print Out Report(Excel)</a>
             <div class="table-responsive m-b-40">
                 <table class="table table-borderless table-data3">
                     <thead>
@@ -27,7 +27,11 @@
                             <th> Date </th>
                         <th>Number Of Order </th>
                             <th>Amount Earned </th>
-                     
+                            <th>Total Item(Sold) </th>
+                            <th>Total Qty(Sold) </th>
+                            <th>Total Product(Sold) </th>
+                            <th>Completion Ratio (%) </th>
+                            <th>Cancellation Ratio (%) </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,6 +46,7 @@
 $i=2;
 $total_record=count($order_dates);
 $total_amount=array();  
+
 @endphp     
 
                
@@ -51,13 +56,21 @@ $total_amount=array();
  $number_of=order_detail_by_date_no($customer->order_date);
  $amount_gain=amount_earned($customer->order_date);
  $amount_ratio=$amount_gain/$number_of;
+ $total_ite=total_item($customer->order_date);
+ $total_qt=total_qty($customer->order_date);
+ $order_complete=order_complete($customer->order_date);
+ $order_cancel=order_cancel($customer->order_date);
 @endphp
 <tr>
 <td>{{$key+1}}</td>
 <td>{{date("d-F-Y",strtotime($customer->order_date))}}</td>
 <td>{{$number_of}}</td>
 <td> {{$amount_gain}} Rs </td>
-
+<td>{{$total_ite}}</td>
+<td>{{$total_qt}}</td>
+<td>{{$total_qt*$total_ite}}</td>
+<td>{{number_format(($order_complete/$number_of)*100,2)}} %</td>
+<td>{{number_format(($order_cancel/$number_of)*100,2)}} %</td>
 </tr>
 
 
