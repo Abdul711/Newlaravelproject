@@ -263,7 +263,7 @@ class FrontController extends Controller
    }
    $price=$price-$discount;
    $price=floor($price);
-  $point=floor(0.2*$price);
+  $point=floor((20/100)*$price);
 
 $user_cart["attr_id"]=$attr_id;
 $user_cart["user_id"]=$user_id;
@@ -594,7 +594,7 @@ if($user_referal_code!=""){
 $amount_to=$sign_up_reward+$referral_amount;
   $msg="Sign Up Reward";
         $type_trans="in";
-        ManageWallet($customer_id,$amount_to,$msg,$type_trans,$date_today);
+        ManageWallet($customer_id,$amount_to,$msg,$type_trans);
 
 
   return response()->json(['status'=>"success",'msg'=>"User Register"]);  

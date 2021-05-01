@@ -308,6 +308,10 @@ public function update_order_status($id,$status)
 $customer_detail=customer_detail($customer_id);
  $web=webSetting();
 $per=$web[0]->point_reward_per;
+$amount_to=$web[0]->return_referal_per;
+$admin_limit=$web[0]->number_of_order_for_referal;
+$msg="Your Referrer Placed A Complete Order";
+$type_tr="in";
 $points=order_point($id);
 $type="in";
 $point=floor(($per/100)*$points);
@@ -318,7 +322,11 @@ $user_id=id_from_refer($customer_from_referral);
   $user_id=0;
 }
 managePoint($user_id,$type,$point);
-
+$orders=NumberOfOrder($customer_id);
+$total_order=$orders["total_order"];
+if($admin_limit>$total_order){
+ManageWallet($user_id,$amount_to,$msg,$type_tr);
+}
   }
   if($status==5){
     $new_status="Delivered";
@@ -398,7 +406,7 @@ return redirect('admin/reward');
 
 } 
 public function customers(){
-  $result["customers"]=DB::table('customers')->paginate(5);
+  $result["customers"]=DB::table('customers')->paginate(15);
  return view('admin/customers',$result);
 
 }

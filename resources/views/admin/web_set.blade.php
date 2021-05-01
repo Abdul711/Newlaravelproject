@@ -76,6 +76,47 @@
                                              
                                             </div>
                                             <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Web Site Email</label>
+                                                <input id="cc-pament" 
+                                                required name="website_email"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$website_email}}" required="true">
+                                             
+                                            </div>
+                                   
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Web Site Mobile</label>
+                                                <input id="cc-pament" 
+                                                required name="website_mobile"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$website_mobile}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Return Referal Amount</label>
+                                                <input id="cc-pament" 
+                                                required name="return_referal_per"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$return_referal_per}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Number Of Order For Referal Amount</label>
+                                                <input id="cc-pament" 
+                                                required name="number_of_order_for_referal"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$number_of_order_for_referal}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Point Amount</label>
+                                                <input id="cc-pament" 
+                                                required name="point_amount"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$point_amount}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1"> Reward Percentage</label>
                                                 <input id="cc-pament" 
                                                 required name="point_reward_per"

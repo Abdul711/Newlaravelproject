@@ -25,6 +25,11 @@ class SettingWebsiteController extends Controller
         $result["point_reward_per"]=$resul[0]->point_reward_per;
         $result["sign_up_reward"]=$resul[0]->sign_up_reward;
         $result["referral_amount"]=$resul[0]->referral_amount;
+        $result["website_email"]=$resul[0]->website_email;
+        $result["website_mobile"]=$resul[0]->website_mobile;
+        $result["return_referal_per"]=$resul[0]->return_referal_per;
+        $result["point_amount"]=$resul[0]->point_amount;
+        $result["number_of_order_for_referal"]=$resul[0]->number_of_order_for_referal;
       }else{
         $result["min_cart_amt"]="";
         $result["free_delivery_cart"]="";
@@ -34,6 +39,11 @@ class SettingWebsiteController extends Controller
         $result["point_reward_per"]="";
         $result["sign_up_reward"]="";
         $result["referral_amount"]="";
+        $result["website_email"]="";
+        $result["website_mobile"]="";
+        $result["return_referal_per"]="";
+        $result["point_amount"]="";
+        $result["number_of_order_for_referal"]="";
     }
     
         return view('admin.web_set',$result);

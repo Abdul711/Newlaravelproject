@@ -258,7 +258,7 @@ function total_point(){
  $user_carts=json_decode($user_carts,true);
  $user_cat_point=0;
  foreach($user_carts as $user_cart){
-  $user_cat_point=$user_cat_point+($user_cart["qty"]*$user_cart["cart_point"]);
+  $user_cat_point=$user_cat_point+($user_cart["cart_point"]);
  }
  return $user_cat_point;
 }
@@ -320,7 +320,7 @@ function order_point($id){
 foreach($points as $point){
 $price=$point->price;
  $point=floor(0.2*$price);
- $total_point= $total_point+$point;
+ $total_point=$total_point+$point;
 }
  $total_point;
   return $total_point;

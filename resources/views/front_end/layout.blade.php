@@ -60,8 +60,27 @@
                 
                 <!-- start cellphone -->
                 <div class="cellphone hidden-xs">
-                  <p><span class="fa fa-phone"></span>00-62-658-658
+                <?php
+                $web=webSetting();
+             
+                $website_email=$web[0]->website_email;
+                $website_mobile=$web[0]->website_mobile;
+                if($website_email!="" && $website_mobile!=""){
+
+                ?>
+                 <p><span class="fa fa-phone"></span>{{$website_mobile}}
+                <span class="fa fa-envelope p-1"></span>{{$website_email}}</p>
+                <?php
+                }else{
+                  ?>
+                     <p><span class="fa fa-phone"></span>00-62-658-658
                 <span class="fa fa-envelope p-1"></span>abdulsamadahsan@gmail.com</p>
+                  <?php
+                }
+              
+
+?>
+               
               
                 </div>
                 <!-- / cellphone -->
@@ -226,8 +245,8 @@
                     <h3>Contact Us</h3>
                     <address>
                       <p> 25 Astor Pl, NY 10003, USA</p>
-                      <p><span class="fa fa-phone"></span>+1 212-982-4589</p>
-                      <p><span class="fa fa-envelope"></span>dailyshop@gmail.com</p>
+                      <p><span class="fa fa-phone"></span>{{$website_mobile}}</p>
+                      <p><span class="fa fa-envelope"></span>{{$website_email}}</p>
                     </address>
                     <div class="aa-footer-social">
                       <a href="#"><span class="fa fa-facebook"></span></a>
