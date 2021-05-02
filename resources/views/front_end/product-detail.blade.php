@@ -395,7 +395,7 @@
                     <li>
                         <figure>
                         <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}"><img src="{{asset('storage/media/'.$productArr->image)}}" alt="{{$productArr->name}}"></a>
-                        <a class="aa-add-card-btn" href="{{url('product/'.$productArr->id)}}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                      
                         <figcaption>
                       <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">
                             {{$productArr->name}}</a></h4>

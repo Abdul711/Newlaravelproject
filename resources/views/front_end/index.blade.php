@@ -119,7 +119,7 @@
                           <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}">
                             <img src="{{asset('storage/media/'.$productArr->image)}}" 
                             alt=""></a>
-                            <a class="aa-add-card-btn" href="javascript:void(0)" onclick="home_add_to_cart('{{$productArr->id}}','{{$home_product_attributes[$productArr->id][0]->size_id}}','{{$home_product_attributes[$productArr->id][0]->color_id}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                        
                             <figcaption>
                               <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">{{$productArr->name}}</a></h4>
                         

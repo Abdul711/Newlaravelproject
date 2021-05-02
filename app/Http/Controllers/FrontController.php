@@ -1080,7 +1080,7 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
     session()->forget('COUPONVALUE');
     session()->forget('COUPONID');    
     }
-  
+
   $coupons=DB::table('coupons')->where(["coupon_code"=>$coupon])->get();
   $cart_total=cartTotal();
   extract($cart_total);
@@ -1089,11 +1089,14 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
   $amt_w=WalletAmt($user_id);
       }else{
         $amt_w=0; 
+        $user_id=0;
       }
  
   if(isset($coupons[0])){
   
     $expiry_date=$coupons[0]->expiry_date;
+    $coupon_code=$coupons[0]->coupon_code;
+    $limit_per_user=$coupons[0]->limit_per_user;
       $time1=strtotime($expiry_date);
       $time2=strtotime(date("Y-M-d h:i:s"));
       if($time2>$time1){
@@ -1105,6 +1108,17 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
     "status"=>$status,"msg"=>$msg,"wallet"=>$amt_w,"min_cart"=>$min_cart_am
     ]);   
       }
+    $usedTime=coupon_used_by_user($coupon_code,$user_id);
+    $usedTime=$usedTime+1;
+    if($usedTime>$limit_per_user){
+        $status="error";
+        $msg="Limit To Use $coupon Exceed ";
+        return response()->json(["cart_promo"=>$cart_promo,"gst"=>$gst,"tax_value"=>$tax_value,
+        "COUPONCODE"=>$COUPONCODE,"delivery_charge"=>$delivery_charge,"final_price"=>$final_price,
+        "discount"=>$discount,"coupon_id"=>$coupon_id,"cart_total"=>$cart_total,"total_item"=>$total_item,
+        "status"=>$status,"msg"=>$msg,"wallet"=>$amt_w,"min_cart"=>$min_cart_am
+        ]);   
+    }
    $type=$coupons[0]->coupon_type;
       if($cart_total > $coupons[0]->cart_min_value){
      if($type=="Fixed"){

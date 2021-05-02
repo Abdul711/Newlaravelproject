@@ -8,11 +8,16 @@
                                             <tbody>
                                             
                                             
-                                          
+                                                                     
                                         
                                                 <tr>
                                                     <td>Coupon Type</td>
                                             <td>{{$coupon_type}}</Td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td> Number Of Time Used </td>
+                                            <td>{{coupon_used($coupon_code)}}</Td>
                                                 </tr>
                                                 <tr>
                                                     <td>Coupon Value (Discount)</td>
@@ -26,6 +31,12 @@
                                                     <td>Cart Min Value</td>
                                                           <td>{{$cart_min_value}}</td>                                         
                                                 </tr>
+                                                @if($limit_per_user!="")
+                                                <tr>
+                                                    <td>Limit Per User</td>
+                                                          <td>{{$limit_per_user}}</td>                                         
+                                                </tr>
+                                                @endif
                                                 <tr>
                                                     <td>Max Discount</td>
                                             <td>{{$max_discount}} </td>

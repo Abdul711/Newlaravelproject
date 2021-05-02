@@ -109,6 +109,14 @@
                                              
                                             </div>
                                             <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Company Address</label>
+                                                <input id="cc-pament" 
+                                                required name="company_address"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$company_address}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1">Point Amount</label>
                                                 <input id="cc-pament" 
                                                 required name="point_amount"

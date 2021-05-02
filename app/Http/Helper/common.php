@@ -262,6 +262,12 @@ function total_point(){
  }
  return $user_cat_point;
 }
+function coupon_used($coupon){
+return DB::table("orders")->where("coupon_code",'=',$coupon)->count();
+}
+function coupon_used_by_user($coupon,$user_id){
+  return DB::table("orders")->where('customer_id','=',$user_id)->where("coupon_code",'=',$coupon)->count();
+  }
 function user_total_point($user_id){
  $user_point_data= DB::table("users_ppoint")->where(["user_id"=>$user_id])->get();
  $user_point=$user_point_data;

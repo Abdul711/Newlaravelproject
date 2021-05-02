@@ -8,25 +8,7 @@
       <div class="row">
          <div class="col-lg-9 col-md-9 col-sm-8 col-md-push-3">
             <div class="aa-product-catg-content">
-               <div class="aa-product-catg-head">
-                  <div class="aa-product-catg-head-left">
-                     <form action="" class="aa-sort-form">
-                        <label for="">Sort by</label>
-                        <select name="" onchange="sort_by()" id="sort_by_value">
-                           <option value="" selected="Default">Default</option>
-                           <option value="name">Name</option>
-                           <option value="price_desc">Price - Desc</option>
-                           <option value="price_asc">Price - Asc</option>
-                           <option value="date">Date</option>
-                        </select>
-                     </form>
-                
-                  </div>
-                  <div class="aa-product-catg-head-right">
-                     <a id="grid-catg" href="#"><span class="fa fa-th"></span></a>
-                     <a id="list-catg" href="#"><span class="fa fa-list"></span></a>
-                  </div>
-               </div>
+             
                <div class="aa-product-catg-body">
                   <ul class="aa-product-catg">
                      <!-- start single product item -->
@@ -47,9 +29,7 @@ $discount_price=$price_product-$discount;
                             <a class="aa-product-img" href="{{url('product/'.$product->id)}}">
                             <img src="{{asset('storage/media/'.$product->image)}}" 
                             alt=""></a>
-                            <a class="aa-add-card-btn" href="javascript:void(0)" onclick="
-                            home_add_to_cart('',
-                            '','')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                        
                             <figcaption>
                               <h4 class="aa-product-title"><a href="{{url('product/'.$product->id)}}">{{$product->name}}</a></h4>
                      
@@ -235,45 +215,9 @@ $discount_price=$price_product-$discount;
                   </ul>
                </div>
            
-               <div class="aa-sidebar-widget">
-                  <h3>Shop By Price</h3>
-                  <!-- price range -->
-                  <div class="aa-sidebar-price-range">
-                     <form action="">
-                        <div id="skipstep" class="noUi-target noUi-ltr noUi-horizontal noUi-background">
-                        </div>
-                        <span id="skip-value-lower" class="example-val">30.00</span>
-                        <span id="skip-value-upper" class="example-val">100.00</span>
-                        <button class="aa-filter-btn" type="button" onclick="sort_price_filter()">Filter</button>
-                     </form>
-                  </div>
-               </div>
+            
                <!-- single sidebar -->
-               <div class="aa-sidebar-widget">
-                  <h3>Shop By Color</h3>
-                  <div class="aa-color-tag">
-
-                  @foreach($product_attributes as $product_att)
-                     @foreach($colors[$product_att->id] as $col)     
-                     @php
-              
-                     $colors_product[$col->id]=$col->color_name;
-                     @endphp
-              
-                  @endforeach
-                           @endforeach
-@php
-prx($colors_product);
-@endphp
-@if(count($colors_product)>0)
-                   @foreach($colors_product as $key=> $product)
-                    <a class="aa-color-{{strtolower($product)}}" onclick="ShowProduct('{{$product}}')" href="javascript:void(0)"></a>
-                    @endforeach
-           @else
-               No Colors Available
-                    @endif
-                  </div>
-               </div>
+         
 
             </aside>
          </div>

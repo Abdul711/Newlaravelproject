@@ -44,6 +44,11 @@
                                                 <p class="text-danger"> @error('cart_min_value'){{$message}}@enderror</p>
                                             </div>
                                             <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Limit Per User </label>
+                                                <input id="cc-pament" name="limit_per_user" type="text" class="form-control" aria-required="true" aria-invalid="false" value="{{$limit_per_user}}">
+                                                <p class="text-danger"> </p>
+                                            </div>
+                                            <div class="form-group">
                                             <label for="cc-payment" class="control-label mb-1">Expiry Date </label>
                                             <input id="cc-pament" name="expiry_date" type="datetime-local" class="form-control" aria-required="true" aria-invalid="false" value="{{$expiry_date}}">
                                             </div>

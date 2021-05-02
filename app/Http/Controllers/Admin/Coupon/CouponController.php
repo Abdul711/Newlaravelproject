@@ -66,6 +66,7 @@ class CouponController extends Controller
         $result['coupon_type']=$arr['0']->coupon_type;
         $result["coupon_max_discount"]=$arr['0']->max_discount;
         $result["expiry_date"]=$arr['0']->expiry_date;
+        $result["limit_per_user"]=$arr['0']->limit_per_user;
     }else{
         $result['coupon_name']='';
         $result['coupon_btn']="Add Coupon Code";
@@ -76,10 +77,10 @@ class CouponController extends Controller
         $result['coupon_type']="";
         $result["coupon_max_discount"]="";
         $result["expiry_date"]="";
+        $result["limit_per_user"]="";
     }
-    /*
-    prx($result);
-    die();*/
+    
+  
     return view('admin/coupon/manage_coupon',$result);
 
 }
@@ -95,6 +96,7 @@ class CouponController extends Controller
        $coupon_data= DB::table("coupons")->where('id','=',$id)->get();
        $coupon_code=$coupon_data[0]->coupon_code;
        $coupon_type=$coupon_data[0]->coupon_type;
+       $limit_per_user=$coupon_data[0]->limit_per_user;
        if($coupon_type=="Fixed"){
            $coupon_value=$coupon_data[0]->coupon_value." Rs ";
        }else{
@@ -118,6 +120,7 @@ class CouponController extends Controller
   $result["coupon_code"]=$coupon_code;   
         $result["expired"]=$expired;
         $result["expiry_date"]=$expiry_date;
+        $result["limit_per_user"]=$limit_per_user;
         $result["coupon_type"]=$coupon_type;
         $result["cart_min_value"]=$coupon_data[0]->cart_min_value." Rs ";
         $result["max_discount"]=$coupon_data[0]->max_discount." Rs ";
@@ -213,6 +216,7 @@ class CouponController extends Controller
                $coupon_id=$request->post('coupon_id');
                $max_discount=$request->post('coupon_max_discount');
                $expiry_date=$request->post('expiry_date');
+               $limit_per_user=$request->post('limit_per_user');
                if($coupon_type==="Percentage"){
                 if($coupon_code_value >= 100){
                     $coupon_code_value==55;
@@ -236,6 +240,7 @@ class CouponController extends Controller
                $model->cart_min_value=$cart_min_value;
                $model->max_discount=$max_discount;
                $model->expiry_date=$expiry_date;
+               $model->limit_per_user=$limit_per_user;
                $model->save();
             
                $request->session()->flash("message","$message");

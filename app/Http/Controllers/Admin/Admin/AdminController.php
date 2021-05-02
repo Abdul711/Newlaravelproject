@@ -305,6 +305,14 @@ public function update_order_status($id,$status)
      $new_state=5;
     $order_detail=order_detail($id);
  $customer_id=$order_detail[0]->customer_id;
+ $coupon_value=$order_detail[0]->coupon_value;
+
+ if($coupon_value!=0){
+  $coupon_code=$order_detail[0]->coupon_code;
+  $customer_id;
+DB::table("coupon_usages")->insert(["coupon_code"=>$coupon_code,"user_id"=>$customer_id]);
+ }
+
 $customer_detail=customer_detail($customer_id);
  $web=webSetting();
 $per=$web[0]->point_reward_per;

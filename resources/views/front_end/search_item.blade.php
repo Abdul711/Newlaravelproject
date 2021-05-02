@@ -15,8 +15,11 @@
                      @if(isset($search_product[0]))
                        @foreach($search_product as $productArr)
                       @php
+                      $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;     
                    $product_price=$product_attributes[$productArr->id][0]->price;
-                   if($productArr->is_discounted=="1" && $productArr->discount_amount!=""){
+                   if($productArr->is_discounted==1 && $productArr->discount_amount!=""){
                    $discount=floor(($productArr->discount_amount/100)*$product_price);
                    }else{
                      $discount=0;
@@ -27,7 +30,7 @@
                         <li>
                           <figure>
                             <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}"><img src="{{asset('storage/media/'.$productArr->image)}}" alt="{{$productArr->name}}"></a>
-                            <a class="aa-add-card-btn" href="javascript:void(0)"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                          
                             <figcaption>
                               <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">{{$productArr->name}}</a></h4>
                               @if($productArr->is_discounted=="1")
@@ -37,7 +40,7 @@
                               <span class="aa-product-price">Rs {{$product_attributes[$productArr->id][0]->price}}</span>
                               @endif
                               <p>{{average_rating($productArr->id)}}  <span class="fa fa-star"> ({{total_rating($productArr->id)}})</span></p>
-                            <p> You Will Earn {{@floor(0.2*$discounted_product)}} Points </p>   
+                            <p> You Will Earn {{@floor($point_amount/100*$discounted_product)}} Points </p>   
                             </figcaption>
                           </figure>            
                           <div class="aa-product-hvr-content">
@@ -59,13 +62,19 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                         @endif
                                   @foreach($search_product as $product)
                         @php
+                        $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;
+                 
                     $p=$product_attributes[$product->id][0]->price;
                     $dis=$product->discount_amount;
-                    if($dis==""){
-                      $discount=0;
-                    }else{
+                    $discounte=$product->is_discounted;
+                    if($discounte==1 && $dis!=""){
                       $discount=$dis;
+                    }else{
+                      $discount=0;
                     }
+                  
                     $discounted_price=($discount/100)*$p;
                   $discounted_price=$p-$discounted_price;
                    @endphp
@@ -113,7 +122,7 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                               @if($product->is_discounted=="1")
                               <span class="title-success" href="#">SALE {{$product->discount_amount}}%</span> 
                               @endif   
-                              <p>You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>
+                              <p>You Will Earn {{@floor($point_amount/100*$discounted_price)}} Points </p>
                               <p> <h4>Brands</h4> <p>
                               <p> <h1 class="text-danger">{{$product->brands}}</h1> <p>
                               <p> <h4>Delivery Span</h4> <p>
