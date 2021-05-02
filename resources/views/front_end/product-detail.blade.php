@@ -64,13 +64,17 @@
         
                    $p=$product_attributes[$product[0]->id][0]->price;
                     $dis=$product[0]->discount_amount;
-                    if($dis==""){
-                      $discount=0;
-                    }else{
-                      $discount=$dis;
-                    }
-                    $discounted_price=($discount/100)*$p;
-                  $discounted_price=$p-$discounted_price;
+                    $Is_dis=$product[0]->is_discounted;
+                               if($Is_dis==1 && $dis!=""){
+                                 $discount=($dis/100)*$p;
+                               }else{
+                                 $discount=0;
+                               }
+       
+                  $discounted_price=$p-$discount;
+                  $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;
                    @endphp
                    @if($product[0]->is_discounted!=0)
                     <div class="title-success">SALE{{$product[0]->discount_amount}}%</div>      
@@ -85,7 +89,7 @@
                      <span class="aa-product-view-price">Rs {{$product_attributes[$product[0]->id][0]->price}}</span>
                        @endif
                       <p class="aa-product-avilability">Avilability: <span>In stock</span></p>
-                      <p>You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>
+                      <p>You Will Earn {{@floor($point_amount/100*$discounted_price)}} Points </p>
                  <p>  Brand: {{$product[0]->brand_name}}</p>
                    
                        <p class="lead_time">
@@ -377,12 +381,16 @@
                     @foreach($related_product as $productArr)
                     @php
                   $product_price=$product_related_attributes[$productArr->id][0]->price;
-                     if($productArr->is_discounted=="1" && $productArr->discount_amount!=""){
+                     if($productArr->is_discounted==1 && $productArr->discount_amount!=""){
                        $discount=floor(($productArr->discount_amount/100)*$product_price);
                      }else{
                        $discount=0;
                      }
+                     $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;
                      $discounted_price=$product_price-$discount;
+              $products_point=floor(($point_amount/100)*$discounted_price);
                     @endphp
                     <li>
                         <figure>
@@ -404,7 +412,7 @@
   Rs {{$product_related_attributes[$productArr->id][0]->price}} 
   </span>
   @endif
-  <p>  You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>
+  <p>  You Will Earn {{$products_point}} Points </p>
                        <div>{{average_rating($productArr->id)}}  <span class="fa fa-star"> ({{total_rating($productArr->id)}})</span>
     <p> </div>
                         </figcaption>
@@ -477,16 +485,21 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                             <div class="aa-price-block">
                             @php
                      $price_product=$product_related_attributes[$productArr->id][0]->price;
-                   if($productArr->is_discounted=="1"){
+                   if($productArr->is_discounted==1){
                      $discount=floor(($productArr->discount_amount/100)*$price_product);
                    }else{
                      $discount=0;
                    }
+                   $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;
                       $discount;
-$discount_price=$price_product-$discount;
+ $discount_price=$price_product-$discount;
+$product_points=floor($point_amount/100*$discount_price);
                      @endphp
                      <div>
-    Point You Will Earn {{@floor(0.2*$discount_price)}} Points
+                  
+   You Will Earn {{$product_points}} Point
                      </div>
                      @if($productArr->is_discounted=="1")
                      <span class="aa-product-view-price">Rs {{$discount_price}}</span>

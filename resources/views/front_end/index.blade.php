@@ -97,13 +97,20 @@
                     @php
                     $p=$home_product_attributes[$productArr->id][0]->price;
                     $dis=$productArr->discount_amount;
-                    if($dis==""){
-                      $discount=0;
-                    }else{
-                      $discount=$dis;
-                    }
+                 $is_dis=$productArr->is_discounted;
+                         if($is_dis==1 && $dis!=""){
+                           $discount=$dis;
+                         }else
+                         {
+                           $discount=0;
+                         }
+                         $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;
+                 
                     $discounted_price=($discount/100)*$p;
-                  $discounted_price=$p-$discounted_price;
+                $discounted_price=$p-$discounted_price;
+            $product_points=floor($point_amount/100*$discounted_price);
                    @endphp
                 
                
@@ -129,7 +136,7 @@
                                                            ({{total_rating($productArr->id)}})
                                                            
                                                            </span></p>        
-                                                           <p>You Will Earn {{@floor(0.2*$discounted_price)}} Points </p>            
+                                                           <p>You Will Earn {{$product_points}} Points </p>            
                             </figcaption>
                           </figure>   
                           <div class="aa-product-hvr-content">
@@ -147,13 +154,13 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                     $p=$home_product_attributes[$product->id][0]->price;
                     $dis=$product->discount_amount;
                     $di=$product->is_discounted;
-                                 if($di=="1"){
+                                 if($di==1 && $dis!=""){
                                    $discount=$dis;
                                  }else{
                                    $discount=0;
                                  }
-              echo       $discounted_price=($discount/100)*$p;
-                  $discounted_prices=$p-$discounted_price;
+               $discounted_price=($discount/100)*$p;
+                $discounted_prices=$p-$discounted_price;
                    @endphp
      <div class="modal fade" 
      id="quick-view-modal-{{$product->id}}" 
@@ -186,7 +193,7 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                           <div class="aa-product-view-content">
                             <h3>{{$product->name}}</h3>
                             <div class="aa-price-block">
-
+                     
                               @if($product->is_discounted=="1")
                             <del>  <span class="aa-product-view-price">Rs {{$home_product_attributes[$product->id][0]->price}}</price></del>
                             <span class="aa-product-view-price">Rs {{$discounted_prices}}</span>
@@ -203,7 +210,7 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                               $web=webSetting();
                         
                            $point_amount=$web[0]->point_amount;
-                          echo $product_points=floor(20/100)*$discounted_prices;
+                         $product_points=floor($point_amount/100*$discounted_prices);
                               @endphp
                               <p>You Will Earn {{$product_points}} Points </p>
                               <p> <h4>Brands</h4> <p>

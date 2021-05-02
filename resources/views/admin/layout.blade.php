@@ -147,6 +147,8 @@ ADMIN_PATH="{{url('/admin')}}";
                             <a href="{{url('admin/inventory')}}">
                                 <i class="fas fa-tachometer-alt"></i>Inventory System</a>
                         </li>
+                     <li>   <a href="{{url('admin/logout')}}">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a></li>
                     </ul>
                 </nav>
             </div>
@@ -179,8 +181,7 @@ ADMIN_PATH="{{url('/admin')}}";
                                                 
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="{{url('admin/logout')}}">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                           
                                             </div>
                                         </div>
                                     </div>

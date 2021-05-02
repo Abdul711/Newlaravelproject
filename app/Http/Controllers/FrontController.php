@@ -263,12 +263,15 @@ class FrontController extends Controller
    }
    $price=$price-$discount;
    $price=floor($price);
-  $point=floor((20/100)*$price);
+   $web=webSetting();
+                        
+   $point_amount=$web[0]->point_amount;
+  $point=floor(($point_amount/100)*$price);
 
 $user_cart["attr_id"]=$attr_id;
 $user_cart["user_id"]=$user_id;
 $user_cart["qty"]=$pqty;
-$user_cart["point"]=$point*$pqty;
+$user_cart["point"]=$point;
 $user_cart["ip_add"]=$ip;
 $user_cart["user_type"]=$user_type;
 $user_cart["product_id"]=$product_id;

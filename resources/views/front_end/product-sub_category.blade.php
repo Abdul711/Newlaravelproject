@@ -67,7 +67,13 @@ $discount_price=$price_product-$discount;
     </span>   
    
                               @endif
-                           <p>    You Will Earn {{@floor(0.2*$discount_price)}} Points </p>
+                              @php
+                              $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;
+                        $point_amount=$point_amount/100;
+                        @endphp
+                           <p>    You Will Earn {{@floor($point_amount*$discount_price)}} Points </p>
                        <div>{{average_rating($product->id)}}  <span class="fa fa-star"> ({{total_rating($product->id)}})</span>
     <p> </div>
 
@@ -130,7 +136,14 @@ $discount_price=$price_product-$discount;
 $discount_price=$price_product-$discount;
                      @endphp
                      <div>
-    Point You Will Earn {{@floor(0.2*$discount_price)}} Points
+                     @php
+                     $web=webSetting();
+                        
+                        $point_amount=$web[0]->point_amount;
+                        $point_amount=$point_amount/100;
+
+                        @endphp
+    Point You Will Earn {{@floor($point_amount*$discount_price)}} Points
                      </div>
                      @if($product->is_discounted=="1")
                      <span class="aa-product-view-price">Rs {{$discount_price}}</span>
