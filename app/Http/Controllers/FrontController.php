@@ -442,7 +442,7 @@ $result["color_sort"]=$color_sort;
 $result["start_price"]=$start_price;
 $result["end_price"]=$end_price;
 
-  
+
 return view('front_end.product',$result);
     }
 
@@ -471,6 +471,7 @@ $result["page_title"]=$category_data[0]->category_name." Page";
      "products.category_id",
    "products.discount_amount",
      "categories.category_name",
+     "products.delivery_charge",
      "brands.brands"
      
      )
@@ -1555,6 +1556,8 @@ $customer_datas=DB::table('customers')->get();
     $content.='<th>Email</th>';
     $content.='<th>Orders</th>';
     $content.='<th>Amount</th>';
+    $content.='<th>Last Order Date</th>';
+    $content.='<th>Last Order Time</th>';
     $content.='</tr>';
     foreach($customer_datas as $key=> $customer_data){
     $total_orders=NumberOfOrder($customer_data->id);
@@ -1570,13 +1573,20 @@ $customer_datas=DB::table('customers')->get();
     $content.='<td>'.$customer_data->customer_email.'</td>';
     $content.='<td>'.$total_order.'</td>';
     $content.='<td>'.$total_amount_expand.' Rs </td>';
+    $content.='<td>'.Last_order_date($customer_data->id)."</td>";
+    $content.='<td>'.Last_order_time($customer_data->id)."</td>";
     $content.='</tr>';
     }
     $content.='</table>';
  /*     PDF2::writeHTML($content);
       PDF2::Output('hello_world.pdf');*/
-     $pdf = PDF::loadHTML($content);
+     $pdf = PDF::loadHTML($content)->setPaper('a3',"portrait");
 
    return $pdf->download('customer_data.pdf');
+    }
+
+    function cancel_order($id){
+    DB::table('orders')->where('id','=',$id)->update(["orders_status"=>7]);
+        return redirect('/pastOrder');
     }
 }

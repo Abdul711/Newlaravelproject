@@ -30,8 +30,8 @@
                        
                             <th>Total Product(Sold) </th>
                             <th>Completion Ratio (%) </th>
-                            <th>Cancellation Ratio (%) </th>
-                            <th>PerForm</th>
+                        
+                      
                         </tr>
                     </thead>
                     <tbody>
@@ -66,18 +66,9 @@ $total_amount=array();
 <td>{{$number_of}}</td>
 <td> {{$amount_gain}} Rs </td>
 
-<td>{{$total_qt*$total_ite}}</td>
+<td>{{$total_qt}} </td>
 <td>{{number_format(($order_complete/$number_of)*100,2)}} %</td>
-<td>{{number_format(($order_cancel/$number_of)*100,2)}} %</td>
-@if($order_complete>$order_cancel)
-<td>Good<td>
-@endif
-@if($order_complete==$order_cancel)
-<td>Average<td>
-@endif
-@if($order_complete<$order_cancel)
-<td>Bad<td>
-@endif
+
 </tr>
 
 
@@ -93,5 +84,32 @@ $total_amount=array();
             <!-- END DATA TABLE-->
         </div>
     </div>
-                        
+    <div class="top-campaign">
+                                    <h3 class="title-3 m-b-30">Total Earning Detail</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-top-campaign">
+                                            <tbody>
+                                            
+                                            @php
+                                      $total_earning=TotalAdminEarning();
+                                      $earnings=$total_earning;
+                                        @endphp
+                                                <tr>
+                                                    <td>Total Earning</td>
+                                                    <td>{{$earnings}} Rs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Gst </td>
+                                                    <td>{{gst($earnings)}} Rs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Final Earning</td>
+                                                    <td>{{final_earning($earnings)}} Rs</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+             
 @endsection

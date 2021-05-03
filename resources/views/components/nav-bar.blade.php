@@ -21,7 +21,9 @@
               </li>
               @endforeach
               @if(session()->has('FRONT_USER_LOGIN')!='0' && session()->has('FRONT_USER_ID')!='0')
+             <li> <a href="javascript:void(0)">Referal Code :{{referal_code(session('FRONT_USER_NAME'))}}</a> </li>
               <li><a href="{{url('/')}}">{{session('FRONT_USER_NAME')}}</a>
+ 
                    <ul class="dropdown-menu">  
                    <li><a href="{{url('/pastOrder')}}">Past Order</a></li>
                    <li><a href="{{url('/remdemPoint')}}">Reedom Point</a></li>

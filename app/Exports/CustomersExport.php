@@ -29,7 +29,9 @@ class CustomersExport implements FromCollection,WithHeadings,WithMapping,WithCol
             'Email',
             'Mobile',
             'Number Of Order',
-            'Amount Spend'
+            'Amount Spend',
+            "Last Order (Date)",
+            "Last Order (Time)",
         ];
     }
     public function map($customer): array
@@ -37,14 +39,16 @@ class CustomersExport implements FromCollection,WithHeadings,WithMapping,WithCol
        $total_orders= NumberOfOrder($customer->id);
         $total_order=$total_orders["total_order"];
         $total_amount_expand=$total_orders["total_amount_expand"];
-      
+ 
         return [
             $customer->customer_name,
             $customer->customer_email,
             $customer->customer_mobile,
             $total_order,
             $total_amount_expand,
-     
+          
+        Last_order_date($customer->id),
+        Last_order_time($customer->id),
         ];
     }
  public function columnWidths(): array
@@ -55,6 +59,8 @@ class CustomersExport implements FromCollection,WithHeadings,WithMapping,WithCol
 "C"=>35,
 "D"=>25,
 "E"=>24,
+"F"=>25,
+"G"=>24,
 
   ];  
 
@@ -70,7 +76,7 @@ public function styles(Worksheet $sheet)
 
         // Styling an entire column.
         'C1'  => ['font' => ['size' =>16,"name"=>"Elephant"]],
-        'D1'=>["font"=>["name"=>"Eras Bold ITC"]],
+        'D1'=>["font"=>["name"=>"Eras Bold ITC","color"=>array('rgb' =>"000")]],
         'E1'=>["font"=>["name"=>"Euphemia"]],
     ];
    

@@ -13,7 +13,10 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class Inventory implements FromCollection,WithHeadings,WithMapping,WithColumnWidths,WithColumnFormatting
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Events\AfterSheet;
+class Inventory implements FromCollection,WithHeadings,WithMapping,WithColumnWidths,WithColumnFormatting,WithEvents
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -29,11 +32,10 @@ class Inventory implements FromCollection,WithHeadings,WithMapping,WithColumnWid
             'Order Date',
             "No Of Order",
             'Amount Earned (Rs)',
-            'Total Item (Sold)',
-            'Total Qty (Sold)',
+        
             'Total Product (Sold)',
             "Completion Ratio (%)",
-            "Cancel Ratio (%)",
+        
         ];
     }
     public function columnWidths(): array
@@ -64,11 +66,9 @@ class Inventory implements FromCollection,WithHeadings,WithMapping,WithColumnWid
         $dte,
  $number_of,
  $amount_gain,
-           $total_item,
-           $total_qty,
-           $total_qty*$total_item,
-           number_format(($order_complete/$number_of)*100,2),
-           number_format(($order_cancel/$number_of)*100,2)
+$total_qty,
+number_format(($order_complete/$number_of)*100,2),
+        
         ];
     }
     public function columnFormats(): array
@@ -76,6 +76,24 @@ class Inventory implements FromCollection,WithHeadings,WithMapping,WithColumnWid
         return [
             'A' => NumberFormat::FORMAT_DATE_DDMMYYYY,
            
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+        $total_earning=TotalAdminEarning();
+        $earnings=$total_earning;
+       $gst=floor(20/100*TotalAdminEarning());
+        return [
+     
+            AfterSheet::class    => function(AfterSheet $event) {
+                $event->sheet->setCellValue("C".TotalAdminEarningRecords(2),TotalAdminEarning()." Rs ");
+                $event->sheet->setCellValue("B".TotalAdminEarningRecords(2),"Total Earning");
+                $event->sheet->setCellValue("C".TotalAdminEarningRecords(3),gst(TotalAdminEarning())." Rs ");
+                $event->sheet->setCellValue("B".TotalAdminEarningRecords(3),"Gst");
+                $event->sheet->setCellValue("C".TotalAdminEarningRecords(4),final_earning(TotalAdminEarning())." Rs ");
+                $event->sheet->setCellValue("B".TotalAdminEarningRecords(4),"Final Earning");
+            },
         ];
     }
 }

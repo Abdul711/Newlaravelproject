@@ -25,7 +25,11 @@
 <p>Customer Address: {{$order_detail[0]->customer_address}}</p>
 <p>Expected Delivery Date: {{date("d-M-Y h:i a",strtotime($order_detail[0]->delivery_expected_time))}}</p>
 <p> Delivery Type: {{ucfirst($order_detail[0]->delivery_type)}}</p>
+@if($order_detail[0]->customer_payment=="Wallet" && $order_detail[0]->remaining_amount==0)
 <p>Payment Type: {{ucfirst($order_detail[0]->customer_payment)}}</p>
+@else
+<p>Payment Type:COD & Wallet </p>
+@endif
 <p>Order Date: {{date("d-M-Y",strtotime($order_detail[0]->created_at))}}</p>
 <p>Order Time: {{date("h:i a",strtotime($order_detail[0]->created_at))}}</p>
 

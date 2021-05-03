@@ -61,6 +61,10 @@ $maxTotal=max($total_amount);
 <td>{{$key+1}}</td>
 <td>{{$customer->customer_name}}
 <p> No Of Order {{$total_order}}</p>
+<p>Last Order Date </p>
+<p>{{Last_order_date($customer->id)}}</p>
+<p>Last Order Time </p>
+<p>{{Last_order_time($customer->id)}}</p>
 @if($maxTotal==$total_amount_expand)
  Amount Spend <p style="color:black; background:red;">{{$total_amount_expand}} Rs</p>
  @else

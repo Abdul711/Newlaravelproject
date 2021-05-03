@@ -153,7 +153,7 @@
                             <h3>{{$product->name}}</h3>
 
                             Delivery Time:<p class="text-danger"><b>{{$product->lead_time}}</b></p>
-                            
+                            Delivery Charge:<p class="text-danger"><b>{{$product->delivery_charge}}</b>Rs</p>
                             <div class="aa-price-block">
                       
                             @if($product->is_discounted=="1")
@@ -201,7 +201,10 @@
                                 </select>
                               </form>
                               <p class="aa-prod-category">
-                                Category: <a href="#">Polo T-Shirt</a>
+                                Category: <a href="#">{{$product->category_name}}</a>
+                              </p>
+                              <p class="aa-prod-category">
+                              Brands: <a href="#">{{$product->brands}}</a>
                               </p>
                             </div>
                            <div class="aa-prod-view-bottom">

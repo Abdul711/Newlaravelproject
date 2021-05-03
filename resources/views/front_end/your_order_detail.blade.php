@@ -22,7 +22,11 @@
          Customer Email: {{$orders[0]->customer_email}}<br>
          Customer Mobile: {{$orders[0]->customer_phone}}<br>
          Delivery Address: {{$orders[0]->customer_address}}<br>
+         @if($orders[0]->customer_payment=="Wallet" && $orders[0]->remaining_amount==0) 
          Payment Method: {{$orders[0]->customer_payment}}<br>
+         @else
+         Payment Method:COD & Wallet<br>
+         @endif
          District: {{$orders[0]->district}}<br>
          Delivery Type: {{ucfirst($orders[0]->delivery_type)}}<br>
          Expected Delivery Time:{{date("d-M-Y h:i a",strtotime($orders[0]->delivery_expected_time))}}<br>

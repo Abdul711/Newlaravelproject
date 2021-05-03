@@ -117,6 +117,14 @@
                                              
                                             </div>
                                             <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Income Tax</label>
+                                                <input id="cc-pament" 
+                                                required name="income_tax"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$income_tax}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1">Point Amount</label>
                                                 <input id="cc-pament" 
                                                 required name="point_amount"

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">    
     <title>@yield('page_title')</title>
     <link href="{{asset('front_assets/css/font-awesome.css')}}" rel="stylesheet">
-    <link href="{{asset('front_assets/css/bootstrap.css')}}" rel="stylesheet">   
+    <link href="{{asset('front_assets/css/bootstrap.css')}}" rel="stylesheet">    
     <link href="{{asset('front_assets/css/jquery.smartmenus.bootstrap.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{asset('front_assets/css/jquery.simpleLens.css')}}">    
     <link rel="stylesheet" type="text/css" href="{{asset('front_assets/css/slick.css')}}">

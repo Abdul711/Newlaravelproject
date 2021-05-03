@@ -86,7 +86,9 @@ Hand Over To Rider</a></td>
 @elseif($value->orders_status==5)
 <td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Delivered</a></td>
 @elseif($value->orders_status==6)
-<td><a class="btn btn-danger" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Cancelled</a></td>
+<td><a class="btn btn-danger" href="javascript:void(0)">Cancelled</a></td>
+@elseif($value->orders_status==7)
+<td><a class="btn btn-danger" href="javascript:void(0)">Cancelled By Customer</a></td>
 @endif
 
 

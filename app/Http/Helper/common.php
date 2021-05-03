@@ -332,7 +332,7 @@ $price=$point->price;
   return $total_point;
 }
 function order_detail_by_date(){
-return DB::table('orders')->distinct()->select('order_date')->get();
+return DB::table('orders')->distinct()->select('order_date')->orderBy('order_date')->get();
 }
 function order_detail_by_date_no($date_t){
  return DB::table('orders')->where('order_date','=',$date_t)->count();
@@ -350,13 +350,50 @@ function amount_earned($date_t){
   return DB::table('orders')->where('order_date','=',$date_t)->where('orders_status','=','5')->sum('final_price');
  
  }
+ function TotalAdminEarning(){
+  $order_details=order_detail_by_date();
+  $totalEarning=0;
+  foreach ($order_details as $key => $detail) {
+
+$amount_gain=amount_earned($detail->order_date);
+$totalEarning=$totalEarning+$amount_gain;
+  }
+  return   $totalEarning;
+ }
+ function gst($total_earning){
+  $web=webSetting();
+  $income_tax=$web[0]->income_tax;
+   return floor($income_tax/100*$total_earning);
+ }
+  function final_earning($final_earning){
+ $gst=gst($final_earning);
+ return $final_earning-$gst;
+  }
+ function TotalAdminEarningRecords($numbers_add){
+  $order_details=order_detail_by_date();
+  $totalEarning=0;
+ 
+  return count($order_details)+$numbers_add;
+ }
  function total_item($date_t){
   return DB::table('orders')->leftJoin('order_details','order_details.order_id','=','orders.id')->
-  where('orders.order_date','=',$date_t)->where('orders.orders_status','=','5')->distinct()->count();
+  where('orders.order_date','=',$date_t)->where('orders.orders_status','=','5')->count();
  
  }
  function total_qty($date_t){
   return DB::table('orders')->leftJoin('order_details','order_details.order_id','=','orders.id')->
   where('orders.order_date','=',$date_t)->where('orders.orders_status','=','5')->sum('order_details.qty');
  }
+ function referal_code($user_name){
+$data=DB::table("customers")->select("customer_referral")->where("customer_name","=",$user_name)->get();
+return$datad= $data[0]->customer_referral;
+ }
+ function Last_order_date($user_name){
+  $data=DB::table("orders")->select("created_at")->where("customer_id","=",$user_name)->orderBy("id","desc")->limit(1)->get();
+  return$datad= date("d-F-Y",strtotime($data[0]->created_at));
+   }
+   function Last_order_time($user_name){
+    $data=DB::table("orders")->select("created_at")->where("customer_id","=",$user_name)->orderBy("id","desc")->limit(1)->get();
+    return$datad= date("h:i a",strtotime($data[0]->created_at));
+     }
 ?>

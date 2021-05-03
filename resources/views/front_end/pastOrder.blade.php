@@ -32,8 +32,8 @@
                         <th>Payment Method</th>
                         <th>Discount</th>
                         <th>Date/Time</th>
-                        <th>Payment Status</th>
-                
+                        <th>Order Status</th>
+              
                       </tr>
                     </thead>
                              
@@ -82,30 +82,34 @@
                       </td>
                  
                      @if($order->orders_status==1)
-                      <td class="{{$class_ta}}">
+                      <td>
                       Pending
+                      <p><a href="{{url('/cancel/'.$order->id)}}" class="btn btn-danger">Cancel</a></p>
                       </td>
                       @elseif($order->orders_status==2)
-                      <td class="{{$class_ta}}">
+                      <td >
                     Under The Process
                       </td>
                       @elseif($order->orders_status==3)
-                      <td class="{{$class_ta}}">
+                      <td>
              Hand Over The Rider
                       </td>
                       @elseif($order->orders_status==4)
-                      <td class="{{$class_ta}}">
+                      <td >
   Out For Delivery
                       </td>
                       @elseif($order->orders_status==5)
-                      <td class="{{$class_ta}}">
+                      <td>
 Delivered
                       </td>
                       @elseif($order->orders_status==6)
-                      <td class="{{$class_ta}}">
+                      <td>
 Cancelled
                       </td>
-           
+                      @elseif($order->orders_status==7)
+                      <td>
+Cancelled By You 
+                      </td>
                       @endif
      
      </tr>        

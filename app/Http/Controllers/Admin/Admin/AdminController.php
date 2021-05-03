@@ -466,8 +466,7 @@ $customer_datas=order_detail_by_date();
    $content.='<th>Order Date</th>';
    $content.='<th>Number Of Order</th>';
    $content.='<th>Amount Earned</th>';
-   $content.='<th>Total Item (Sold)</th>';
-   $content.='<th>Total Qty (Sold)</th>';
+
    $content.='<th>Total Product (Sold)</th>';
    $content.='</tr>';
    foreach($customer_datas as $key=> $customer_data){
@@ -481,11 +480,26 @@ $customer_datas=order_detail_by_date();
    $content.='<td>'.date("d-F-Y",strtotime($customer_data->order_date)).'</td>';
    $content.='<td>'.$number_of_order.'</td>';
    $content.='<td>'.$amount_gain.' Rs </td>';
-   $content.='<td>'.$total_item.'</td>';
+  
    $content.='<td>'.$total_qty.'</td>';
-   $content.='<td>'.$total_item*$total_qty.'</td>';
     $content.='</tr>';
-   }
+  
+
+  }
+  $total_earning=TotalAdminEarning();
+  $earnings=$total_earning;
+  $content.='<tr>';
+  $content.='<th> Total Earning </th>';
+  $content.='<td>'.$earnings.' Rs </td>';
+  $content.='</tr>';
+  $content.='<tr>';
+  $content.='<th> Gst </th>';
+  $content.='<td>'. gst($earnings).' Rs </td>';
+  $content.='</tr>';
+  $content.='<tr>';
+  $content.='<th> Final Earning </th>';
+  $content.='<td>'. final_earning($earnings).' Rs </td>';
+  $content.='</tr>';
    $content.='</table>';
 /*     PDF2::writeHTML($content);
      PDF2::Output('hello_world.pdf');*/
