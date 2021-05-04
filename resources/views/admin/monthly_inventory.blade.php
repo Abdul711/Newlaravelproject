@@ -1,7 +1,7 @@
 @extends('admin/layout')
-@section('page_title','Inventory Daily')
+@section('page_title','Inventory Monthly')
 @section('container')
-    <h1 class="mb10">Inventory(Daily)</h1>
+    <h1 class="mb10">Inventory(Monthly)</h1>
  
     <div class="row m-t-30">
         <div class="col-md-12">
@@ -17,19 +17,19 @@
     </button>
 </div>
 @endif 
-<a href="{{url('admin/inventory/inventory_pdf')}}">Print Out Report(PDF)</a>
-<a href="{{url('admin/inventory/inventory_excel')}}">Print Out Report(Excel)</a>
+<a href="{{url('admin/inventory/monthly_inventory_pdf')}}">Print Out Report(PDF)</a>
+<a href="{{url('admin/inventory/monthly_inventory_excel')}}">Print Out Report(Excel)</a>
             <div>
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>S.NO</th>
-                            <th> Date </th>
+                         <th>S.No</th>
+                            <th> Month(days) </th>
                         <th>Number Of Order </th>
+                        <th>Gst </th>
                             <th>Amount Earned </th>
                        
-                            <th>Total Product(Sold) </th>
-                            <th>Completion Ratio (%) </th>
+                      
                         
                       
                         </tr>
@@ -43,32 +43,30 @@
            
              
 @php
-$i=2;
-$total_record=count($order_dates);
-$total_amount=array();  
+$i=0;
+$total_record=count($order_months);
+
 
 @endphp     
 
                
-@foreach($order_dates as $key => $customer)
+@foreach($order_months as $key => $customer)
 @php
- $number_of=order_detail_by_date_no($customer->order_date);
- $amount_gain=amount_earned($customer->order_date);
- $amount_ratio=$amount_gain/$number_of;
- $total_ite=total_item($customer->order_date);
- $total_qt=total_qty($customer->order_date);
- $order_complete=order_complete($customer->order_date);
- $order_cancel=order_cancel($customer->order_date);
+$i=$i+1;
+$m="2021-02";
+$po=monthly_inve($customer);
+
+$number_of_day=$po["number_of_day"];
+$gst=$po["gst_income"];
+$total_order=$po["total_order"];
+$final_earning=$po["final_earning"];
 @endphp
 <tr>
-<td>{{$key+1}}</td>
-<td>{{date("d-M-Y",strtotime($customer->order_date))}}</td>
-<td>{{$number_of}}</td>
-<td> {{$amount_gain}} Rs </td>
-
-<td>{{$total_qt}} </td>
-<td>{{number_format(($order_complete/$number_of)*100,2)}} %</td>
-
+<td>{{$i}}</td>
+<td>{{date("F-Y",strtotime($customer))}} ({{$number_of_day}}) </td>
+<td>{{$total_order}}</td>
+<td>{{$gst}} Rs </td>
+<td>{{$final_earning}} Rs</td>
 </tr>
 
 

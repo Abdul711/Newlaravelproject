@@ -396,4 +396,45 @@ return$datad= $data[0]->customer_referral;
     $data=DB::table("orders")->select("created_at")->where("customer_id","=",$user_name)->orderBy("id","desc")->limit(1)->get();
     return$datad= date("h:i a",strtotime($data[0]->created_at));
      }
+
+    function monthly_inve($m){
+      $day_end = strtotime("last day of $m");
+      $day_first = strtotime("first day of $m");
+
+  
+        $d=date("Y-m-d",$day_end);
+      $e=date("Y-m-d",$day_first);
+      $month=date("m",$day_first);
+      $year=date("Y",$day_first);
+  
+      $da=cal_days_in_month(CAL_GREGORIAN,$month,$year);
+     $totalOrder=DB::table("orders")->whereBetween('orders.order_date',[$e,$d])->count();
+     $totalEarning=DB::table("orders")->whereBetween('orders.order_date',[$e,$d])->sum("final_price");
+     $web=webSetting();
+     $income_tax=$web[0]->income_tax;   
+     $gst=floor(($income_tax/100)*$totalEarning);
+     $inv_arr["total_order"]=$totalOrder;
+     $inv_arr["total_earning"]=$totalEarning;
+     $inv_arr["gst_income"]=$gst;
+     $inv_arr["final_earning"]=$totalEarning-$gst;
+     $inv_arr["number_of_day"]=$da;
+       return $inv_arr;
+
+
+    }
+
+function monthly_admin(){
+  $details=order_detail_by_date();
+  $moth=array();
+    foreach($details as $detail){
+     $order_date=$detail->order_date;
+  "<br>".$order_date=substr($order_date,0,-3);
+  array_push($moth,$order_date);
+  
+    }
+   $moth= array_unique($moth);
+   return $moth;
+}
+
+
 ?>

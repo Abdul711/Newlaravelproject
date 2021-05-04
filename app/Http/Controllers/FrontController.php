@@ -910,6 +910,10 @@ print_r($webset);*/
 
 extract($_POST);
 $delivery_time;
+$present_time=date("d-m-Y h:i:s");
+
+
+
 if($delivery_type=="scheduled"){
    $data_count=DB::table("orders")->where('delivery_expected_time','=',$delivery_time)->count();
     if($data_count>=2){

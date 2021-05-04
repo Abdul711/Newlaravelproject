@@ -29,7 +29,7 @@
                             <th>S.NO</th>
                             <th>Coupon Code</th>
                       
-                   
+                   <th> View Detail</th>
                             <th> Added On </th>
                             <th colspan="3"> Action </th>
                         </tr>
@@ -43,10 +43,10 @@
                  
                             
                         <tr>
-                        <td>{{$keys+1}}
-                        <p>
-                    <a class="btn btn-outline-secondary" href="{{url('admin/coupon/view_detail')}}/{{$category['id']}}">View Detail</a></p>
-                        </td>
+                        <td>{{$keys+1}}</td>
+                       
+                 <td>  <p> COUPON-{{$category->id}}</p> <p> <a class="btn btn-outline-secondary" href="{{url('admin/coupon/view_detail')}}/{{$category['id']}}">View Detail</a></p></td>
+                      
                             <td>{{$category['coupon_code']}}</td>
                      
                         

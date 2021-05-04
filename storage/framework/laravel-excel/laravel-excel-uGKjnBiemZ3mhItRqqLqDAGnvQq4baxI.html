@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('page_title')</title>
-    <link href="{{asset('admin_assets/css/font-face.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/font-awesome-5/css/fontawesome-all.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('admin_assets/css/theme.css')}}" rel="stylesheet" media="all">
-    <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+    <title>Inventory Monthly</title>
+    <link href="http://localhost:8000/admin_assets/css/font-face.css" rel="stylesheet" media="all">
+    <link href="http://localhost:8000/admin_assets/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="http://localhost:8000/admin_assets/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="http://localhost:8000/admin_assets/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="http://localhost:8000/admin_assets/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="http://localhost:8000/admin_assets/css/theme.css" rel="stylesheet" media="all">
+    <script src="http://localhost:8000/ckeditor/ckeditor.js"></script>
 </head>
 <script>
-ADMIN_PATH="{{url('/admin')}}";
+ADMIN_PATH="http://localhost:8000/admin";
 </script>
 <body>
 <div class="page-wrapper">
@@ -23,7 +23,7 @@ ADMIN_PATH="{{url('/admin')}}";
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="index.html">
-                            <img src="{{asset('admin_assets/images/icon/logo.png')}}" alt="CoolAdmin" />
+                            <img src="http://localhost:8000/admin_assets/images/icon/logo.png" alt="CoolAdmin" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -37,30 +37,30 @@ ADMIN_PATH="{{url('/admin')}}";
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li>
-                            <a href="{{url('admin/dashboard')}}')">
+                            <a href="http://localhost:8000/admin/dashboard')">
                              
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
                  
                         <li>
-                            <a href="{{url('admin/category')}}">
+                            <a href="http://localhost:8000/admin/category">
                                 <i class="fas fa-tachometer-alt"></i>Category</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/sub_category')}}">
+                            <a href="http://localhost:8000/admin/sub_category">
                                 <i class="fas fa-tachometer-alt"></i>Sub Category</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/sub_category')}}"">
+                            <a href="http://localhost:8000/admin/sub_category"">
                                 <i class="fas fa-tachometer-alt"></i>Product`</a>
 
                         </li>
                         <li>
-                            <a href="{{url('admin/size')}}">
+                            <a href="http://localhost:8000/admin/size">
                                 <i class="fas fa-tachometer-alt"></i>Size</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/size')}}">
+                            <a href="http://localhost:8000/admin/size">
                                 <i class="fas fa-tachometer-alt"></i>Size</a>
                         </li>
                     </ul>
@@ -73,85 +73,85 @@ ADMIN_PATH="{{url('/admin')}}";
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a href="#">
-                    <img src="{{asset('admin_assets/images/icon/logo.png')}}" alt="Cool Admin" />
+                    <img src="http://localhost:8000/admin_assets/images/icon/logo.png" alt="Cool Admin" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li>
-                            <a href="{{url('admin/dashboard')}}"">
+                            <a href="http://localhost:8000/admin/dashboard"">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
                        
                         <li>
-                            <a href="{{url('admin/category')}}"">
+                            <a href="http://localhost:8000/admin/category"">
                                 <i class="fas fa-tachometer-alt"></i>Category</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/sub_category')}}"">
+                            <a href="http://localhost:8000/admin/sub_category"">
                                 <i class="fas fa-tachometer-alt"></i>Sub Category</a>
 
                         </li>
                         <li>
-                            <a href="{{url('admin/product')}}"">
+                            <a href="http://localhost:8000/admin/product"">
                                 <i class="fas fa-tachometer-alt"></i>Product</a>
 
                         </li>
                         
                         <li>
-                            <a href="{{url('admin/tax')}}">
+                            <a href="http://localhost:8000/admin/tax">
                             <i class="fa fa-tachometer-alt"></i>Tax</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/size')}}">
+                            <a href="http://localhost:8000/admin/size">
                                 <i class="fas fa-tachometer-alt"></i>Size</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/color')}}">
+                            <a href="http://localhost:8000/admin/color">
                                 <i class="fas fa-tachometer-alt"></i>Color</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/coupon')}}">
+                            <a href="http://localhost:8000/admin/coupon">
                                 <i class="fas fa-tachometer-alt"></i>Coupon </a>
                         </li>
                         <li>
-                            <a href="{{url('admin/vendor')}}">
+                            <a href="http://localhost:8000/admin/vendor">
                                 <i class="fas fa-tachometer-alt"></i>Vendor </a>
                         </li>
                         <li>
-                            <a href="{{url('admin/brand')}}">
+                            <a href="http://localhost:8000/admin/brand">
                                 <i class="fas fa-tachometer-alt"></i>Brand Management</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/banner')}}">
+                            <a href="http://localhost:8000/admin/banner">
                                 <i class="fas fa-tachometer-alt"></i>Banner Management</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/setting')}}">
+                            <a href="http://localhost:8000/admin/setting">
                                 <i class="fas fa-tachometer-alt"></i>Web Setting</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/reward')}}">
+                            <a href="http://localhost:8000/admin/reward">
                                 <i class="fas fa-tachometer-alt"></i>Manage Rewards</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/order')}}">
+                            <a href="http://localhost:8000/admin/order">
                                 <i class="fas fa-tachometer-alt"></i>Order Management</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/customers')}}">
+                            <a href="http://localhost:8000/admin/customers">
                                 <i class="fas fa-tachometer-alt"></i>Customers</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/inventory')}}">
+                            <a href="http://localhost:8000/admin/inventory">
                                 <i class="fas fa-tachometer-alt"></i>Inventory System(Daily)</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/inventory_monthly')}}">
+                            <a href="http://localhost:8000/admin/inventory_monthly">
                                 <i class="fas fa-tachometer-alt"></i>Inventory System(Monthly)</a>
                         </li>
-                     <li>   <a href="{{url('admin/logout')}}">
+                     <li>   <a href="http://localhost:8000/admin/logout">
                                                     <i class="zmdi zmdi-power"></i>Logout</a></li>
                     </ul>
                 </nav>
@@ -179,7 +179,7 @@ ADMIN_PATH="{{url('/admin')}}";
                                            
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="{{url('admin/manage')}}">
+                                                    <a href="http://localhost:8000/admin/manage">
                                                         <i class="zmdi zmdi-account"></i>Account</a>
                                                 </div>
                                                 
@@ -201,8 +201,141 @@ ADMIN_PATH="{{url('/admin')}}";
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        @section('container')
-                        @show
+                            <h1 class="mb10">Inventory(Monthly)</h1>
+ 
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <!-- DATA TABLE-->
+             
+<a href="http://localhost:8000/admin/inventory/monthly_inventory_pdf">Print Out Report(PDF)</a>
+
+            <div>
+                <table class="table table-borderless table-data3">
+                    <thead>
+                        <tr>
+                         <th>S.No</th>
+                            <th> Month(days) </th>
+                        <th>Number Of Order </th>
+                        <th>Gst </th>
+                            <th>Amount Earned </th>
+                       
+                      
+                        
+                      
+                        </tr>
+                    </thead>
+                    <tbody>
+                
+            
+                 
+              
+      
+           
+             
+     
+
+               
+<tr>
+<td>1</td>
+<td>January-2020 (31) </td>
+<td>2</td>
+<td>2034 Rs </td>
+<td>13616 Rs</td>
+</tr>
+
+
+
+<tr>
+<td>2</td>
+<td>January-2021 (31) </td>
+<td>1</td>
+<td>450 Rs </td>
+<td>3015 Rs</td>
+</tr>
+
+
+
+<tr>
+<td>3</td>
+<td>February-2021 (28) </td>
+<td>1</td>
+<td>450 Rs </td>
+<td>3015 Rs</td>
+</tr>
+
+
+
+<tr>
+<td>4</td>
+<td>March-2021 (31) </td>
+<td>1</td>
+<td>253 Rs </td>
+<td>1697 Rs</td>
+</tr>
+
+
+
+<tr>
+<td>5</td>
+<td>April-2021 (30) </td>
+<td>41</td>
+<td>45772 Rs </td>
+<td>306324 Rs</td>
+</tr>
+
+
+
+<tr>
+<td>6</td>
+<td>May-2021 (31) </td>
+<td>18</td>
+<td>13822 Rs </td>
+<td>92505 Rs</td>
+</tr>
+
+
+
+<tr>
+<td>7</td>
+<td>June-2021 (30) </td>
+<td>1</td>
+<td>372 Rs </td>
+<td>2493 Rs</td>
+</tr>
+
+
+
+
+                 </tbody>
+                </table>
+            </div>
+            <!-- END DATA TABLE-->
+        </div>
+    </div>
+    <div class="top-campaign">
+                                    <h3 class="title-3 m-b-30">Total Earning Detail</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-top-campaign">
+                                            <tbody>
+                                            
+                                                                                            <tr>
+                                                    <td>Total Earning</td>
+                                                    <td>403533 Rs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Gst </td>
+                                                    <td>52459 Rs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Final Earning</td>
+                                                    <td>351074 Rs</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+             
                     </div>
                 </div>
             </div>
@@ -212,10 +345,10 @@ ADMIN_PATH="{{url('/admin')}}";
     </div>
 
 
-    <script src="{{asset('admin_assets/vendor/jquery-3.2.1.min.js')}}"></script>
-    <script src="{{asset('admin_assets/vendor/bootstrap-4.1/popper.min.js')}}"></script>
-    <script src="{{asset('admin_assets/vendor/bootstrap-4.1/bootstrap.min.js')}}"></script>
-  <!--  <script src="{{asset('admin_assets/vendor/wow/wow.min.js')}}"></script>--->
-    <script src="{{asset('admin_assets/js/main.js')}}"></script>
+    <script src="http://localhost:8000/admin_assets/vendor/jquery-3.2.1.min.js"></script>
+    <script src="http://localhost:8000/admin_assets/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="http://localhost:8000/admin_assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+  <!--  <script src="http://localhost:8000/admin_assets/vendor/wow/wow.min.js"></script>--->
+    <script src="http://localhost:8000/admin_assets/js/main.js"></script>
 </body>
 </html>

@@ -143,9 +143,12 @@ Route::get('admin/color/status/{id}/{status}',[ColorController::class,'update_st
 Route::get('admin/customers',[AdminController::class,'customers']);
 Route::get('admin/customers/customer_pdf',[FrontController::class,'customer_laravel_pdf']);
 Route::get('admin/customers/customer_excel',[AdminController::class,'customer_laravel_excel']);
+Route::get('admin/inventory/monthly_inventory_excel',[AdminController::class,'monthly_inventory_laravel_excel']);
+Route::get('admin/inventory/monthly_inventory_pdf',[AdminController::class,'monthly_inventory_laravel_pdf']);
 Route::get('admin/inventory/inventory_excel',[AdminController::class,'inventory_laravel_excel']);
 Route::get('admin/inventory/inventory_pdf',[AdminController::class,'inventory_laravel_pdf']);
 Route::get('admin/inventory',[AdminController::class,'inventory']);
+Route::get('admin/inventory_monthly',[AdminController::class,'inventory_monthly']);
 /* Crud Operation Route For Size */
 Route::get('admin/size',[SizeController::class,'show']);
 Route::get('admin/size/delete/{id}',[SizeController::class,'destroy']);

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\CustomersExport;
 use App\Exports\Inventory;
+use App\Exports\Monthly;
 use Excel;
 use \PDF;
 class AdminController extends Controller
@@ -438,6 +439,14 @@ $result['order_dates']=$detail;
 
 return view('admin.inventory',$result);
 }
+public function inventory_monthly(){
+
+
+$moth=monthly_admin();
+
+$result['order_months']=$moth;
+return view("admin.monthly_inventory",$result);
+}
 function  inventory_laravel_pdf(){
   
 
@@ -506,5 +515,36 @@ $customer_datas=order_detail_by_date();
     $pdf = PDF::loadHTML($content)->setPaper('a3',"portrait");
 
   return $pdf->download('inven_data.pdf');
-   }
+ 
+
+}
+function monthly_inventory_laravel_pdf(){
+  $moth=monthly_admin();
+}
+function monthly_inventory_laravel_excel(){
+  $moth=monthly_admin();
+  foreach($moth as $customer){
+  $po=monthly_inve($customer);
+
+$number_of_day=$po["number_of_day"];
+$gst=$po["gst_income"];
+$total_order=$po["total_order"];
+$final_earning=$po["final_earning"];
+$date_with_yaer=date("F-Y",strtotime($customer));
+
+$monthly_array["month_name"]=$date_with_yaer;
+$monthly_array["number_of_days"]=$number_of_day;
+$monthly_array["amount_earned"]=$final_earning;
+$monthly_array["total_order"]=$total_order;
+$monthly_array["gst"]=$gst;
+$c=DB::table("monthly_inventories")->where("month_name","=",$date_with_yaer)->count();
+if($c==0){
+DB::table("monthly_inventories")->insert($monthly_array);
+}else{
+  DB::table("monthly_inventories")->update($monthly_array);
+}
+  }
+  return Excel::download(new Monthly,'inventory.xls');
+}
+
 }
