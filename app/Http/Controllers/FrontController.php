@@ -918,7 +918,16 @@ if($delivery_type=="scheduled"){
    $data_count=DB::table("orders")->where('delivery_expected_time','=',$delivery_time)->count();
     if($data_count>=2){
     return response()->json(["status"=>"error","msg"=>"Slot is Booked"]);    
+
     }
+    $delivery_time;
+      $time1= strtotime($delivery_time);
+      $time2=strtotime(date("d-m-Y h:i:s"));
+      $difference= $time1-$time2;
+      if($difference<0){
+      return response()->json(["status"=>"error","msg"=>"Please Future Time"]);  
+      }
+ 
 }
 
 if(isset($resul[0])){

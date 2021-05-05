@@ -144,12 +144,20 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <i class="fas fa-tachometer-alt"></i>Customers</a>
                         </li>
                         <li>
+                            <a href="{{url('admin/customers')}}">
+                                <i class="fas fa-tachometer-alt"></i>Subscribers</a>
+                        </li>
+                        <li>
+                            <a href="{{url('admin/customers')}}">
+                                <i class="fas fa-tachometer-alt"></i>Product Review</a>
+                        </li>
+                        <li>
                             <a href="{{url('admin/inventory')}}">
-                                <i class="fas fa-tachometer-alt"></i>Inventory System(Daily)</a>
+                                <i class="fas fa-tachometer-alt"></i>Inventory System<p>(Daily)</p></a>
                         </li>
                         <li>
                             <a href="{{url('admin/inventory_monthly')}}">
-                                <i class="fas fa-tachometer-alt"></i>Inventory System(Monthly)</a>
+                                <i class="fas fa-tachometer-alt"></i>Inventory System <p>(Monthly)</p></a>
                         </li>
                      <li>   <a href="{{url('admin/logout')}}">
                                                     <i class="zmdi zmdi-power"></i>Logout</a></li>

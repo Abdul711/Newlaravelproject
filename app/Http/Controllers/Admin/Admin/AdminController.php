@@ -520,6 +520,40 @@ $customer_datas=order_detail_by_date();
 }
 function monthly_inventory_laravel_pdf(){
   $moth=monthly_admin();
+  $content="";
+  $content.="<table>";
+  $content.="<tr>";
+  $content.="<th>S.No</th>";
+  $content.="<th>Month</th>";
+  $content.="<th>Number Of Day</th>";
+  $content.="<th>Number Of Order</th>";
+  $content.="<th>Gst</th>";
+  $content.="<th>My Earning</th>";
+  $content.="</tr>";
+  $i=0;
+ foreach($moth as $customer){
+  $po=monthly_inve($customer);
+$i=$i+1;
+$number_of_day=$po["number_of_day"];
+$gst=$po["gst_income"];
+$total_order=$po["total_order"];
+$final_earning=$po["final_earning"];
+$content.="<tr>";
+$content.="<td>".$i."</td>";
+$content.="<td>".date("F-Y",strtotime($customer))."</td>";
+$content.="<td>".$number_of_day."</td>";
+$content.="<td>".$total_order."</td>";
+$content.="<td>".$gst." Rs </td>";
+$content.="<td>".$final_earning." Rs </td>";
+$content.="</tr>";
+ }
+ $content.="</table>";
+ $pdf = PDF::loadHTML($content)->setPaper('a3',"portrait");
+
+ return $pdf->download('inven_data.pdf');
+
+  prx($moth);
+
 }
 function monthly_inventory_laravel_excel(){
   $moth=monthly_admin();
