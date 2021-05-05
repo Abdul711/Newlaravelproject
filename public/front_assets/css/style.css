@@ -2680,7 +2680,13 @@ height:850px;
 
 /*---- Login form ----*/
 
-.aa-login-form input[type="text"],
+.aa-login-form input[type="text"]{
+    font-size: 16px;
+  height: 40px;
+  margin-bottom: 15px;
+  padding: 10px;
+  width: 100%;
+}
 .aa-login-form input[type="password"] {
   border: 1px solid #ccc;
   font-size: 16px;
@@ -2688,6 +2694,10 @@ height:850px;
   margin-bottom: 15px;
   padding: 10px;
   width: 100%;
+}
+
+.goge{
+  margin:-20px;
 }
 .aa-login-form label {
   font-weight: normal;

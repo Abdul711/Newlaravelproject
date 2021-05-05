@@ -7,8 +7,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use DB;
-class Monthly implements FromCollection,WithMapping,WithHeadings,WithColumnWidths
+class Monthly implements FromCollection,WithMapping,WithHeadings,WithColumnWidths,WithTitle
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -27,8 +28,8 @@ class Monthly implements FromCollection,WithMapping,WithHeadings,WithColumnWidth
          "Number Of Days",
         "Gst",
         "Total Order",
-        "Amount Earned"
-        
+        "Amount Earned",
+     "Total Earning"
         ];
     }
     public function columnWidths(): array
@@ -39,6 +40,7 @@ class Monthly implements FromCollection,WithMapping,WithHeadings,WithColumnWidth
    "C"=>20,
    "D"=>21,
    "E"=>22,
+   "F"=>21
   
      ];  
    
@@ -56,8 +58,13 @@ $final_earning=$po["final_earning"];
          $number_of_day,
          $gst,
          $total_order,
-         $final_earning
+         $final_earning,
+         $final_earning+$gst
+      
         ];
     }
-
+    public function title(): string
+    {
+    	return 'Some Text';
+    }
 }

@@ -1114,3 +1114,49 @@ alert(FRONT_PATH+"/readd/"+id);
 }
 });
 }
+
+$(".goge").click(function(){
+var po=$("input[name='user_client_password']").prop("type");
+$(this).toggleClass("fa fa-eye fa fa-eye-slash");
+if(po=="password"){
+  $("input[name='user_client_password']").prop("type","text");
+
+
+}
+if(po=="text"){
+    $("input[name='user_client_password']").prop("type","password");
+      
+    
+
+
+
+}
+
+});
+$(".login_customer").click(function(e){
+  e.preventDefault();
+var form_data=$(".login_front_user").serialize();
+ var password=$("input[name='user_login_password']").val();
+  var email=$("input[name='user_login_email']").val();
+    valid_email=/[A-Za-z0-9_.]{3,}@[A-Za-z]{3,}[.]{1}[A-Za-z]{3,6}$/;
+     if(email==""){
+       swal("Oops!","Please Fill Email","error");
+       return false;
+     }
+     if(password==""){
+            swal("Oops!","Please Fill Password","error");
+               return false;
+     }
+      
+         path=FRONT_PATH+"/loginFront_user";
+     $.ajax({
+     method:"POST",
+url:path,
+data:form_data,
+success:function(data_reply){
+  alert(data_reply);
+  console.log(data_reply);
+}
+
+     });
+});

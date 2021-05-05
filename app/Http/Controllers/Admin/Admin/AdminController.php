@@ -538,13 +538,16 @@ $number_of_day=$po["number_of_day"];
 $gst=$po["gst_income"];
 $total_order=$po["total_order"];
 $final_earning=$po["final_earning"];
+$total_earning=$final_earning+$gst;
 $content.="<tr>";
 $content.="<td>".$i."</td>";
 $content.="<td>".date("F-Y",strtotime($customer))."</td>";
 $content.="<td>".$number_of_day."</td>";
 $content.="<td>".$total_order."</td>";
 $content.="<td>".$gst." Rs </td>";
+
 $content.="<td>".$final_earning." Rs </td>";
+$content.="<td>".$total_earning." Rs </td>";
 $content.="</tr>";
  }
  $content.="</table>";

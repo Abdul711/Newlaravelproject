@@ -303,12 +303,12 @@
                 }
 
                 @endphp
-          <form class="aa-login-form login-user" action="">
+          <form class="aa-login-form login_front_user" action="">
             <label for="">Username or Email address<span>*</span></label>
-            <input type="text" name="user_login_email" value="{{$login_email}}" placeholder="Username or email">
+            <input type="text" name="user_client_email" value="{{$login_email}}" placeholder="Username or email">
             <label for="">Password<span>*</span></label>
-            <input type="password" name="user_login_password" placeholder="Password">
-            <button class="aa-browse-btn" type="submit">Login</button>
+            <input type="password" id="user_password" name="user_client_password" placeholder="Password"><i class="fa fa-eye goge"></i><br>
+            <button class="aa-browse-btn login_customer" type="submit">Login</button>
             <label class="rememberme" for="rememberme"><input type="checkbox" value="rem" name="rem" id="rememberme" {{$rememberme}}> Remember me </label>
         
             <p class="aa-lost-password"><a href="{{url('/forget_password')}}">Lost your password?</a></p>

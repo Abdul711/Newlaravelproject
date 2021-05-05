@@ -31,7 +31,7 @@
                 @endphp
                  <form action="" class="aa-login-form login-user">
                   <label for="">Username or Email address<span>*</span></label>
-                   <input type="text" value="{{$login_email}}"  name="user_login_email" placeholder="Username or email">
+                   <input type="text" value="{{$login_email}}"  name="user_client_email" placeholder="Username or email">
                    <label for="">Password<span>*</span></label>
                     <input name="user_login_password" value="{{$login_password}}" type="password" placeholder="Password">
                     <button type="submit" class="aa-browse-btn">Login</button>

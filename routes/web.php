@@ -152,7 +152,7 @@ Route::get('admin/inventory_monthly',[AdminController::class,'inventory_monthly'
 /* Crud Operation Route For Size */
 Route::get('admin/size',[SizeController::class,'show']);
 Route::get('admin/size/delete/{id}',[SizeController::class,'destroy']);
-
+Route::post("/loginFront_user",[FrontController::class,"login_client"]);
 Route::get('admin/size/manage_size/{id?}',[SizeController::class,'manage']);
 Route::post('admin/size/manage_size',[SizeController::class,'manage_size_process'])->name('size.store');
 Route::get('admin/size/status/{id}/{status}',[SizeController::class,'update_status']);

@@ -1602,4 +1602,14 @@ $customer_datas=DB::table('customers')->get();
     DB::table('orders')->where('id','=',$id)->update(["orders_status"=>7]);
         return redirect('/pastOrder');
     }
+function login_client(Request $req){
+ 
+       extract($_POST);
+
+     $totalCount=DB::table("customers")->where("customer_email","=",$user_client_email)->count();
+       if($totalCount==0){
+        return response()->json(['status'=>"success",'msg'=>"User Login "]);            
+       }    
+       
+}
 }
