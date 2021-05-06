@@ -91,9 +91,10 @@ Route::get('admin/update/{id?}',[AdminController::class,'update_admin']);
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
 Route::group(['middleware'=>'admin_auth'],function(){
 Route::get('admin/order/status/{id}/{status}',[AdminController::class,'update_order_status']);
+Route::post("/register_subscriber",[FrontController::class,"register_subscriber"]);
 Route::get('admin/order_cancel/{id}',[AdminController::class,'order_cancel']);
     Route::get('admin/order',[AdminController::class,"orders_detail"]);
-
+    Route::get('admin/product_review',[AdminController::class,"product_review"]);
     Route::get('admin/email_detail/{id}',[AdminController::class,"email_detail"]);
     Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);

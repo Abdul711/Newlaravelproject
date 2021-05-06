@@ -148,7 +148,7 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <i class="fas fa-tachometer-alt"></i>Subscribers</a>
                         </li>
                         <li>
-                            <a href="{{url('admin/customers')}}">
+                            <a href="{{url('admin/product_review')}}">
                                 <i class="fas fa-tachometer-alt"></i>Product Review</a>
                         </li>
                         <li>

@@ -132,9 +132,9 @@ class FrontController extends Controller
        die('');*/
        $review=DB::table("product_review")->
      
-       select('user_name','user_email','product_id','review','rating','product_review.created_at')->
+       select('user_name','user_email','product_id','review','rating','product_review.created_at',"product_review.status")->
 
-       where(["product_review.product_id"=>$id])->get();
+       where(["product_review.product_id"=>$id])->where(["product_review.status"=>"1"])->get();
  
        if(session()->has("FRONT_USER_ID")){
         $user_id=session('FRONT_USER_ID');
@@ -1390,12 +1390,20 @@ return view('front_end.pastOrder',$result);
     }else{
      $id=$_COOKIE["CUSTOMER_ID"];
     }
-
-
     extract($_POST);
-    if($rating==''){
-        $rating=5;
+   $custome_data=DB::table("customers")->where("customer_email","=",$review_email)->get();
+    if(isset($custome_data[0])){
+        $review_name=$custome_data[0]->customer_name;
+        $user_type="Reg";
+        $status=1;
+    }else{
+        $review_name=$review_name;
+        $user_type="Non-Reg";
+        $status=0;
+        $id=rand(11111,99999);
     }
+
+
     if($review!="" && $review_name!="" && $review_email!=""){
       DB::table('product_review')->insert([
           "product_id"=>$pid,
@@ -1404,6 +1412,8 @@ return view('front_end.pastOrder',$result);
           "user_name"=>$review_name,
           "user_id"=>$id,
           "rating"=>$rating,
+          "user_type"=>$user_type,
+          "status"=>$status,
           "created_at"=>date("Y-m-d H:i:s")
       ]);
     }if($rating!=""){
@@ -1606,10 +1616,65 @@ function login_client(Request $req){
  
        extract($_POST);
 
-     $totalCount=DB::table("customers")->where("customer_email","=",$user_client_email)->count();
-       if($totalCount==0){
-        return response()->json(['status'=>"success",'msg'=>"User Login "]);            
-       }    
+     $data_customer=DB::table("customers")->where("customer_email","=",$user_client_email)->get();
+     if(isset($data_customer[0])){
+       $customer_password=$data_customer[0]->customer_password;
+       $customer_id=$data_customer[0]->id;
+       $user_client_password;
+       $status=$data_customer[0]->customer_status;
+       $verified=$data_customer[0]->customer_verified;
+  
+        if($status==1){
+             if($verified==1){
+                   if(Hash::check($user_client_password,$customer_password)){
+                    session()->put('FRONT_USER_LOGIN','1');   
+                    session()->put('FRONT_USER_ID',$data_customer[0]->id); 
+                    session()->put('FRONT_USER_NAME',$data_customer[0]->customer_name); 
+                    session()->put('FRONT_USER_EMAIL',$data_customer[0]->customer_email); 
+                    $user_id=0;
+                    $ip=ip_address();
+                   $cart_data=DB::table("carts")->where('ip_add',"=",$ip)->where('user_id',"=",$user_id)->get();
+                         if(isset($cart_data[0])){
+                            DB::table("carts")->where('ip_add',"=",$ip)->where('user_id',"=",$user_id)->update([
+                             "user_type"=>"Reg",
+                             "user_id"=>$customer_id
+                            ]);
+                         }
+                         if(isset($rem) && $rem!=null){
+                            setcookie('login_email',$user_client_email,time()+60*60*2);
+                            setcookie('login_password',$user_client_password,time()+60*60*2);
+                         }else{
+                              if(isset($_COOKIE['login_email'])){
+                                 setcookie('login_email',$user_client_email,time()-60*60*2);
+                              }
+                              if(isset($_COOKIE['login_password'])){
+                                 setcookie('login_password',$user_client_password,time()-60*60*2);
+                              }
+                         } 
+
+                    return response()->json(['status'=>"success",'msg'=>"User Login Successfully"]); 
+                   }else{
+                    return response()->json(['status'=>"error",'msg'=>"Wrong Password"]); 
+                   }
+             }else{
+                return response()->json(['status'=>"error",'msg'=>"First Verify Your Email Address"]); 
+             }
+        }else{
+            return response()->json(['status'=>"error",'msg'=>"Account Deactivated"]); 
+        }
+
+     }else{
+        return response()->json(['status'=>"error",'msg'=>"Email Addreess is not Registered"]); 
+     }
+
+ 
+      
        
+}
+function register_subscriber(Request $req){
+unset($_POST["_token"]);
+$_POST["created_at"]=date("Y-m-d H:i:s");
+DB::table("subscribers")->insert($_POST);
+   
 }
 }

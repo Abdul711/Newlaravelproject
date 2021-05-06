@@ -1156,6 +1156,41 @@ data:form_data,
 success:function(data_reply){
   alert(data_reply);
   console.log(data_reply);
+
+
+      if(data_reply.status=="success"){
+        setInterval(function() {
+            window.location.href=window.location.href;
+        }, 6000);
+      }
+
+
+}
+
+     });
+});
+
+$("#subscribe").click(function(e){
+  e.preventDefault();
+     path=FRONT_PATH+"/register_subscriber";
+form_data=$("#subscribers").serialize();
+alert(form_data);
+     $.ajax({
+     method:"POST",
+url:path,
+data:form_data,
+success:function(data_reply){
+  alert(data_reply);
+  console.log(data_reply);
+
+
+      if(data_reply.status=="success"){
+        setInterval(function() {
+            window.location.href=window.location.href;
+        }, 6000);
+      }
+
+
 }
 
      });

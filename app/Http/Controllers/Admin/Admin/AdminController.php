@@ -529,6 +529,7 @@ function monthly_inventory_laravel_pdf(){
   $content.="<th>Number Of Order</th>";
   $content.="<th>Gst</th>";
   $content.="<th>My Earning</th>";
+  $content.="<th>Total Earning</th>";
   $content.="</tr>";
   $i=0;
  foreach($moth as $customer){
@@ -583,5 +584,10 @@ DB::table("monthly_inventories")->insert($monthly_array);
   }
   return Excel::download(new Monthly,'inventory.xls');
 }
-
+function product_review (){
+     $result["data"]=DB::table("product_review")->select("product_review.created_at as added_on",
+     "product_review.status","product_review.user_email","product_review.user_name","product_review.review","product_review.id",
+     "product_review.user_type","products.name")->leftJoin("products","products.id","=","product_review.product_id")->get();
+     return view("admin.product_review",$result);
+}
 }

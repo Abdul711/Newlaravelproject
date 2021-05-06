@@ -307,7 +307,7 @@
             <label for="">Username or Email address<span>*</span></label>
             <input type="text" name="user_client_email" value="{{$login_email}}" placeholder="Username or email">
             <label for="">Password<span>*</span></label>
-            <input type="password" id="user_password" name="user_client_password" placeholder="Password"><i class="fa fa-eye goge"></i><br>
+            <input type="password" id="user_password"  name="user_client_password" placeholder="Password"><i class="fa fa-eye goge"></i><br>
             <button class="aa-browse-btn login_customer" type="submit">Login</button>
             <label class="rememberme" for="rememberme"><input type="checkbox" value="rem" name="rem" id="rememberme" {{$rememberme}}> Remember me </label>
         
