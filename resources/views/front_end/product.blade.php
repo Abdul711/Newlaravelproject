@@ -190,16 +190,7 @@
                      
                      
                             <div class="aa-prod-quantity">
-                              <form action="">
-                                <select name="" id="qtyProduct">
-                                  <option value="1">1</option>
-                                  <option value="2">2</option>
-                                  <option value="3">3</option>
-                                  <option value="4">4</option>
-                                  <option value="5">5</option>
-                                  <option value="6">6</option>
-                                </select>
-                              </form>
+                       
                               <p class="aa-prod-category">
                                 Category: <a href="#">{{$product->category_name}}</a>
                               </p>

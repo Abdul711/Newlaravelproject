@@ -588,6 +588,22 @@ function product_review (){
      $result["data"]=DB::table("product_review")->select("product_review.created_at as added_on",
      "product_review.status","product_review.user_email","product_review.user_name","product_review.review","product_review.id",
      "product_review.user_type","products.name")->leftJoin("products","products.id","=","product_review.product_id")->get();
+
      return view("admin.product_review",$result);
+}
+function subscribers(){
+  $result["data"]=DB::table("subscribers")->get();
+   return view("admin/subscriber",$result);
+}
+function view_order_by_date($d){
+  $result["order_date"]=date("d-F-Y",strtotime($d));
+  $result["data"]=DB::table("orders")->select('created_at','final_price','id')->where('order_date','=',$d)->get();
+  return view('admin/inventory_date_detail',$result);
+}
+function customers_update_status($id,$status){
+  $model=Customer::find($id);
+  $model->customer_status=$status;
+  $model->save();
+  return redirect('admin/customers');
 }
 }

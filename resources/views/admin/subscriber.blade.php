@@ -1,5 +1,5 @@
 ﻿@extends('admin/layout')
-@section('page_title','Product Review')
+@section('page_title','Subscribers')
 @section('tax_select','active')
 @section('container')
     @if(session()->has('message'))
@@ -10,7 +10,7 @@
         </button>
     </div> 
     @endif                           
-    <h1 class="mb10">Product Review</h1>
+    <h1 class="mb10">Subscribers</h1>
  
     <div class="row m-t-30">
         <div class="col-md-12">
@@ -19,13 +19,11 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                       
-                            <th>Review</th>
-                            <th>User Name</th>
+                       <th> S.NO </th>
                             <th>User Email</th>
                             <th>User Type</th>
                             <th>Added On</th>
-                            <th>Action</th>
+                        
                         </tr>
                     </thead>
                     <tbody>
@@ -33,23 +31,21 @@
                     $total_tax=count($data);
                     @endphp
                     @if($total_tax>0)
-                        @foreach($data as $list)
+                        @foreach($data  as $key=> $list)
+                        @php
+                        $key=$key+1;
+                        @endphp
                         <tr>
-                            <td>{{$list->review}}</td>
-                            <td>{{$list->user_name}}</td>
-                            <td>{{$list->user_email}}</td>
-<td>{{$list->user_type}}</td>
-<td>{{date("d-F-Y",strtotime($list->added_on))}}</td>
+                 <td>{{$key}}</td>
+                            <td>{{$list->email}}</td>
+
                             <td>
                                
-                                @if($list->status==1)
-                                    <a href="{{url('admin/tax/status/0')}}/{{$list->id}}"><button type="button" class="btn btn-primary">Active</button></a>
-                                 @elseif($list->status==0)
-                                    <a href="{{url('admin/tax/status/1')}}/{{$list->id}}"><button type="button" class="btn btn-warning">Deactive</button></a>
-                                @endif
+                            {{user_type($list->email)}}                             
 
                            
                             </td>
+                            <td>{{date("d-F-Y",strtotime($list->created_at))}}</td>
                         </tr>
                         @endforeach
                         @else

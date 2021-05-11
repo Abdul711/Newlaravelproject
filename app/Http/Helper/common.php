@@ -435,6 +435,48 @@ function monthly_admin(){
    $moth= array_unique($moth);
    return $moth;
 }
-
-
+function user_type($email){
+  $total_record=DB::table("customers")->where("customer_email","=",$email)->count();
+     if($total_record==0){
+       $user_type="Non-Registered";
+     }else{
+      $user_type="Registered";
+     }
+     return $user_type;
+}
+     function orders_status($id){
+      $total_order=DB::table("orders")->where('id','=',$id)->get();
+          if(isset($total_order[0])){
+          $orders_status=$total_order[0]->orders_status;
+              if($orders_status==1){
+                $message="Pending";
+              }if($orders_status==2){
+                $message="Confirmed";
+              }
+              if($orders_status==3){
+                $message="Hand Over To Rider";
+              }
+              if($orders_status==4){
+                $message="Out For Delivery";
+              }if($orders_status==5){
+                $message="Delivered";
+              }if($orders_status==6){
+                $message="Cancelled";
+              }if($orders_status==7){
+                $message="Cancelled By Customer";
+              }
+              return $message;
+          }else{
+            $message="No Order Of this Id Found";
+            return $message;
+          }     
+     }
+   function size_id($size_id){
+   $data=DB::table('sizes')->where('size_name','=',$size_id)->get();
+return $data[0]->id;
+   }
+   function color_id($size_id){
+    $data=DB::table('colors')->where('color_name','=',$size_id)->get();
+ return $data[0]->id;
+    }
 ?>

@@ -225,45 +225,41 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
 
 
                                 @php
-
-
-
-
                                 @endphp
                        @endforeach
 
                        @foreach($home_product_attributes[$product->id] as $size)
+                               @if($size->size_name!="")
                                  <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$size->product_id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$product->id}}"> {{$size->size_name}}</a>
+                        @else
+                        No Size Or Standard Size Available
+                        @endif
                            @endforeach
                             </div>
                             <h4>Color</h4>
                             <div class="aa-col-tag">
                             @foreach($home_product_attributes[$product->id] as $color)
-                                       
+                                       @if($color->color_name!="")
                                  <a   href="javascript:void(0)"  id="color_{{$color->color_name}}{{$product->id}}" class="productColor  
                                   ColorSize{{$color->size_name}} aa-col-{{strtolower($color->color_name)}}" onclick="selectColor('{{$color->color_name}}','{{$product->id}}')"   ></a>
-                            
+                           @else
+                           No Color Or Standard Color Available
+                            @endif
+
                             @endforeach
 
                                  </div>
                        
                             <div class="aa-prod-quantity">
                               <form action="">
-                                <select name="" id="qtyProduct">
-                                  <option value="1" selected="1">1</option>
-                                  <option value="2">2</option>
-                                  <option value="3">3</option>
-                                  <option value="4">4</option>
-                                  <option value="5">5</option>
-                                  <option value="6">6</option>
-                                </select>
+                             
                               </form>
                               <p class="aa-prod-category">
                                 Category: <a href="#">{{$list->category_name}}</a>
                               </p>
                             </div>
                            <div class="aa-prod-view-bottom">
-                              <a href="javascript:void(0)" onclick="qtyTake('{{$product->id}}')" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                              <a href="javascript:void(0)" onclick="qtyTake('{{$product->id}}','{{$home_product_attributes[$product->id][0]->color_name}}','{{$home_product_attributes[$product->id][0]->size_name}}')" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                            
                             </div>
                            

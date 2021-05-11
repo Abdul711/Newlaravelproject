@@ -221,6 +221,7 @@ class FrontController extends Controller
      function add_to_cart(Request $req){
 
  extract($_POST);
+
  $ip=ip_address();
  if(session()->has('FRONT_USER_ID')){
     $user_type="Reg";
@@ -229,89 +230,90 @@ class FrontController extends Controller
             $user_type="Non-Reg";   
             $user_id=0;
      }
- $product_attribute=DB::table("product_attributes")->
- leftJoin("sizes","sizes.id","=","product_attributes.size_id")->
- leftJoin("colors","colors.id","=","product_attributes.color_id")->
- leftJoin("products","products.id","=","product_attributes.product_id")->
- select('product_attributes.qty as product_qty','product_attributes.product_id',#
- 'product_attributes.id as attribute_id',
- 'product_attributes.price','products.is_discounted','products.discount_amount')->
- where('size_name','=',$size_id)->
- where('color_name','=',$color_id)->
- where('product_id','=',$product_id)->
- get();
-
-      if(isset($product_attribute[0])){
-   $price=$product_attribute[0]->price;
-   $attr_id=$product_attribute[0]->attribute_id;
-   $product_id=$product_attribute[0]->product_id;
-   $is_discounted=$product_attribute[0]->is_discounted;
-   $product_qty=$product_attribute[0]->product_qty;
-    if($product_qty<$pqty){
-        return response()->json(["status","error","msg"=>"Qty For This Product Not Available"]);       
-    }
-   if($is_discounted=="1"){
-      $discount_amount=$product_attribute[0]->discount_amount;
-         if($discount_amount!="" && $discount_amount>0){
-             $discount=($discount_amount/100)*$price;
-         }else{
-             $discount=0;
-         }
-      
-   }else{
-       $discount=0;
-   }
-   $price=$price-$discount;
-   $price=floor($price);
-   $web=webSetting();
-                        
-   $point_amount=$web[0]->point_amount;
-  $point=floor(($point_amount/100)*$price);
-
-$user_cart["attr_id"]=$attr_id;
-$user_cart["user_id"]=$user_id;
-$user_cart["qty"]=$pqty;
-$user_cart["point"]=$point;
-$user_cart["ip_add"]=$ip;
-$user_cart["user_type"]=$user_type;
-$user_cart["product_id"]=$product_id;
-$user_cart_data=DB::table("carts")->where('product_id','=',$product_id)->
-where('attr_id','=',$attr_id)->
-where('user_id','=',$user_id)->
-where('user_type','=',$user_type)->
-where('ip_add','=',$ip)->
-get();
-$total_record=count($user_cart_data);
-$cart_total=cartTotal();
-extract($cart_total);
-$point=total_point();
-if($total_record<=0){
-DB::table("carts")->insert($user_cart);
-$msg="Added";
-}else{
-    $cart_id=$user_cart_data[0]->id;
-    if($pqty==0){
-        $msg="Deleted From Cart";
-        DB::table("carts")->where('id','=',$cart_id)->delete();
-        return response()->json(["status","success","msg"=>"Product $msg Successfully ","cart_total"=>$cart_total,
-        "final_price"=>$final_price,"gst"=>$gst,"delivery_charge"=>$delivery_charge,
-        "points"=>$point]);
-    }
-    DB::table("carts")->where('id','=',$cart_id)->update($user_cart);
-    $msg="Updated";
-}
-$cart_total=cartTotal();
-extract($cart_total);
-
-  return response()->json(["status","success","msg"=>"Product $msg Successfully ","cart_total"=>$cart_total,
-  "final_price"=>$final_price,"gst"=>$gst,"delivery_charge"=>$delivery_charge,
-  "points"=>$point]);
+      if($size_id!="no_size"){
+    $size_product_id=size_id($size_id);
       }else{
-        return response()->json(["status","error","msg"=>"Product Not Exist With Given Attribute"]);
+        $size_product_id=0;
       }
- 
+      if($color_id!="no_color"){
+        $color_product_id=color_id($color_id);
+          }else{
+            $color_product_id=0;
+          }
+              $color_product_id;
+              $productAttribute=DB::table("product_attributes")->where("product_attributes.color_id",'=',$color_product_id)
+->leftJoin("products","products.id","=","product_attributes.product_id")
+              ->where("product_attributes.size_id",'=',$size_product_id)
+              ->where("product_attributes.product_id","=",$product_id)
+              ->select("products.is_discounted","products.discount_amount",
+              "product_attributes.id","product_attributes.price","product_attributes.qty")
+              ->get();
 
- 
+    if(isset($productAttribute[0])){
+     $attribute_id=$productAttribute[0]->id;
+     $product_id;
+     $price=$productAttribute[0]->price;
+     $is_discounted=$productAttribute[0]->is_discounted;
+     $discount_amount=$productAttribute[0]->discount_amount;
+        if($is_discounted==1 &&  $discount_amount!=""){
+            $product_price=$price-floor(($discount_amount/100)*$price);
+        }else{
+              $product_price=$price;
+        }
+     $product_price;
+     $web=webSetting();
+      $point_amount=$web[0]->point_amount;
+          $point=floor($point_amount/100*$product_price);
+      
+    $cart_data=DB::table("carts")->where('ip_add','=',$ip)->where('user_id','=',$user_id)->where('attr_id','=',$attribute_id)->where('product_id','=',$product_id);
+    $cart_datas=$cart_data->get();
+           if(isset($cart_datas[0])){
+         $cart_id=$cart_datas[0]->id;
+        $pqty;
+        $mg="Updated";
+          if($pqty==0){
+              $mg="Delete";
+              DB::table("carts")->where(["id"=>$cart_id])->delete();
+            $cart_total=cartTotal();
+            $cart_total["msg"]=$mg;
+            $status="success";
+            $cart_total["success"]=$status;
+return response()->json($cart_total);            
+          }
+     $cart_data->update([
+        "ip_add"=>$ip,
+        "point"=>$point,
+        "user_type"=>$user_type,
+        "user_id"=>$user_id,
+        "qty"=>$pqty,
+        "product_id"=>$product_id,
+        "attr_id"=>$attribute_id
+    ]);
+
+           }else{
+               $mg="Inserted";
+            DB::table("carts")->insert([
+                "ip_add"=>$ip,
+                "point"=>$point,
+                "user_type"=>$user_type,
+                "user_id"=>$user_id,
+                "qty"=>$pqty,
+                "product_id"=>$product_id,
+                "attr_id"=>$attribute_id
+            ]);
+           }
+     
+           $cart_total=cartTotal();
+                 $cart_total["msg"]=$mg;
+                 $status="success";
+                 $cart_total["success"]=$status;
+ return response()->json($cart_total);
+       
+
+  
+   }else{
+       return response()->json(["msg"=>"Product Not Available","status"=>"error"]);
+   }
      }
          public function store(Request $request){
          $validator=  Validator::make($request->all(),[
@@ -563,7 +565,7 @@ $mr="";
          "customer_verified"=>"0",
          "customer_rand_str"=>$mrt,
          "customer_status"=>"1",
-         "customer_status"=>"1",
+       
    "customer_referral"=>$referal_code
      ];
 /*print_r($insert_user_arr);*/
@@ -1672,9 +1674,13 @@ function login_client(Request $req){
        
 }
 function register_subscriber(Request $req){
+extract($_POST);
 unset($_POST["_token"]);
-$_POST["created_at"]=date("Y-m-d H:i:s");
-DB::table("subscribers")->insert($_POST);
-   
+$subscriber_array["created_at"]=date("Y-m-d H:i:s");
+$subscriber_array["email"]=$email;
+$total=DB::table("subscribers")->where('email','=',$email)->count();
+if($total==0){
+DB::table("subscribers")->insert($subscriber_array);
+}
 }
 }

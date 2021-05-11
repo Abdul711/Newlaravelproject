@@ -23,9 +23,13 @@
          Customer Mobile: {{$orders[0]->customer_phone}}<br>
          Delivery Address: {{$orders[0]->customer_address}}<br>
          @if($orders[0]->customer_payment=="Wallet" && $orders[0]->remaining_amount==0) 
-         Payment Method: {{$orders[0]->customer_payment}}<br>
+         Payment Method:COD & Wallet <br>
          @else
-         Payment Method:COD & Wallet<br>
+         @if($orders[0]->customer_payment=="COD")
+         Payment Method:Cash On Delivery </br>
+         @else
+         Payment Method:{{$orders[0]->customer_payment}}<br>
+         @endif
          @endif
          District: {{$orders[0]->district}}<br>
          Delivery Type: {{ucfirst($orders[0]->delivery_type)}}<br>
@@ -64,8 +68,12 @@
                         <td><a href="#"><img src="{{asset('storage/media/'.$order_detail->image)}}" width="300" height="" alt="img"></a></td>
                         <td><a class="aa-cart-title" href="#">{{$order_detail->name}}</a>
                         <p>
+                        @if($order_detail->color_name!="")
                <b>Color</b> :{{$order_detail->color_name}} <strong>  <br>
+               @endif
+               @if($order_detail->size_name!="")
                   <b>Size</b> : <strong> {{$order_detail->size_name}} </strong><br>
+       @endif
                   <b>Category</b> : {{$order_detail->category_name}} <strong></strong>
                         </p>
                         

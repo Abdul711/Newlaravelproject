@@ -2,6 +2,7 @@
   <!-- / menu -->  
  
   @extends('front_end/layout2')
+  @section('page_title','Page Not Found')
 @section('container')
 
   <!-- 404 error section -->

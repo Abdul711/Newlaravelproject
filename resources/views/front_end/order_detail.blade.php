@@ -86,8 +86,12 @@
                         <td ><a href="#"><img src="{{asset('storage/media/'.$order_detail->image)}}" width="300" height="" alt="img"></a></td>
                         <td><a class="aa-cart-title" href="#">{{$order_detail->name}}</a>
                         <p>
+                       @if($order_detail->color_name!="")
                <b>Color</b> :{{$order_detail->color_name}} <strong>  <br>
+               @endif
+              @if($order_detail->size_name!="")
                   <b>Size</b> : <strong> {{$order_detail->size_name}} </strong><br>
+                  @endif
                   <b>Category</b> : {{$order_detail->category_name}} <strong></strong>
                         </p>
                         

@@ -89,21 +89,28 @@ Route::get('admin/add_admin',[AdminController::class,'add_admin']);
 Route::get('admin',[AdminController::class,'index']);
 Route::get('admin/update/{id?}',[AdminController::class,'update_admin']);
 Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
+Route::post("/register_subscriber",[FrontController::class,"register_subscriber"]);
+Route::get('/reset/{?token}',[FrontController::class,'reset_p']);
+Route::post("/loginFront_user",[FrontController::class,"login_client"]);
+
+
+Route::group(['middleware'=>'disable_back_btn'],function(){
 Route::group(['middleware'=>'admin_auth'],function(){
 Route::get('admin/order/status/{id}/{status}',[AdminController::class,'update_order_status']);
-Route::post("/register_subscriber",[FrontController::class,"register_subscriber"]);
+Route::get('admin/print_invoice/{id}',[FrontController::class,"invoice"]);
 Route::get('admin/order_cancel/{id}',[AdminController::class,'order_cancel']);
     Route::get('admin/order',[AdminController::class,"orders_detail"]);
+    Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
+
     Route::get('admin/product_review',[AdminController::class,"product_review"]);
     Route::get('admin/email_detail/{id}',[AdminController::class,"email_detail"]);
-    Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
+
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
     Route::get('admin/manage',[AdminController::class,'manage_account']);
     Route::post('admin/manage_admin_process',[AdminController::class,'manage_admin_process'])->name('admin.manage_admin_process'); 
     /* Crud Operation Route For Category */
     Route::get('admin/category',[CategoryController::class,'show']);
     Route::get('admin/category/delete/{id}',[CategoryController::class,'destroy']);
-     Route::get('/reset/{?token}',[FrontController::class,'reset_p']);
     Route::get('admin/category/manage_category/{id?}',[CategoryController::class,'manage']);
     Route::post('admin/category/manage_category',[CategoryController::class,'manage_category_process'])->name('category.store');
     Route::get('admin/category/status/{id}/{status}',[CategoryController::class,'update_status']);
@@ -116,34 +123,33 @@ Route::get('admin/order_cancel/{id}',[AdminController::class,'order_cancel']);
     Route::post('admin/sub_category/manage_sub_category',[SubCategoryController::class,'manage_sub_category_process'])->name('sub_category.store');
       /* Crud Operation Route For Product */
       Route::get('admin/product',[ProductController::class,'show']);
-
       Route::get('admin/product/manage_product/{id?}',[ProductController::class,'manage_product']);
       Route::post('admin/product/manage_producty_process',[ProductController::class,'manage_product_process'])->name('product.manage_product_process');
       Route::get('admin/product/delete/{id}',[ProductController::class,'delete']);
       Route::get('admin/product/status/{status}/{id}',[ProductController::class,'status']);
       Route::get('admin/product/product_attr_delete/{paid}/{pid}',[ProductController::class,'product_attr_delete']);
       Route::get('admin/product/product_images_delete/{paid}/{pid}',[ProductController::class,'product_images_delete']);
+     /* Crud Operation Route For Coupon */
 
-
-     Route::get('admin/coupon',[CouponController::class,'show']);
+Route::get('admin/coupon',[CouponController::class,'show']);
 Route::get('admin/coupon/delete/{id}',[CouponController::class,'destroy']);
 Route::get('admin/coupon/status/{id}/{status}',[CouponController::class,'update_status']);
-
 Route::get('admin/coupon/manage_coupon/{id?}',[CouponController::class,'manage']);
-
 Route::get('admin/coupon/view_detail/{id?}',[CouponController::class,'view_coupon_detail']);
 Route::post('admin/coupon/manage_coupon',[CouponController::class,'manage_coupon_process'])->name('coupon.store');
 
 /* Crud Operation Route For Color */
 Route::get('admin/color',[ColorController::class,'show']);
 Route::get('admin/color/delete/{id}',[ColorController::class,'destroy']);
-
 Route::get('admin/color/manage_color/{id?}',[ColorController::class,'manage']);
 Route::post('admin/color/manage_color',[ColorController::class,'manage_color_process'])->name('color.store');
 Route::get('admin/color/status/{id}/{status}',[ColorController::class,'update_status']);
+/* Route For Customer */
 Route::get('admin/customers',[AdminController::class,'customers']);
+Route::get('admin/customer/update_status/{id}/{status}',[AdminController::class,'customers_update_status']);
 Route::get('admin/customers/customer_pdf',[FrontController::class,'customer_laravel_pdf']);
 Route::get('admin/customers/customer_excel',[AdminController::class,'customer_laravel_excel']);
+/* Route For Inventory */
 Route::get('admin/inventory/monthly_inventory_excel',[AdminController::class,'monthly_inventory_laravel_excel']);
 Route::get('admin/inventory/monthly_inventory_pdf',[AdminController::class,'monthly_inventory_laravel_pdf']);
 Route::get('admin/inventory/inventory_excel',[AdminController::class,'inventory_laravel_excel']);
@@ -153,7 +159,7 @@ Route::get('admin/inventory_monthly',[AdminController::class,'inventory_monthly'
 /* Crud Operation Route For Size */
 Route::get('admin/size',[SizeController::class,'show']);
 Route::get('admin/size/delete/{id}',[SizeController::class,'destroy']);
-Route::post("/loginFront_user",[FrontController::class,"login_client"]);
+
 Route::get('admin/size/manage_size/{id?}',[SizeController::class,'manage']);
 Route::post('admin/size/manage_size',[SizeController::class,'manage_size_process'])->name('size.store');
 Route::get('admin/size/status/{id}/{status}',[SizeController::class,'update_status']);
@@ -185,14 +191,16 @@ Route::get('admin/vendor/manage_vendor/{id}',[VendorController::class,'manage_ve
 Route::post('admin/vendor/manage_vendor_process',[VendorController::class,'manage_vendor_process'])->name('vendor.manage_vendor_process');
 Route::get('admin/vendor/delete/{id}',[VendorController::class,'delete']);
 Route::get('admin/vendor/status/{status}/{id}',[VendorController::class,'status']);
+/*Route For website Setting */
 Route::get('admin/setting',[SettingWebsiteController::class,"index"]);  
 Route::post('admin/setting',[SettingWebsiteController::class,'manage_web_process'])->name('settingweb.manage_website_process');
+/*Route For Managing Rewards */
 Route::post('admin/reward/manage_rewards',[AdminController::class,'manage_reward_process'])->name('reward.store');   
 Route::get('admin/reward/manage_rewards',[AdminController::class,'manage_reward']);     
 Route::get('admin/reward',[AdminController::class,"reward_detail"]);
 Route::get('admin/reward/status/{id}',[AdminController::class,"reward_status"]);
-
-
+Route::get('admin/subscribers',[AdminController::class,"subscribers"]);
+Route::get("admin/order_detail_by_date/{dt}",[AdminController::class,"view_order_by_date"]);
 Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');
@@ -204,7 +212,7 @@ Route::get('/admin/logout', function () {
     
     });
 });
-
+});
 
 
 

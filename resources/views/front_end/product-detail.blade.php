@@ -155,10 +155,10 @@
                     <div class="aa-prod-quantity">
                       <form action="">
                         <select id="qty" name="qty" >
-                        <option >Select Qty</option>
-                        @for ($i=1; $i<11; $i++)
-                            <option value="{{$i}}">{{$i}}</option>
-                  @endfor
+                        <option value="">Select Qty</option>
+       <option value="1">1</option>
+       <option value="2">2</option>
+       <option value="3">3</option>
                         </select>
                       </form>
                       <p class="aa-prod-category">
@@ -166,7 +166,7 @@
                       </p>
                     </div>
                     <div class="aa-prod-view-bottom">
-                      <a class="aa-add-to-cart-btn" href="javascript:void(0)" onclick="add_to_cart()">Add To Cart</a>
+                      <a class="aa-add-to-cart-btn" href="javascript:void(0)" onclick="add_cart('{{$product_attributes[$product[0]->id][0]->size_name}}','{{$product_attributes[$product[0]->id][0]->color_name}}')">Add To Cart</a>
                     </div>
                     <div id="add_to_cart_msg"></div>
                   </div>
@@ -538,14 +538,7 @@ $product_points=floor($point_amount/100*$discount_price);
                             </div>
                             <div class="aa-prod-quantity">
                               <form action="">
-                                <select name="" id="qtyProduct">
-                                  <option value="1">1</option>
-                                  <option value="2">2</option>
-                                  <option value="3">3</option>
-                                  <option value="4">4</option>
-                                  <option value="5">5</option>
-                                  <option value="6">6</option>
-                                </select>
+                             
                               </form>
                               <p class="aa-prod-category">
                                 Category: <a href="#">Polo T-Shirt</a>
@@ -575,9 +568,9 @@ $product_points=floor($point_amount/100*$discount_price);
   <form id="frmAddToCart">
     <input type="hidden" id="size_id" name="size_id" value=""/>
     <input type="hidden" id="color_id" name="color_id" value=""/>
-    <input type="hidden" id="pqty" name="pqty"/>
+    <input type="hidden" id="pqty" name="pqty" value=""/>
 
-    <input type="hidden" id="product_id" name="product_id" value=""/>    
+    <input type="hidden" id="product_id" name="product_id" value="{{$product[0]->id}}"/>    
       
     @csrf
   </form>

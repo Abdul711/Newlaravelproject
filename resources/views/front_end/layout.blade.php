@@ -189,7 +189,23 @@
 <br>    <!-- / header top  -->
 <br>
 <hr>
-
+<section id="aa-subscribe">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-subscribe-area">
+            <h3>Subscribe our newsletter </h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, velit!</p>
+            <form action="" id="subscribers" class="aa-subscribe-form">
+              <input type="email" name="email" id="" placeholder="Enter your Email">
+              <input type="submit" id="subscribe" value="Subscribe">
+              @csrf
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <footer id="aa-footer">
     <!-- footer bottom -->

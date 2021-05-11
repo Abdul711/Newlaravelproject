@@ -432,17 +432,10 @@ $('.login-user').submit(function (e) {
     swal("Oop!","Please Enter Email Address","error");
     return false;
   }
-  if(user_password==""){
-    swal("Oop!","Please Enter Password","error");
-    return false;
-  }
 
 
- if(!valid_email.test(user_email)){
-        swal("Oops!","Please Provide Correct Email Address","error");
 
-   return false;
-  }
+
      form_data=$(this).serialize();
     jQuery.ajax({
     url:'login_process',
@@ -551,6 +544,7 @@ $("#password_reset").submit(function (e) {
 function add_to_cart(){
 
 /*PRODUCT_IMAGE*/
+
 path=FRONT_PATH+"/add_cart";
 
 form_data=$('#frmAddToCart').serialize();
@@ -624,6 +618,12 @@ function change_product_color_image(color_id,product_id){
 alert("color_id"+color_id+"product_id"+product_id);
 $("#color_id").val('');
 $("#product_id").val('');
+
+if(color_id==""){
+  color_id="No_color";
+}else{
+  color_id=color_id;
+}
 $("#color_id").val(color_id);
 
 $("#product_id").val(product_id);
@@ -633,8 +633,21 @@ $("#product_id").val(product_id);
   jQuery('.color_'+color_id).css('border','3px solid black');
 
 }
-function showColor(size){
+function sizeSelect(size,product){
   
+  $(".productColor").hide();
+  $('.ColorSize'+size).show();
+
+   jQuery('.size_link').css('border','2px solid grey');
+       jQuery('#size_'+size+product).css('border','2px solid grey');
+  jQuery('#size_'+size+product).css('border','2px solid black');
+    
+    $("#size_id").val('');
+  $("#size_id").val(size);
+
+}
+function showColor(size){
+
   $(".product_color").hide();
   $('.size_'+size).show();
    jQuery('.size_link').css('border','1px solid #ddd');
@@ -669,7 +682,14 @@ $.each(param.data, function (arrKey,arrVal) {
    html_cart+='<li>';
    html_cart+='<a class="aa-cartbox-img" href="#"><img src="'+PRODUCT_IMAGE+'/'+arrVal.product_image+'" alt="img"></a>';
    html_cart+='<div class="aa-cartbox-info">';
-   html_cart+='<h4><a href="#">'+arrVal.name+'</a></h4><p><b>Color:</b><strong>'+arrVal.product_colors+'</strong></p><p><b>Size:</b><strong>'+arrVal.product_sizes+'</strong></p><p>'+arrVal.qty+' * Rs '+price+'</p></div></li>';
+   html_cart+='<h4><a href="#">'+arrVal.name+'</a></h4>';
+   if(arrVal.product_colors!=null){
+  html_cart+='<p><b>Color:</b><strong>' +arrVal.product_colors+'</strong></p>';
+   }
+    if(arrVal.product_sizes!=null){
+  html_cart+=' <p><b>Size:</b><strong>'+arrVal.product_sizes+'</strong></p>';
+    }
+  html_cart+='<p>'+arrVal.qty+"* Rs"+price;
 });
 path=FRONT_PATH+"/cart";
    html_cart+='<li><span   class="aa-cartbox-total-title">Total</span> <span class="aa-cartbox-total-price">Rs<span class="c_p">'+param.cart_total+'</span></span></li>';
@@ -695,6 +715,11 @@ $(".aa-cart-notify").html(total);
 
 }
 function deleteCart(color_id,size_id,product_id,attr_id){
+  if(color_id==""){
+     color_id="no_color";
+   }if(size_id==""){
+        size_id="no_size";
+   }
 
 qty=0;
 $("#pqty").val(qty);
@@ -706,6 +731,11 @@ $("#box"+attr_id).remove();
 add_to_cart();
 }
 function updateCart(color_id,size_id,product_id,attr_id,price){
+   if(color_id==""){
+     color_id="no_color";
+   }if(size_id==""){
+        size_id="no_size";
+   }
 
 qty=$('#qty'+attr_id).val();
 qty=parseInt(qty);
@@ -721,7 +751,7 @@ $("#price"+attr_id).html('Rs'+qty*price);
 add_to_cart();
 
 
-_
+
 }
 
 function totalPrice(){
@@ -923,19 +953,7 @@ if(response.status=="error"){
 
 
 });
-function sizeSelect(size,product){
-  
-  $(".productColor").hide();
-  $('.ColorSize'+size).show();
 
-   jQuery('.size_link').css('border','2px solid grey');
-       jQuery('#size_'+size+product).css('border','2px solid grey');
-  jQuery('#size_'+size+product).css('border','2px solid black');
-
-    $("#size_id").val('');
-  $("#size_id").val(size);
-
-}
 function sort_by(){
 $("#sort").val($("#sort_by_value").val());
 $("#categoryFilter").submit();
@@ -951,7 +969,9 @@ function selectColor(color,product){
   
   jQuery('#color_'+color+product).css('border','0px solid black');
 
-
+    if(color==""){
+      color="no_color";
+    }
   jQuery('#color_'+color+product).css('border','4px solid black');
   $(".productColor").css('0px solid black');
        $("#color_id").val('');
@@ -984,15 +1004,54 @@ $("#sear_pro").click(function(e){
  }
   
 });
-function qtyTake(productId){
-                         
+function qtyTake(productId,color,size){
+             if(color==""){
+               color="no_color";
+             }     
+                    if(size==""){
+               size="no_size";
+             }             
   qty=$("#qtyProduct").val();
+  qty="1";
+var   size_id=$("#size_id").val();
+  var color_id=$("#color_id").val();
+   
+         if(color!="no_color" && color_id==""){
+           swal("Oops!","Please Select Color","error");
+           return false;
+         }
+ if(size!="no_size" && size_id==""){
+           swal("Oops!","Please Select Size","error");
+                 return false;
+         }
+$("#size_id").val(size);
+$("#color_id").val(color);
 if(qty==""){
   swal("Oops!","Select Qty","error");
   return false;
 }
-  $("#pqty").val(qty);
+$("#pqty").val(qty);
    $("#product_id").val(productId);
+   add_to_cart();
+}
+function add_cart(size,color){
+   if(size==""){
+    size="no_size";
+   }if(color==""){
+     color="no_color";
+   }
+   color_id=$("#color_id").val();
+     size_id=$("#size_id").val();
+     if(size!="no_size" && size_id==""){
+       swal("Oops!","Please Select Size","error");
+       return false;
+     }
+          if(color!="no_color" && color_id==""){
+       swal("Oops!","Please Select Color","error");
+       return false;
+     }
+   $("#color_id").val(color);
+     $("#size_id").val(size);
    add_to_cart();
 }
 $('.product_rating').click(function(){
@@ -1135,28 +1194,29 @@ if(po=="text"){
 });
 $(".login_customer").click(function(e){
   e.preventDefault();
-var form_data=$(".login_front_user").serialize();
- var password=$("input[name='user_login_password']").val();
-  var email=$("input[name='user_login_email']").val();
-    valid_email=/[A-Za-z0-9_.]{3,}@[A-Za-z]{3,}[.]{1}[A-Za-z]{3,6}$/;
-     if(email==""){
-       swal("Oops!","Please Fill Email","error");
-       return false;
-     }
-     if(password==""){
-            swal("Oops!","Please Fill Password","error");
-               return false;
-     }
-      
+
+ var password=$("input[name='user_client_password']").val();
+  var email=$("input[name='user_client_email']").val();
+       if(email==""){
+         swal("Oops","Please Fill The Email","error");
+         return false;
+       }
+   if(password==""){
+         swal("Oops","Please Fill The Email","error");
+    return false;
+   }
          path=FRONT_PATH+"/loginFront_user";
+         var form_data=$(".login_front_user").serialize();
      $.ajax({
      method:"POST",
 url:path,
 data:form_data,
 success:function(data_reply){
-  alert(data_reply);
-  console.log(data_reply);
 
+  console.log(data_reply);
+           if(data_reply.status=="error"){
+       swal("Oops",data_reply.msg,"error");
+           }
 
       if(data_reply.status=="success"){
         setInterval(function() {

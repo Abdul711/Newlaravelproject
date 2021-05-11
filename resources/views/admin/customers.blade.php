@@ -70,6 +70,11 @@ $maxTotal=max($total_amount);
  @else
  Amount Spend <p>{{$total_amount_expand}} Rs</p>
  @endif
+ @if($customer->customer_status==1)
+<a class="btn btn-success" href="{{url('admin/customer/update_status/'.$customer->id.'/'.'0')}}">Active</a>
+ @else
+ <a class="btn btn-danger" href="{{url('admin/customer/update_status/'.$customer->id.'/'.'1')}}">Deactive</a>
+ @endif
 </td>
 
 <td> {{$customer->customer_email}}</td>

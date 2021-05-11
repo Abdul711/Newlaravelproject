@@ -32,8 +32,12 @@
                       <div class="aa-cartbox-info">
                         <h4><a href="#">{{$cart_data->name}}</a></h4>
                         <p>
+                        @if($cart_data->product_colors!="")
                   <b>Color</b> : <strong>  {{$cart_data->product_colors}}</strong><br>
+                  @endif
+                  @if($cart_data->product_sizes!="")
                   <b>Size</b> : <strong>  {{$cart_data->product_sizes}}</strong><br>
+                  @endif
    
                         </p>
                         <p>{{$cart_data->qty}} * Rs {{$price}}</p>

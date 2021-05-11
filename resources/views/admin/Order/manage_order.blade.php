@@ -25,10 +25,14 @@
 <p>Customer Address: {{$order_detail[0]->customer_address}}</p>
 <p>Expected Delivery Date: {{date("d-M-Y h:i a",strtotime($order_detail[0]->delivery_expected_time))}}</p>
 <p> Delivery Type: {{ucfirst($order_detail[0]->delivery_type)}}</p>
-@if($order_detail[0]->customer_payment=="Wallet" && $order_detail[0]->remaining_amount==0)
-<p>Payment Type: {{ucfirst($order_detail[0]->customer_payment)}}</p>
-@else
+@if($order_detail[0]->customer_payment=="Wallet" && $order_detail[0]->remaining_amount>0)
 <p>Payment Type:COD & Wallet </p>
+@else
+    @if($order_detail[0]->customer_payment=="COD")
+    <p>Payment Type:Cash On Delivery </p>
+    @else
+<p>Payment Type:{{ucfirst($order_detail[0]->customer_payment)}} </p>
+@endif
 @endif
 <p>Order Date: {{date("d-M-Y",strtotime($order_detail[0]->created_at))}}</p>
 <p>Order Time: {{date("h:i a",strtotime($order_detail[0]->created_at))}}</p>
@@ -38,8 +42,9 @@
 @else
 <p>Payment Status : Pending </p>
 @endif
+Order Status:{{orders_status($order_detail[0]->id)}}
 </div>
-<a href="{{url('/print_invoice/'.$order_detail[0]->id)}}" class="btn btn-primary">Print Invoice </a>
+<a href="{{url('admin/print_invoice/'.$order_detail[0]->id)}}" class="btn btn-primary">Print Invoice </a>
 
       
             <div class="table-responsive m-b-40">
@@ -62,8 +67,12 @@
               </td>
       <td>
       {{$cart_detail->name}}
+     @if($cart_detail->color_name!="")
       <p>Color:{{$cart_detail->color_name}}</p>
+      @endif
+      @if($cart_detail->size_name!="")
       <p>Size:{{$cart_detail->size_name}}</p>
+      @endif
       <p>Brand:{{$cart_detail->brands}}</p>
       <img src="{{asset('storage/media/'.$cart_detail->image)}}" width="150" height="150">
       

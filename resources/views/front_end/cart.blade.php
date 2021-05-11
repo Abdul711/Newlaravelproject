@@ -47,8 +47,12 @@
                         <td><a href="#"><img src="{{asset('storage/media/'.$cart_data->product_image)}}" alt="img"></a></td>
                         <td><a class="aa-cart-title" href="#">{{$cart_data->name}}</a>
                         <p>
+                       @if($cart_data->product_colors!="")
                   <b>Color</b> : <strong>  {{$cart_data->product_colors}}</strong><br>
+                  @endif
+                  @if($cart_data->product_sizes!="")
                   <b>Size</b> : <strong>  {{$cart_data->product_sizes}}</strong><br>
+                  @endif
                   <b>Brand</b> : <strong>  {{$cart_data->product_brands}}</strong><br>
                   <b>Category</b> : <strong>  {{$cart_data->product_category}}</strong>
                         </p>
@@ -129,23 +133,7 @@
 
 
   <!-- Subscribe section -->
-  <section id="aa-subscribe">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="aa-subscribe-area">
-            <h3>Subscribe our newsletter </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, velit!</p>
-            <form action="" id="subscribers" class="aa-subscribe-form">
-              <input type="email" name="email" id="" placeholder="Enter your Email">
-              <input type="submit" id="subscribe" value="Subscribe">
-              @csrf
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+ 
   <form id="frmAddToCart">
     <input type="text" id="size_id" name="size_id" value=""/>
     <input type="text" id="color_id" name="color_id" value=""/>

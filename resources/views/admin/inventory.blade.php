@@ -62,7 +62,7 @@ $total_amount=array();
 @endphp
 <tr>
 <td>{{$key+1}}</td>
-<td>{{date("d-M-Y",strtotime($customer->order_date))}}</td>
+<td><a href="{{url('admin/order_detail_by_date/'.$customer->order_date)}}">{{date("d-M-Y",strtotime($customer->order_date))}}</a></td>
 <td>{{$number_of}}</td>
 <td> {{$amount_gain}} Rs </td>
 
