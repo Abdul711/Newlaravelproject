@@ -1682,5 +1682,18 @@ $total=DB::table("subscribers")->where('email','=',$email)->count();
 if($total==0){
 DB::table("subscribers")->insert($subscriber_array);
 }
+}  
+
+public function contact_us(Request $req){
+    sleep(4);
+
+
+extract($_POST);
+$data_array["user_name"]=$query_user_name;
+$data_array["email"]=$query_email;
+$data_array["message"]=$query_message;
+$data_array["mobile"]=$query_mobile;
+$data_array["created_at"]=date("Y-m-d H:i:s");
+DB::table("contact_us")->insert($data_array);
 }
 }

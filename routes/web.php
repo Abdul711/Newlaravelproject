@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\Vendor\VendorController;
 use App\Http\Controllers\Admin\Banner\BannerController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\SettingWebsiteController;
+
 /*
 /*
 |--------------------------------------------------------------------------
@@ -92,7 +93,7 @@ Route::post('admin/auth',[AdminController::class,'auth'])->name('admin.auth');
 Route::post("/register_subscriber",[FrontController::class,"register_subscriber"]);
 Route::get('/reset/{?token}',[FrontController::class,'reset_p']);
 Route::post("/loginFront_user",[FrontController::class,"login_client"]);
-
+Route::post('/contactus',[FrontController::class,'contact_us']);
 
 Route::group(['middleware'=>'disable_back_btn'],function(){
 Route::group(['middleware'=>'admin_auth'],function(){

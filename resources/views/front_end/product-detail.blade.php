@@ -521,7 +521,12 @@ $product_points=floor($point_amount/100*$discount_price);
                                
                                 
                             @foreach($product_related_attributes[$productArr->id] as $size)
+                                @if($size->size_name!="")
                                  <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$productArr->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$productArr->id}}"> {{$size->size_name}}</a>
+                                @else
+                                No Size Or Standard Size Available
+                  
+                                @endif
                                  @endforeach
 
                               
@@ -545,7 +550,7 @@ $product_points=floor($point_amount/100*$discount_price);
                               </p>
                             </div>
                            <div class="aa-prod-view-bottom">
-                            <a href="javascript:void(0)" class="aa-add-to-cart-btn" onclick="qtyTake('{{$productArr->id}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                            <a href="javascript:void(0)" class="aa-add-to-cart-btn" onclick="qtyTake('{{$productArr->id}}','{{$product_related_attributes[$productArr->id][0]->color_name}}','{{$product_related_attributes[$productArr->id][0]->size_name}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                            
                             </div>
                            

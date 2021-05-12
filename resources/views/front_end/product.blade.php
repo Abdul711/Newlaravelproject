@@ -174,17 +174,26 @@
                             <h4>Size</h4>
                             <div class="aa-prod-view-size">
                                  @foreach($category_product_attributes[$product->id] as $size)
+                                 @if($size->size_name!="")
                                  <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$product->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$product->id}}"> {{$size->size_name}}</a>
+                                 @else
+                       No Size Or Standard Size Available
+                                 @endif
+                         
                                  @endforeach
 
                               
                             </div>
                             <h4>Color</h4>
-                          
+                        
                    
                                  @foreach($category_product_attributes[$product->id] as $color)
+                                 @if($color->color_name!="")
                                  <a   href="javascript:void(0)"  id="color_{{$color->color_name}}{{$product->id}}" class="productColor  
                                   ColorSize{{$color->size_name}} aa-col-{{strtolower($color->color_name)}}" onclick="selectColor('{{$color->color_name}}','{{$product->id}}')"   ></a>
+                       @else
+                       No Color Or Standard Color Available
+                                @endif
                                  @endforeach
                       
                      
@@ -200,7 +209,7 @@
                             </div>
                            <div class="aa-prod-view-bottom">
 
-                              <a href="javascript:void(0)" onclick="qtyTake('{{$product->id}}')" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>                
+                              <a href="javascript:void(0)" onclick="qtyTake('{{$product->id}}','{{$category_product_attributes[$product->id][0]->color_name}}','{{$category_product_attributes[$product->id][0]->size_name}}')" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>                
                             </div>
                            
                           </div>

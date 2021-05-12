@@ -1033,6 +1033,8 @@ if(qty==""){
 $("#pqty").val(qty);
    $("#product_id").val(productId);
    add_to_cart();
+     $('#frmAddToCart').trigger('reset');
+ 
 }
 function add_cart(size,color){
    if(size==""){
@@ -1234,6 +1236,11 @@ $("#subscribe").click(function(e){
   e.preventDefault();
      path=FRONT_PATH+"/register_subscriber";
 form_data=$("#subscribers").serialize();
+email=$("#subs_email").val();
+if(email==""){
+  swal("Ops","Somethinng Wrong","error");
+  return false;
+}
 alert(form_data);
      $.ajax({
      method:"POST",
@@ -1254,4 +1261,40 @@ success:function(data_reply){
 }
 
      });
+});
+$("#sendQuery").click(function(e){
+  e.preventDefault();
+  var user_name=$("input[name='query_user_name']").val();
+   var user_email=$("input[name='query_email']").val();
+    var user_mobile=$("input[name='query_mobile']").val();
+     var user_subject=$("input[name='query_subject']").val();
+      var user_message=$("input[name='query_message']").val();
+   var formData= $("#queryForm").serialize();
+ 
+         if(user_name!="" &&  user_email!="" && user_mobile!="" &&  user_subject!=""  && user_message!=""){
+              
+      $.ajax({
+        url:FRONT_PATH+"/contactus",
+        method:"post",
+        data:formData,
+        beforeSend:function(){
+          $("#contactError").css("color","red");
+           $("#contactError").html("Sending Please Wait...");
+           $("#sendQuery").prop("disabled",true);
+
+        },
+        success:function(data_reply){
+console.log(data_reply);
+ $("#contactError").css("color","red");
+           $("#contactError").html("");
+                $("#sendQuery").prop("disabled",false);
+                  $("#contactError").css("color","red");
+           $("#contactError").html("Query Send ");
+        }
+      });
+
+         }else{
+             $("#contactError").css("color","red");
+           $("#contactError").html("* All Field Required");
+         }
 });

@@ -159,6 +159,10 @@ ADMIN_PATH="{{url('/admin')}}";
                             <a href="{{url('admin/inventory_monthly')}}">
                                 <i class="fas fa-tachometer-alt"></i>Inventory System <p>(Monthly)</p></a>
                         </li>
+                        <li>
+                            <a href="{{url('admin/inventory_monthly')}}">
+                                <i class="fas fa-tachometer-alt"></i>Contact Us </a>
+                        </li>
                      <li>   <a href="{{url('admin/logout')}}">
                                                     <i class="zmdi zmdi-power"></i>Logout</a></li>
                     </ul>

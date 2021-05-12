@@ -91,7 +91,7 @@
                   <li><a href="{{url('/my_account')}}">My Account</a></li>
                   
                   <li class="hidden-xs"><a href="{{url('/cart')}}">My Cart</a></li>
-           
+                  <li class="hidden-xs"><a href="{{url('/my_contact')}}">Contact Us</a></li>
                  @if(session()->has('FRONT_USER_LOGIN')=='0' && session()->has('FRONT_USER_ID')=='0')
                     
                   <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
@@ -197,7 +197,7 @@
             <h3>Subscribe our newsletter </h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, velit!</p>
             <form action="" id="subscribers" class="aa-subscribe-form">
-              <input type="email" name="email" id="" placeholder="Enter your Email">
+              <input type="email" name="email" id="subs_email" placeholder="Enter your Email">
               <input type="submit" id="subscribe" value="Subscribe">
               @csrf
             </form>
