@@ -115,30 +115,39 @@
                 
                
                         <li>
-                          <figure>
+                    
+                    
+
                           <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}">
                             <img src="{{asset('storage/media/'.$productArr->image)}}" 
                             alt=""></a>
+                            <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">{{$productArr->name}}</a></h4>
+                           @foreach($home_product_attributes[$productArr->id] as $size)
+                              @if($size->size_name!="")
+                           <input type="radio" value="{{$size->size_name}}"  name="colorName" data-color="{{ColorBySize($size->size_name,$size->product_id)}}" id="SizeProduct{{$size->product_id}}"> {{$size->size_name}}  ({{Price($size->product_id,$size->size_name)}} Rs)
+                           @else
+                           <input type="radio" hidden value="{{$size->size_name}}" checked="checked" name="colorName" data-color="{{$size->color_name}}" id="SizeProduct{{$size->product_id}}"> 
+                           {{$size->size_name}}
+
+                            {{PriceProduct($productArr->id)}} Rs
+@endif
+                           @endforeach
+                      
+             
                         
-                            <figcaption>
-                              <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">{{$productArr->name}}</a></h4>
-                        
+                 
+                      <br>
                               
-                              @if($productArr->is_discounted=="1")
-                              <del>    <span class="aa-product-price">Rs {{$home_product_attributes[$productArr->id][0]->price}}
-                              </span></del>
-                              <span class="aa-product-price">Rs {{$discounted_price}}</span> 
-                              @else
-                              <span class="aa-product-price">Rs {{$home_product_attributes[$productArr->id][0]->price}}
-                              </span>
-                                                           @endif
+                        
                                                            <p>{{average_rating($productArr->id)}}<span class="fa fa-star">
-                                                           ({{total_rating($productArr->id)}})
-                                                           
-                                                           </span></p>        
-                                                           <p>You Will Earn {{$product_points}} Points </p>            
-                            </figcaption>
-                          </figure>   
+                                                           ({{total_rating($productArr->id)}})</p>
+                                                           You Will Earn {{$product_points}} Points 
+                                                           </span>  
+                                                           <br>
+                                                  <a href="javascript:void(0)"  class="addProduct"><span class="fa fa-shopping-cart add_cart_icon" onclick="addItem('{{$productArr->id}}','{{$home_product_attributes[$productArr->id][0]->size_name}}','{{$home_product_attributes[$productArr->id][0]->color_name}}')"> Add To Cart </span></a>
+                                                   
+                                                     
+              
                           <div class="aa-product-hvr-content">
 
 <a href="#" data-toggle2="tooltip" data-placement="top"  
@@ -229,8 +238,14 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                        @endforeach
 
                        @foreach($home_product_attributes[$product->id] as $size)
+                       @php
+               
+      
+            
+                       @endphp
                                @if($size->size_name!="")
-                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$size->product_id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$product->id}}"> {{$size->size_name}}</a>
+                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$size->product_id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$product->id}}"> 
+                                 {{$size->size_name}} ({{Price($size->product_id,$size->size_name)}}    Rs)</a>
                         @else
                         No Size Or Standard Size Available
                         @endif
@@ -238,6 +253,9 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
                             </div>
                             <h4>Color</h4>
                             <div class="aa-col-tag">
+                            @php
+                          
+                            @endphp
                             @foreach($home_product_attributes[$product->id] as $color)
                                        @if($color->color_name!="")
                                  <a   href="javascript:void(0)"  id="color_{{$color->color_name}}{{$product->id}}" class="productColor  

@@ -40,9 +40,10 @@ class FrontController extends Controller
             $result['home_product_attributes'][$list1->id]=
             DB::table('product_attributes')
             ->leftJoin('sizes','sizes.id','=','product_attributes.size_id')
- 
+
             ->leftJoin('colors','colors.id','=','product_attributes.color_id')
             ->where(['product_attributes.product_id'=>$list1->id])
+            ->select('sizes.size_name','colors.color_name','product_attributes.id as attr_id','product_attributes.price','product_attributes.product_id')
             ->get();
             $result['image_collection'][$list1->id]=
             DB::table('product_images')
@@ -100,6 +101,7 @@ class FrontController extends Controller
             "products.warranty",
             "products.is_discounted",
             "products.discount_amount",
+            "products.sub_category_id",
             "products.is_featured","products.is_discounted",
             "categories.category_name",
             "brands.brands as brand_name"
@@ -176,6 +178,7 @@ class FrontController extends Controller
             "products.warranty",
             "products.is_discounted",
             "products.discount_amount",
+            "products.sub_category_id",
             "products.is_featured","products.is_discounted",
             "categories.category_name",
             "brands.brands as brand_name"
@@ -183,8 +186,10 @@ class FrontController extends Controller
         ->where(['products.status'=>1])
         ->where('products.id','!=',$list1->id)
         ->where("products.category_id",'=',$list1->category_id)
-        ->get();
+        ->where("products.sub_category_id",'=',$list1->sub_category_id)
 
+        ->get();
+   
     }
     foreach($result["related_product"] as $list2){
    $data=DB::table('product_attributes')
@@ -209,9 +214,9 @@ class FrontController extends Controller
     }
     $result["user_review"]=$review;
     $result["average_rating"]=number_format(DB::table("product_review")->where('product_id','=',$id)->avg('rating'),2);
-   /* prx($result);      
-    die();
-*/
+ 
+
+
        return view('front_end.product-detail',$result);
       }
       function cart_total_user(){
@@ -240,6 +245,7 @@ class FrontController extends Controller
           }else{
             $color_product_id=0;
           }
+ 
               $color_product_id;
               $productAttribute=DB::table("product_attributes")->where("product_attributes.color_id",'=',$color_product_id)
 ->leftJoin("products","products.id","=","product_attributes.product_id")
@@ -414,7 +420,7 @@ $query=$query->where('colors.color_name','=',$color_sort);
                      'sizes.id as size_id',
                  'colors.color_name',
                  'colors.id as color_id',
-      
+                 "product_attributes.product_id",
                  "product_attributes.price",
                  "product_attributes.mrp",
                  "product_attributes.qty",
@@ -471,6 +477,7 @@ $result["page_title"]=$category_data[0]->category_name." Page";
      "products.is_discounted",
      "products.lead_time",
      "products.category_id",
+     
    "products.discount_amount",
      "categories.category_name",
      "products.delivery_charge",
@@ -490,7 +497,7 @@ $result["page_title"]=$category_data[0]->category_name." Page";
                  'sizes.id as size_id',
              'colors.color_name',
              'colors.id as color_id',
-         
+             'product_id',
              "product_attributes.price",
              "product_attributes.mrp",
              "product_attributes.qty",

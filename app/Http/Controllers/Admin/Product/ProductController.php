@@ -339,4 +339,21 @@ $result["sub_category"]=DB::table("categories")->where('parent_category_id','!='
       }
     return response()->json(["total_sub"=>$total_category,"data"=>$data]);
     }
+public function product_detail ($id)
+    {
+      $product_detail_data= DB::table("products")->where('id','=',$id)->get();
+      if($product_detail_data[0]->status==1){
+        $result["status"]="Active";
+      }else{
+        $result["status"]="Deactive";  
+      }
+      $product_attribute=DB::table('product_attributes')->leftJoin('sizes','sizes.id','=',"product_attributes.size_id")->leftJoin('colors','colors.id','=',"product_attributes.color_id")->select('colors.color_name','sizes.size_name','product_attributes.id as attr_id')->where('product_id','=',$id)->get();
+        $result["product_name"]=$product_detail_data[0]->name;
+        $result["product_id"]=$product_detail_data[0]->id;
+        $result["category"]=CategoryName($product_detail_data[0]->category_id);
+        $result["sub_category"]=CategoryName($product_detail_data[0]->sub_category_id);
+        $result["brand"]=BrandName($product_detail_data[0]->brand_id);
+        $result["product_attributes"]=$product_attribute;
+        return view('admin/product/product_detail',$result);
+    }
 }

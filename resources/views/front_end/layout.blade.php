@@ -337,7 +337,11 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div>    
-
+                    <form id="DeleteCartItem">
+                    <input type="text" name="color_name" id="color_name">
+                    <input type="text" name="size_name" id="size_name">
+                    <input type="text" name="product_id_cart" id="product_id_cart">
+                    </form>
   <!-- jQuery library -->
   <script src="{{asset('front_assets/js/jquery.js')}}"></script>  
   <script src="{{asset('front_assets/js/bootstrap.js')}}"></script>  

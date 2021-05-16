@@ -3341,6 +3341,7 @@ height:850px;
   -ms-transition: all 0.5s;
   -o-transition: all 0.5s;
   transition: all 0.5s;
+  
 }
 #aa-contact .aa-contact-area .aa-contact-address .aa-contact-address-left .comments-form textarea {
   border-radius: 0;
@@ -4425,3 +4426,12 @@ box-sizing:border-box;
 .hide_coupon_box2{
     display:block;
 }          
+.addProduct{
+  background:black;
+  color:white;
+  width:100%;
+  padding:5px;
+}
+.add_cart_icon{
+padding:14px;
+}

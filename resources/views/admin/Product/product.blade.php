@@ -35,7 +35,7 @@
                         <tr>
                             <td>{{$list->id}}</td>
                             <td>{{$list->name}}</td>
-                            <td>{{$list->slug}}</td>
+                            <td><a href="{{url('admin/product/'.$list->id)}}">View Detail</a></td>
                             <td>
                             @if($list->image!='')
                                 <img width="100px" src="{{asset('storage/media/'.$list->image)}}"/>

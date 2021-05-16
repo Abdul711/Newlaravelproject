@@ -51,6 +51,18 @@ function parent_category_name($parent_id){
 	  }
 	  return $cat;
 }
+function BrandName($id)
+{
+    
+    if($id!=0){
+		$cat=DB::table("brands")->where(["id"=>$id])->get();
+       $cat=$cat[0]->brands;
+
+	  }else{
+		$cat="";
+	  }
+	  return $cat;
+}
 function userCart(){
 	   if(session()->has('FRONT_USER_ID')){
         $user_type="Reg";
@@ -479,4 +491,65 @@ return $data[0]->id;
     $data=DB::table('colors')->where('color_name','=',$size_id)->get();
  return $data[0]->id;
     }
+
+    function Product_Detail($id){
+      return DB::table('products')->where('id','=',$id)->get();
+    }
+  function Price($id,$size_name=""){
+        
+    $size_id=size_id($size_name);
+    if($size_name==""){
+      $size_id=0;
+    }
+    $productAttribute=DB::table('product_attributes')->where('size_id','=',$size_id)->where('product_id','=',$id)->get();
+    if(isset($productAttribute[0])){
+      $price=$productAttribute[0]->price;
+      $product_detail=Product_Detail($id);
+        $is_discounted=$product_detail[0]->is_discounted;
+        $discount_amount=$product_detail[0]->discount_amount;
+
+     if($is_discounted==1 && $discount_amount!=""){
+$discount=floor($discount_amount/100*$price);
+     }else{
+   
+        $discount=0;
+     }
+$product_price=$price-$discount;
+
+    return  $product_price;
+    }
+  }
+function PriceProduct($id){
+ 
+  $size_id=0;
+  $productAttribute=DB::table('product_attributes')->where('size_id','=',$size_id)->where('product_id','=',$id)->get();
+  if(isset($productAttribute[0])){
+    $price=$productAttribute[0]->price;
+    $product_detail=Product_Detail($id);
+      $is_discounted=$product_detail[0]->is_discounted;
+      $discount_amount=$product_detail[0]->discount_amount;
+
+   if($is_discounted==1 && $discount_amount!=""){
+$discount=floor($discount_amount/100*$price);
+   }else{
+ 
+      $discount=0;
+   }
+$product_price=$price-$discount;
+return $product_price;
+  }
+  }
+
+
+  function colorNameById($id){
+    $data_color=DB::table('colors')->where('id','=',$id)->get();
+    $color_name=$data_color[0]->color_name;
+    return $color_name;
+  }
+  function ColorBySize($size_name,$product_id){
+  $size_id=size_id($size_name);
+   $data_attribute= DB::table('product_attributes')->where('product_id','=',$product_id)->where('size_id','=',$size_id)->get();
+   $color_name=colorNameById($data_attribute[0]->color_id);
+    return $color_name;
+  }
 ?>

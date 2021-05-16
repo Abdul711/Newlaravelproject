@@ -26,7 +26,7 @@
               $price=$cart_data->product_price-$dis;
               @endphp
 
-                    <li>
+                    <li class="cartBoxDet{{$cart_data->cart_id}}">
 
                       <a class="aa-cartbox-img" href="#"><img src="{{asset('storage/media/'.$cart_data->product_image)}}" alt="img"></a>
                       <div class="aa-cartbox-info">
@@ -42,6 +42,7 @@
                         </p>
                         <p>{{$cart_data->qty}} * Rs {{$price}}</p>
                       </div>
+                      <a class="aa-remove-product" href="#" onclick="DeleteCartItem('{{$cart_data->cart_id}}','{{$cart_data->qty}}','{{$price}}')" ><span class="fa fa-times"></span></a>
                     </li>
                     @endforeach
                          
@@ -52,7 +53,9 @@
                       <span class="aa-cartbox-total-price">
                         Rs <span class="c_p">{{$cart_total}}</span>
                       </span>
+                     
                     </li>
+
                   </ul>
                   <a class="aa-cartbox-checkout aa-primary-btn" href="{{url('/cart')}}">Cart</a>
                   @else

@@ -22,7 +22,6 @@
                        <th> S.NO </th>
                             <th>Order id</th>
                             <th>Final Price</th>
-                            <th>Total Item</th>
                             <th>Order Status</th>
                         
                         </tr>
@@ -52,7 +51,6 @@
 
                            
                             </td>
-                            <td> 4</td>
                           <td> {{orders_status($list->id)}}</td>
                         </tr>
                         @endforeach

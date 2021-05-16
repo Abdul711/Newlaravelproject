@@ -160,7 +160,7 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <i class="fas fa-tachometer-alt"></i>Inventory System <p>(Monthly)</p></a>
                         </li>
                         <li>
-                            <a href="{{url('admin/inventory_monthly')}}">
+                            <a href="{{url('admin/contact_us')}}">
                                 <i class="fas fa-tachometer-alt"></i>Contact Us </a>
                         </li>
                      <li>   <a href="{{url('admin/logout')}}">

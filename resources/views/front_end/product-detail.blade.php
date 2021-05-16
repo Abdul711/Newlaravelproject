@@ -522,7 +522,7 @@ $product_points=floor($point_amount/100*$discount_price);
                                 
                             @foreach($product_related_attributes[$productArr->id] as $size)
                                 @if($size->size_name!="")
-                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$productArr->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$productArr->id}}"> {{$size->size_name}}</a>
+                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$productArr->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$productArr->id}}"> {{$size->size_name}} ({{Price($size->product_id,$size->size_name)}} Rs )</a>
                                 @else
                                 No Size Or Standard Size Available
                   

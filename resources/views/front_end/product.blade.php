@@ -174,8 +174,9 @@
                             <h4>Size</h4>
                             <div class="aa-prod-view-size">
                                  @foreach($category_product_attributes[$product->id] as $size)
+                                 
                                  @if($size->size_name!="")
-                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$product->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$product->id}}"> {{$size->size_name}}</a>
+                                 <a href="javascript:void(0)" onclick="sizeSelect('{{$size->size_name}}','{{$product->id}}')" class="Siz size_link" id="size_{{$size->size_name}}{{$product->id}}"> {{$size->size_name}} ({{Price($size->product_id,$size->size_name)}} Rs )</a>
                                  @else
                        No Size Or Standard Size Available
                                  @endif

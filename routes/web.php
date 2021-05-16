@@ -130,6 +130,7 @@ Route::get('admin/order_cancel/{id}',[AdminController::class,'order_cancel']);
       Route::get('admin/product/status/{status}/{id}',[ProductController::class,'status']);
       Route::get('admin/product/product_attr_delete/{paid}/{pid}',[ProductController::class,'product_attr_delete']);
       Route::get('admin/product/product_images_delete/{paid}/{pid}',[ProductController::class,'product_images_delete']);
+      Route::get('admin/product/{pid}',[ProductController::class,'product_detail']);
      /* Crud Operation Route For Coupon */
 
 Route::get('admin/coupon',[CouponController::class,'show']);
@@ -202,6 +203,7 @@ Route::get('admin/reward',[AdminController::class,"reward_detail"]);
 Route::get('admin/reward/status/{id}',[AdminController::class,"reward_status"]);
 Route::get('admin/subscribers',[AdminController::class,"subscribers"]);
 Route::get("admin/order_detail_by_date/{dt}",[AdminController::class,"view_order_by_date"]);
+Route::get('admin/contact_us',[AdminController::class,'contact']);
 Route::get('/admin/logout', function () {
         if(session()->has('ADMIN_LOGIN')){
              session()->forget('ADMIN_LOGIN');

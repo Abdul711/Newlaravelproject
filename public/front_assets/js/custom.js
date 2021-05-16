@@ -581,7 +581,7 @@ delivery_charge_text="Free Delivery";
  
 }else{
   swal("Congratulations",response.msg,"success");
-  $('#frmAddToCart').trigger('reset');
+
  
   if(response.delivery_charge>0){
 delivery_charge_text=response.delivery_charge+" Rs ";
@@ -595,6 +595,9 @@ delivery_charge_text="Free Delivery";
   $(".gst").html(response.gst+" Rs ");
   $(".final").html(response.final_price+" Rs ");
 add_detail();
+  $(".product_color").css('display','inline-block');
+     $(".productColor").css('display','inline-block');
+     $('#frmAddToCart').trigger('reset');
 
 }
   }
@@ -635,7 +638,7 @@ $("#product_id").val(product_id);
 }
 function sizeSelect(size,product){
   
-  $(".productColor").hide();
+  $(".productColor").css('display','none');
   $('.ColorSize'+size).show();
 
    jQuery('.size_link').css('border','2px solid grey');
@@ -648,7 +651,7 @@ function sizeSelect(size,product){
 }
 function showColor(size){
 
-  $(".product_color").hide();
+  $(".product_color").css('display','none');
   $('.size_'+size).show();
    jQuery('.size_link').css('border','1px solid #ddd');
   jQuery('#size_'+size).css('border','1px solid black');
@@ -668,7 +671,7 @@ console.log(param);
      var html_cart='<ul>';
 total=param.total_item;
 
-if(total>0){
+if(total>=1){
 $.each(param.data, function (arrKey,arrVal) { 
  disc=arrVal.is_discounted;
  if(disc==1){
@@ -679,7 +682,7 @@ $.each(param.data, function (arrKey,arrVal) {
 
   price=arrVal.product_price-disc_amount;
   
-   html_cart+='<li>';
+   html_cart+='<li class="cartBoxDet'+arrVal.cart_id+'">';
    html_cart+='<a class="aa-cartbox-img" href="#"><img src="'+PRODUCT_IMAGE+'/'+arrVal.product_image+'" alt="img"></a>';
    html_cart+='<div class="aa-cartbox-info">';
    html_cart+='<h4><a href="#">'+arrVal.name+'</a></h4>';
@@ -689,7 +692,11 @@ $.each(param.data, function (arrKey,arrVal) {
     if(arrVal.product_sizes!=null){
   html_cart+=' <p><b>Size:</b><strong>'+arrVal.product_sizes+'</strong></p>';
     }
+    d=arrVal.cart_id;
+    qty=arrVal.qty;
   html_cart+='<p>'+arrVal.qty+"* Rs"+price;
+   html_cart+='<a class="aa-remove-product" href="#" onclick="DeleteCartItem('+d+','+qty+','+price+')" ><span class="fa fa-times"></span></a>';
+      html_cart+='</li>';
 });
 path=FRONT_PATH+"/cart";
    html_cart+='<li><span   class="aa-cartbox-total-title">Total</span> <span class="aa-cartbox-total-price">Rs<span class="c_p">'+param.cart_total+'</span></span></li>';
@@ -1024,16 +1031,19 @@ var   size_id=$("#size_id").val();
            swal("Oops!","Please Select Size","error");
                  return false;
          }
-$("#size_id").val(size);
-$("#color_id").val(color);
+
 if(qty==""){
   swal("Oops!","Select Qty","error");
   return false;
 }
+ if(size=="no_size"){
+   $("#size_id").val(size);
+ }
 $("#pqty").val(qty);
    $("#product_id").val(productId);
    add_to_cart();
-     $('#frmAddToCart').trigger('reset');
+
+
  
 }
 function add_cart(size,color){
@@ -1052,8 +1062,7 @@ function add_cart(size,color){
        swal("Oops!","Please Select Color","error");
        return false;
      }
-   $("#color_id").val(color);
-     $("#size_id").val(size);
+
    add_to_cart();
 }
 $('.product_rating').click(function(){
@@ -1298,3 +1307,47 @@ console.log(data_reply);
            $("#contactError").html("* All Field Required");
          }
 });
+function addItem(ProductID,size_name,color){
+
+
+var size=$("#SizeProduct"+ProductID+":checked").val();
+var color_name=$("#SizeProduct"+ProductID+":checked").data('color');
+
+
+    if(size_name!= "" && size == undefined ){
+      swal("Oop!","Please Select Size","error");
+      return false;
+    }
+if(size_name==""){
+  size="no_size";
+}
+
+   $("#size_id").val(size);
+      $("#color_id").val(color_name);
+          $("#product_id").val(ProductID);
+          qty=1;
+          $("#pqty").val(qty);
+
+   add_to_cart();
+
+
+}
+function DeleteCartItem(attr_id,qty,price){
+  alert(qty*price);
+var cart_total=$('.c_p').html();
+cart_total=parseInt(cart_total);
+total_item=$('.aa-cart-notify').html();
+total_item=parseInt(total_item);
+total_item=total_item-1;
+$('.aa-cart-notify').html(total_item);
+alert(cart_total);
+Total=qty*price;
+cart_total_after_remove=cart_total-Total;
+$('.c_p').html(cart_total_after_remove);
+$(".cartBoxDet"+attr_id).remove();
+/*add_detail();*/
+alert(form_data);
+
+}
+
+

@@ -8,10 +8,10 @@
 
 @endphp
 
-{{asset($image)}}
-<img src="">
-<img src="{{asset($image)}}">
-<a href="{{url('admin/products')}}" class="btn btn-outline-primary"> Back </a>
+
+
+
+<a href="{{url('admin/product')}}" class="btn btn-outline-primary"> Back </a>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div>
@@ -24,34 +24,67 @@
                                                 <td colspan='2'>{{$category}} </td>
                                                 </tr>
                                                 <tr>
-                                                <td>Sub Category</td>
-                                                <td colspan='2'>{{$sub_category}}</td>
+                                                 <td> Product Id </td>
+                                                <td colspan='2'>{{$product_id}} </td>
                                                 </tr>
-                                                <tr>
                                                 <td>Brand</td>
                                                 <td colspan='2'>{{$brand}}</td>
+                                                </tr>
+                                                </tr>
+                                                <td>Sub Category</td>
+                                                <td colspan='2'>{{$sub_category}}</td>
                                                 </tr>
                                                 <tr>
                                                 <td >Current Status</td>
                                                 <td colspan='2'>{{$status}}</td>
                                                 </tr>
                                           
-                                                @foreach($product_attributes  as $keys => $product_attribute)                              
-                                                @php
-                                             $product_attribute=(array)$product_attribute;
-                                             print_r($product_attribute);
-                                                @endphp
-                                                <tr>
-                                                <td> Size {{ $product_attribute['p_att_size_name']}}</td>
-                                                <td> Price :{{$product_attribute['attribute_price']}} Rs</td>
-                                                <td>  Color {{ $product_attribute['p_att_c_name']}} </td>   
-                                                </tr>
-                                                <tr>
-                                                             
-                                                </tr>
-                                                @endforeach
+                                      
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
+</div>
+<div class="row m-t-30">
+        <div class="col-md-12">
+            <!-- DATA TABLE-->
+            <div class="table-responsive m-b-40">
+                <table class="table table-borderless table-data3">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Color</th>
+                            <th>Size</th>
+                        
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($product_attributes as $list)
+                        <tr>
+                            <td>{{$list->attr_id}}</td>
+                            <td>
+                            @if($list->color_name!="")
+                            
+                            {{$list->color_name}}
+                            @else No Color 
+                            @endif
+                            
+                            </td>
+                            <td>@if($list->size_name!=""){{$list->size_name}}@else No Size @endif</td>
+                       
+                            <td>
+                            
+                              
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <!-- END DATA TABLE-->
+        </div>
+    </div>
+                        
+
 @endsection
