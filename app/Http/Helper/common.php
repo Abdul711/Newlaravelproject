@@ -551,5 +551,10 @@ return $product_price;
    $data_attribute= DB::table('product_attributes')->where('product_id','=',$product_id)->where('size_id','=',$size_id)->get();
    $color_name=colorNameById($data_attribute[0]->color_id);
     return $color_name;
+  
+  }
+    function TotalItemInOrder($id)
+  {
+ return   $data_attribute= DB::table('order_details')->where('order_id','=',$id)->count();
   }
 ?>

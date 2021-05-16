@@ -247,7 +247,7 @@
                 <div class="checkout-right">
                   <h4>Order Summary</h4>
                   <div class="aa-order-summary-area">
-               You  Will Earn  {{total_point()}}  Points
+               You  Will Earn  <span class="points">{{total_point()}}</span>  Points
             
                   @foreach($cart_datas as $cart_data)
                   @php
@@ -260,7 +260,7 @@
               }
               $price=$cart_data['product_price']-$dis;
                   @endphp
-              <p class="checkout_box">
+              <p class="checkout_box  checkout{{$cart_data['cart_id']}}">
 Product Name:<b>{{$cart_data["name"]}}</b><br>
 @if($cart_data["product_sizes"]!="")
 Size:<b>{{$cart_data["product_sizes"]}}</b><br>
@@ -301,7 +301,7 @@ Color:<b>{{$cart_data["product_colors"]}}</b><br>
                       
         
                 <p class="checkout_box cart_price "> Coupon Code :<span class="couponcode">{{$COUPONCODE}}</span</p>
-            <p class="checkout_box cart_price cart_total"> Cart Total :{{$cart_total}} Rs</p>
+            <p class="checkout_box cart_price cart_total"> Cart Total :<span class="c_p">{{$cart_total}}</span> Rs</p>
             <p class="checkout_box cart_price  cart_promo {{$pr}}" hidden="false">  Cart Total After Promotion :<span class="after_promo">{{$cart_after}}</span> Rs</p>
             <p class="checkout_box cart_price cart_promo {{$pr}}" hidden="false">  Discount :<span class="discount">{{$discount}}</span> Rs</p>
             <p class="checkout_box cart_price " hidden="false">  GST ( <span class="tax_per">{{$tax}}</span> %):<span class="tax_amt">{{$gst}}</span> Rs</p>

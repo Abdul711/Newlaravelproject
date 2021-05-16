@@ -42,7 +42,7 @@
                         </p>
                         <p>{{$cart_data->qty}} * Rs {{$price}}</p>
                       </div>
-                      <a class="aa-remove-product" href="#" onclick="DeleteCartItem('{{$cart_data->cart_id}}','{{$cart_data->qty}}','{{$price}}')" ><span class="fa fa-times"></span></a>
+                      <a class="aa-remove-product" href="javascript:void(0)" onclick="DeleteCartItem('{{$cart_data->cart_id}}','{{$cart_data->qty}}','{{$price}}','{{$cart_data->cart_point}}')" ><span class="fa fa-times"></span></a>
                     </li>
                     @endforeach
                          

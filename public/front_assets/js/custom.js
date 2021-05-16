@@ -594,7 +594,7 @@ delivery_charge_text="Free Delivery";
   $(".cart_total").html(response.cart_total+" Rs ");
   $(".gst").html(response.gst+" Rs ");
   $(".final").html(response.final_price+" Rs ");
-add_detail();
+
   $(".product_color").css('display','inline-block');
      $(".productColor").css('display','inline-block');
      $('#frmAddToCart').trigger('reset');
@@ -604,7 +604,7 @@ add_detail();
 });
 
 
-
+add_detail();
 
 
 }
@@ -671,7 +671,7 @@ console.log(param);
      var html_cart='<ul>';
 total=param.total_item;
 
-if(total>=1){
+if(total>0){
 $.each(param.data, function (arrKey,arrVal) { 
  disc=arrVal.is_discounted;
  if(disc==1){
@@ -694,25 +694,29 @@ $.each(param.data, function (arrKey,arrVal) {
     }
     d=arrVal.cart_id;
     qty=arrVal.qty;
+   point_cart=arrVal.cart_point;
   html_cart+='<p>'+arrVal.qty+"* Rs"+price;
-   html_cart+='<a class="aa-remove-product" href="#" onclick="DeleteCartItem('+d+','+qty+','+price+')" ><span class="fa fa-times"></span></a>';
+   html_cart+='<a class="aa-remove-product" href="javascript:void(0)" onclick="DeleteCartItem('+d+','+qty+','+price+','+point_cart+')" ><span class="fa fa-times"></span></a>';
       html_cart+='</li>';
 });
+
+
 path=FRONT_PATH+"/cart";
    html_cart+='<li><span   class="aa-cartbox-total-title">Total</span> <span class="aa-cartbox-total-price">Rs<span class="c_p">'+param.cart_total+'</span></span></li>';
         html_cart+='</ul><a  class="aa-cartbox-checkout aa-primary-btn" href="'+path+'">Cart</a>';
-
         $(".aa-cartbox-summary").html(html_cart);
+}
+else{
+  $(".cart-view-total").css('display','none');
+    $(".checkout").css('display','none');
+    $("#no").show();
+     html_cart+='<li>No Item In Cart</li>';
+       $(".aa-cartbox-summary").html(html_cart);
+}
+      
  
 
-}else{
-  html_cart+='<li>No Item In Cart</li>';
 
-  $(".checkout").remove();
- /* $(".aa-cartbox-summary").remove();
-  $("#no").show();*/
-
-}
 
 $(".aa-cart-notify").html(total);
 
@@ -721,7 +725,7 @@ $(".aa-cart-notify").html(total);
 
 
 }
-function deleteCart(color_id,size_id,product_id,attr_id){
+function deleteCart(color_id,size_id,product_id,attr_id,cart_id){
   if(color_id==""){
      color_id="no_color";
    }if(size_id==""){
@@ -734,7 +738,7 @@ $("#size_id").val(size_id);
 $("#color_id").val(color_id);
 $("#product_id").val(product_id);
 
-$("#box"+attr_id).remove();
+$("#box"+cart_id).remove();
 add_to_cart();
 }
 function updateCart(color_id,size_id,product_id,attr_id,price){
@@ -1331,22 +1335,64 @@ if(size_name==""){
    add_to_cart();
 
 
+
+
 }
-function DeleteCartItem(attr_id,qty,price){
-  alert(qty*price);
+function deleteCartAtt(cartId){
+  path=FRONT_PATH+"/delete_cart/"+cartId;
+  $.ajax({
+url:path,
+method:"get",
+success:function(dataReply){
+
+
+}
+  });
+
+}
+function DeleteCartItem(attr_id,qty,price,point){
+
 var cart_total=$('.c_p').html();
 cart_total=parseInt(cart_total);
 total_item=$('.aa-cart-notify').html();
+finalPrice=$(".final_price").html();
+finalPrice=parseInt(finalPrice);
 total_item=parseInt(total_item);
 total_item=total_item-1;
 $('.aa-cart-notify').html(total_item);
-alert(cart_total);
+
 Total=qty*price;
+finalPrice=finalPrice-Total;
+$(".final_price").html(finalPrice);
 cart_total_after_remove=cart_total-Total;
 $('.c_p').html(cart_total_after_remove);
+$(".total_cart").html(cart_total_after_remove);
+$(".checkout"+attr_id).remove();
 $(".cartBoxDet"+attr_id).remove();
+$("#box"+attr_id).remove();
+             
+points=$(".points").html();
+points=parseInt(points);
+$(".points").html(points-point);
 /*add_detail();*/
-alert(form_data);
+dataD=deleteCartAtt(attr_id);
+if(total_item<=0){
+   $(".cart-view-total").css('display','none');
+    $(".checkout").css('display','none');
+    $("#no").show();
+    $(".place_order").css('display','none');
+          curremtLocation=window.location.href;
+       curremtLocation=curremtLocation.substr(22);
+       curremtLocation=curremtLocation.replace('#','');
+          alert(curremtLocation);
+     html_cart='No Item In Cart';
+       $(".aa-cartbox-summary").html(html_cart);
+       if(curremtLocation=="checkout"){
+         window.location.href="/";
+       }
+
+}
+
 
 }
 

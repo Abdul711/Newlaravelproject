@@ -42,7 +42,7 @@ class TopNav extends Component
         ->leftJoin("categories","categories.id","=","products.category_id")
         ->leftJoin("brands","brands.id","=","products.brand_id")               
         ->select(
-            "carts.qty","carts.id as cart_id","carts.attr_id as attribute_id","carts.product_id as cart_product_id",
+            "carts.qty","carts.id as cart_id","carts.attr_id as attribute_id","carts.product_id as cart_product_id","carts.point as cart_point",
         "product_attributes.price as product_price","product_attributes.mrp as product_market_price",
         "products.name","products.image as product_image",
         "colors.color_name as product_colors",

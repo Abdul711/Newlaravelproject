@@ -79,7 +79,7 @@ Route::get('/checkout',[FrontController::class,'checkout']);
 Route::post('add_cart',[FrontController::class,"add_to_cart"]);  
 
 Route::get('/reset_password/{id?}',[FrontController::class,'reset_p']);
-
+Route::get('/delete_cart/{id}',[FrontController::class,'delete_cart']);
 Route::post('registration_process',[FrontController::class,'registration_process'])->name('registration.registration_process');
 Route::post('login_process',[FrontController::class,'login_process'])->name('registration.login_process');
 Route::post('forget_password',[FrontController::class,'forget_password'])->name('registration.forget_password');

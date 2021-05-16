@@ -52,7 +52,7 @@
 
                            
                             </td>
-                            <td> 4</td>
+                            <td>{{TotalItemInOrder($list->id)}}</td>
                           <td> {{orders_status($list->id)}}</td>
                         </tr>
                         @endforeach

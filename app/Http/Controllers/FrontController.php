@@ -1703,4 +1703,15 @@ $data_array["mobile"]=$query_mobile;
 $data_array["created_at"]=date("Y-m-d H:i:s");
 DB::table("contact_us")->insert($data_array);
 }
+public function delete_cart($id)
+{
+
+    $mg="Delete";
+    $cart_total=cartTotal();
+    $cart_total["msg"]=$mg;
+    $status="success";
+    $cart_total["success"]=$status;
+    DB::table('carts')->where('id','=',$id)->delete();
+return response()->json($cart_total);
+}
 }
