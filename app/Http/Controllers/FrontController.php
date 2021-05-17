@@ -909,7 +909,7 @@ $cart_data= userCart();
 }
 public function PlaceOrder(Request $req)
 {
-
+sleep(6);
  $date_today=date("Y-m-d H:i:s");
  $resul=DB::table("web_setting")->get();
  /*  $webset=webSetting();
@@ -923,32 +923,18 @@ $present_time=date("d-m-Y h:i:s");
 
 
 
-if($delivery_type=="scheduled"){
-   $data_count=DB::table("orders")->where('delivery_expected_time','=',$delivery_time)->count();
-    if($data_count>=2){
-    return response()->json(["status"=>"error","msg"=>"Slot is Booked"]);    
 
-    }
-    $delivery_time;
-      $time1= strtotime($delivery_time);
-      $time2=strtotime(date("d-m-Y h:i:s"));
-      $difference= $time1-$time2;
-      if($difference<0){
-      return response()->json(["status"=>"error","msg"=>"Please Future Time"]);  
-      }
- 
-}
 
 if(isset($resul[0])){
 $min_cart_amt=$resul[0]->min_cart_amt;
 
 $web_status=$resul[0]->web_status;
-
+$delivery_min=$resul[0]->min_delivery_time;
 }else{
     $min_cart_amt=0;   
  
     $web_status=1;
-
+    $delivery_min=90;
 
 }
 if($web_status!=1){
@@ -957,9 +943,28 @@ return response()->json(["status"=>"error","msg"=>"Website Is Closed"]);
 if($total_price<$min_cart_amt){
   return response()->json(["status"=>"error","msg"=>"$total_price Rs is Less To Place Order Min Cart Amount is $min_cart_amt Rs"]);
 }
+if($delivery_type=="scheduled"){
+    $data_count=DB::table("orders")->where('delivery_expected_time','=',$delivery_time)->count();
+     if($data_count>=2){
+     return response()->json(["status"=>"error","msg"=>"Slot is Booked"]);    
  
- 
+     }
+     $delivery_time;
+       $time1= strtotime($delivery_time);
+       $time2=strtotime(date("d-m-Y h:i:s"));
+       $difference= $time1-$time2;
+       if($difference<0){
+       return response()->json(["status"=>"error","msg"=>"Please Future Time"]);  
+       }
+  
+ } 
+ if($delivery_type=="express"){
+     
+    $currentTime=date("Y-m-dTH:i",strtotime("+$delivery_min minutes"));
+    $delivery_time=$currentTime;
+ }
 
+$delivery_time=date("Y-m-dTH:i",strtotime($delivery_time));
 
 if($customer_payment=="Wallet"){
   
@@ -1091,7 +1096,7 @@ return response()->json(["status"=>"success","msg"=>"Order Placed"]);
 }
  public function apply_coupon($coupon)
 {
-
+     sleep(5);
 
     $web=webSetting();
     $min_cart_amt=$web[0]->min_cart_amt;
@@ -1394,6 +1399,7 @@ return view('front_end.pastOrder',$result);
 }
  public function review_rating(Request $req)
 {
+    sleep(5);
     if(session()->has("FRONT_USER_ID")){
         $id=session('FRONT_USER_ID');
     }else{
@@ -1558,64 +1564,6 @@ $data=DB::table("order_details")->where(['order_id'=>$id])->get();
 
 
     }
-   function  customer_laravel_pdf(){
-  
-
-
-
-   /* PDF2::SetTitle('Customer');
-    PDF2::SetAutoPageBreak(true,10);
-    PDF2::SetMargins(PDF_MARGIN_LEFT,'5',PDF_MARGIN_RIGHT);
-    PDF2::AddPage();*/
-    $content="";
-    $content="<style>th
-    {background-color:blue;
-    color:yellow;
-    text-align:center;
-    }
-    td{
-        text-align:center;
-    }
-
-    </style>";
-$customer_datas=DB::table('customers')->get();
-    $content.='<h1>Customer Data</h1>';
-    $content.='<table>';
-    $content.='<tr>';
-    $content.='<th>#</th>';
-    $content.='<th>Name</th>';
-    $content.='<th>Mobile Number</th>';
-    $content.='<th>Email</th>';
-    $content.='<th>Orders</th>';
-    $content.='<th>Amount</th>';
-    $content.='<th>Last Order Date</th>';
-    $content.='<th>Last Order Time</th>';
-    $content.='</tr>';
-    foreach($customer_datas as $key=> $customer_data){
-    $total_orders=NumberOfOrder($customer_data->id);
-    $key=$key+1;
-    $total_order=$total_orders["total_order"];
-    $total_amount_expand=$total_orders["total_amount_expand"];
-    $content.='<tr>';
-    $content.='<td>'.$key.'</td>';
-    $content.='<td>'.$customer_data->customer_name.'</td>';
-
-  
-    $content.='<td>'.$customer_data->customer_mobile.'</td>';
-    $content.='<td>'.$customer_data->customer_email.'</td>';
-    $content.='<td>'.$total_order.'</td>';
-    $content.='<td>'.$total_amount_expand.' Rs </td>';
-    $content.='<td>'.Last_order_date($customer_data->id)."</td>";
-    $content.='<td>'.Last_order_time($customer_data->id)."</td>";
-    $content.='</tr>';
-    }
-    $content.='</table>';
- /*     PDF2::writeHTML($content);
-      PDF2::Output('hello_world.pdf');*/
-     $pdf = PDF::loadHTML($content)->setPaper('a3',"portrait");
-
-   return $pdf->download('customer_data.pdf');
-    }
 
     function cancel_order($id){
     DB::table('orders')->where('id','=',$id)->update(["orders_status"=>7]);
@@ -1624,7 +1572,7 @@ $customer_datas=DB::table('customers')->get();
 function login_client(Request $req){
  
        extract($_POST);
-
+sleep(6);
      $data_customer=DB::table("customers")->where("customer_email","=",$user_client_email)->get();
      if(isset($data_customer[0])){
        $customer_password=$data_customer[0]->customer_password;

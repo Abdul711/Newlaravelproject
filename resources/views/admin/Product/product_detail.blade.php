@@ -56,7 +56,8 @@
                             <th>Color</th>
                             <th>Size</th>
                         
-                            <th>Action</th>
+                            <th>Qty Sell</th>
+                            <th>Qty Remaining</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,7 +75,7 @@
                             <td>@if($list->size_name!=""){{$list->size_name}}@else No Size @endif</td>
                        
                             <td>
-                            
+                            {{SellDetail($list->attr_id)}}
                               
                             </td>
                         </tr>

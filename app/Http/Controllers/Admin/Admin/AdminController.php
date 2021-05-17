@@ -419,6 +419,70 @@ public function customers(){
  return view('admin/customers',$result);
 
 }
+function  customer_laravel_pdf(){
+  
+
+
+
+  /* PDF2::SetTitle('Customer');
+   PDF2::SetAutoPageBreak(true,10);
+   PDF2::SetMargins(PDF_MARGIN_LEFT,'5',PDF_MARGIN_RIGHT);
+   PDF2::AddPage();*/
+   $content="";
+   $content="<style>th
+   {background-color:blue;
+   color:yellow;
+   text-align:center;
+   }
+   td{
+       text-align:center;
+   }
+
+   </style>";
+$customer_datas=DB::table('customers')->get();
+   $content.='<h1>Customer Data</h1>';
+   $content.='<table>';
+   $content.='<tr>';
+   $content.='<th>#</th>';
+   $content.='<th>Name</th>';
+   $content.='<th>Mobile Number</th>';
+   $content.='<th>Email</th>';
+   $content.='<th>Orders</th>';
+   $content.='<th>Amount</th>';
+   $content.='<th>Last Order Date</th>';
+   $content.='<th>Last Order Time</th>';
+   $content.='</tr>';
+   foreach($customer_datas as $key=> $customer_data){
+   $total_orders=NumberOfOrder($customer_data->id);
+   $key=$key+1;
+   $total_order=$total_orders["total_order"];
+   $total_amount_expand=$total_orders["total_amount_expand"];
+     if($total_amount_expand!="no_order"){
+      $total_amount_expand=$total_amount_expand." Rs ";
+     }else{
+      $total_amount_expand="No Order Placed";
+     }
+   $content.='<tr>';
+   $content.='<td>'.$key.'</td>';
+   $content.='<td>'.$customer_data->customer_name.'</td>';
+
+ 
+   $content.='<td>'.$customer_data->customer_mobile.'</td>';
+   $content.='<td>'.$customer_data->customer_email.'</td>';
+   $content.='<td>'.$total_order.'</td>';
+   $content.='<td>'.$total_amount_expand.' </td>';
+   $content.='<td>'.Last_order_date($customer_data->id)."</td>";
+   $content.='<td>'.Last_order_time($customer_data->id)."</td>";
+   $content.='</tr>';
+   }
+   $content.='</table>';
+/*     PDF2::writeHTML($content);
+     PDF2::Output('hello_world.pdf');*/
+    $pdf = PDF::loadHTML($content)->setPaper('a3',"portrait");
+
+  return $pdf->download('customer_data.pdf');
+   }
+
 public function customer_laravel_excel()
 {
 return Excel::download(new CustomersExport,'users.xls');

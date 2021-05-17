@@ -66,9 +66,9 @@ $maxTotal=max($total_amount);
 <p>Last Order Time </p>
 <p>{{Last_order_time($customer->id)}}</p>
 @if($maxTotal==$total_amount_expand)
- Amount Spend <p style="color:black; background:red;">{{$total_amount_expand}} Rs</p>
+ Amount Spend <p style="color:black; background:red;">  {{$total_amount_expand}}  </p>
  @else
- Amount Spend <p>{{$total_amount_expand}} Rs</p>
+ Amount Spend <p>  @if($total_amount_expand!="no_order") {{$total_amount_expand}} Rs @endif  @if($total_amount_expand=="no_order") No Order Placed @endif </p>
  @endif
  @if($customer->customer_status==1)
 <a class="btn btn-success" href="{{url('admin/customer/update_status/'.$customer->id.'/'.'0')}}">Active</a>

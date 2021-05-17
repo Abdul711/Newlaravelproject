@@ -4435,3 +4435,27 @@ box-sizing:border-box;
 .add_cart_icon{
 padding:14px;
 }
+.waiting_msg{
+  clear:both;
+  color:red;
+}
+.wait{
+  clear:both;
+  color:red;
+}
+.waits{
+  clear:both;
+  color:red;
+}
+.add_item_to_cart {
+padding:12px 19px;
+margin:2px;
+background:black;
+color:white;
+}
+.addBtn {
+padding:12px 19px;
+margin:2px;
+background:black;
+color:white;
+}

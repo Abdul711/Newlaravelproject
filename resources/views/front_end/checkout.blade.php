@@ -45,6 +45,7 @@
                         <div class="apply_coupon_box {{$class_box1}} ">
                           <input type="text" placeholder="Coupon Code" class="  aa-coupon-code" id="coupon_code">
                           <input type="submit" value="Apply Coupon" class="aa-browse-btn apply_coupon" >
+                          <div class="waits"></div>
                           </div>
                         
                           <div class="applied_coupon_box {{$class_box2}} "> 
@@ -346,7 +347,9 @@ Color:<b>{{$cart_data["product_colors"]}}</b><br>
                                  <input type="radio" id="wallet" name="optionsRadios" class="wallet" value="Wallet" {{$check}} {{$dis}}> Wallet <span class="wallet">({{$wallet_amt}}</span> Rs) <span class="wallet_msg">{{$msg}}</span></label>
                                  <label for="paypal"><input type="radio" id="paypal" name="optionsRadios" value="paypal"> Via Paypal </label>
                                  <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">    
-                                 <input type="submit" value="Place Order" class="aa-browse-btn place_order">                
+                              
+                                 <input type="submit" value="Place Order" class="aa-browse-btn place_order">      
+                                 <div class="wait"> </div>          
                                </div>
 
                 </div>

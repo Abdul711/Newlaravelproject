@@ -32,6 +32,7 @@ class SettingWebsiteController extends Controller
         $result["number_of_order_for_referal"]=$resul[0]->number_of_order_for_referal;
         $result["company_address"]=$resul[0]->company_address;
         $result["income_tax"]=$resul[0]->income_tax;
+        $result["min_delivery_time"]=$resul[0]->min_delivery_time;
       }else{
         $result["min_cart_amt"]="";
         $result["free_delivery_cart"]="";
@@ -48,6 +49,8 @@ class SettingWebsiteController extends Controller
         $result["number_of_order_for_referal"]="";
         $result["company_address"]="";
         $result["income_tax"]="";
+        $result["min_delivery_time"]="";
+      
     }
     
         return view('admin.web_set',$result);

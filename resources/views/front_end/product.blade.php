@@ -83,10 +83,25 @@
                           @else
                           <span class="aa-product-price">Rs{{$category_product_attributes[$product->id][0]->price}}</span>
                             @endif
-                            <p>{{average_rating($product->id)}}  <span class="fa fa-star"> ({{total_rating($product->id)}})</span></p>
-                            <p> You Will Earn {{@floor($point_amount/100*$discounted_price)}} Points </p>
-                            </figcaption>
-                          </figure>    
+                     <br>    {{average_rating($product->id)}}  <span class="fa fa-star"> ({{total_rating($product->id)}})</span><br>
+                     <br>          You Will Earn {{@floor($point_amount/100*$discounted_price)}} Points 
+                      
+                         </figcaption>
+                          </figure>   
+                        @foreach($category_product_attributes[$product->id] as $size)
+                              @if($size->size_name!="")
+                           <input type="radio" value="{{$size->size_name}}"  name="colorName" data-color="{{ColorBySize($size->size_name,$size->product_id)}}" id="SizeProduct{{$size->product_id}}"> {{$size->size_name}}  ({{Price($size->product_id,$size->size_name)}} Rs)
+                           @else
+                           <input type="radio" style="display:none;"  value="{{$size->size_name}}" checked="checked" name="colorName" data-color="{{$size->color_name}}" id="SizeProduct{{$size->product_id}}"> 
+                           {{$size->size_name}}
+
+                           
+@endif
+                           @endforeach
+                      </br>
+                      <br>
+                          <a href="javascript:void(0)"  class="addBtn"><span class="fa fa-shopping-cart add_cart_icon" onclick="addItem('{{$product->id}}','{{$category_product_attributes[$product->id][0]->size_name}}','{{$category_product_attributes[$product->id][0]->color_name}}')"> Add To Cart </span></a>
+                      
                           @if($product->is_discounted=="1")
                           <span class="aa-badge aa-sale" href="#">SALE {{$product->discount_amount}} %</span>   
                    @endif

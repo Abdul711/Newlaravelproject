@@ -315,7 +315,13 @@ $user_point["user_id"]=$user_id;
 function NumberOfOrder ($id)
 {
   $total_order=DB::table("orders")->where("customer_id",'=',$id)->count();
+      if($total_order==0){
+        $total_order="No Order Placed";
+      }
   $total_amount_expand=DB::table("orders")->where("customer_id",'=',$id)->sum('final_price');
+  if($total_amount_expand==0){
+    $total_amount_expand="no_order";
+  }
   $total_array["total_order"]=$total_order;
   $total_array["total_amount_expand"]=$total_amount_expand;
 return $total_array;
@@ -402,11 +408,22 @@ return$datad= $data[0]->customer_referral;
  }
  function Last_order_date($user_name){
   $data=DB::table("orders")->select("created_at")->where("customer_id","=",$user_name)->orderBy("id","desc")->limit(1)->get();
-  return$datad= date("d-F-Y",strtotime($data[0]->created_at));
+  if(isset($data[0])){
+  $dated= date("d-F-Y",strtotime($data[0]->created_at));
+  }else{
+    $dated=date('d-F-Y');
+    $dated="No Order Placed";
+  }
+  return $dated;
    }
    function Last_order_time($user_name){
     $data=DB::table("orders")->select("created_at")->where("customer_id","=",$user_name)->orderBy("id","desc")->limit(1)->get();
-    return$datad= date("h:i a",strtotime($data[0]->created_at));
+    if(isset($data[0])){
+      $dated= date("h:i a",strtotime($data[0]->created_at));
+      }else{
+      $dated="No Order Placed";
+      }
+    return $dated;
      }
 
     function monthly_inve($m){
@@ -556,5 +573,8 @@ return $product_price;
     function TotalItemInOrder($id)
   {
  return   $data_attribute= DB::table('order_details')->where('order_id','=',$id)->count();
+  }
+ function SellDetail($id){
+return DB::table('order_details')->where('attr_id','=',$id)->sum('qty');
   }
 ?>

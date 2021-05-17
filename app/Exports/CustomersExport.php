@@ -39,7 +39,11 @@ class CustomersExport implements FromCollection,WithHeadings,WithMapping,WithCol
        $total_orders= NumberOfOrder($customer->id);
         $total_order=$total_orders["total_order"];
         $total_amount_expand=$total_orders["total_amount_expand"];
- 
+        if($total_amount_expand!="no_order"){
+            $total_amount_expand=$total_amount_expand;
+           }else{
+            $total_amount_expand="No Order Placed";
+           }
         return [
             $customer->customer_name,
             $customer->customer_email,

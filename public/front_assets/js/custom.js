@@ -407,6 +407,9 @@ $("#register_user").submit(function (e) {
     url:'registration_process',
     data:jQuery('#register_user').serialize(),
     type:'post',
+    beforeSend:function(){
+      $(".wait").html('Please Wait ...');
+    },
     success:function(result){
     alert(result);
     console.log(result);
@@ -415,6 +418,7 @@ $("#register_user").submit(function (e) {
     window.location.href=FRONT_PATH+"/register_success";
   }
     if(result.status=="error"){
+          $(".wait").html(result.msg);
     swal("Oops!",result.msg,result.status);
   }   
     }
@@ -827,7 +831,9 @@ path=FRONT_PATH+"/place_coupon/"+coupon_code;
 $.ajax({
    url:path,
    method:"get",
-
+beforeSend:function(){
+$(".waits").html("<div class='alert alert-success alert-dismissible'><button type='button' class='close' data-dismiss='alert'>&times;</button> Please Wait While Applying Coupon</div>");
+},
    success:function(res){
         min_cart=parseInt(res.min_cart);
 
@@ -858,8 +864,10 @@ delivery_charge_text=res.delivery_charge+"Rs";
                              $(".delivery_charge").html(delivery_charge_text);
                                         $("#delivery_charge").val(res.delivery_charge);
          title_msg="Congratulations";
+            $(".waits").html("<div class='alert alert-success alert-dismissible'><button type='button' class='close' data-dismiss='alert'>&times;</button>"+res.msg+"</div>");
          }else{
                 title_msg="Oops! Something Went Wrong";
+                $(".waits").html("<div class='alert alert-danger alert-dismissible'><button type='button' class='close' data-dismiss='alert'>&times;</button>"+res.msg+"</div>");
          }
     
          if(res.wallet>0){
@@ -874,7 +882,7 @@ delivery_charge_text=res.delivery_charge+"Rs";
                  $(".wallet_msg").text('Low Wallet');
                  $(".wallet_msg").css('color',"red");
          }
-        
+    
               swal(title_msg,res.msg,res.status);                       
    }
 });
@@ -915,13 +923,13 @@ customer_zip=$("#zip").val();
       delivery_tim=delivery_time;
     }else{
 now=new Date();
-delivery_tim=now.getTime()+45*60*1000;
+delivery_tim=now.getTime();
     new_date=new Date(delivery_tim);
     month=new_date.getMonth()+1;
       dateToday=new_date.getDate();
-    alert(month+"date"+dateToday);
+
     new_date=new_date.getFullYear()+"-"+"0"+month+"-"+dateToday+"T"+new_date.getHours()+":"+new_date.getMinutes();
-    alert(new_date);
+
     delivery_tim=new_date;
     }
     $("#delivery_time").val(delivery_tim);
@@ -947,10 +955,13 @@ $.ajax({
   url:path,
   method:"post",
   data:form_data,
+  beforeSend:function(){
+    $(".wait").html('Please Wait..');
+  },
   success:function(response){
     alert(response);
         console.log(response);
-     
+       $(".wait").html(response.msg);
 if(response.status=="error"){
   swal("Oops!",response.msg,response.status);
 }else{
@@ -1077,7 +1088,7 @@ product_id=$(this).data('product_id');
 
 $("#rating").val('');
 $("#rating").val(rating);
-alert("product_id"+product_id+"rating"+rating);
+
 });
 
 
@@ -1167,7 +1178,11 @@ $.ajax({
 url:path,
 data:$("#ReviewAndRating").serialize(),
 method:"post",
+beforeSend:function(){
+  $(".wait").html("Please Wait ...");
+},
 success:function(response){
+    $(".wait").html(response.message);
   swal("Dear User",response.message,response.status);
 }
 });
@@ -1226,8 +1241,11 @@ $(".login_customer").click(function(e){
      method:"POST",
 url:path,
 data:form_data,
+beforeSend:function(){
+$(".waiting_msg").html('Please Wait ...');
+},
 success:function(data_reply){
-
+$(".waiting_msg").html(data_reply.msg);
   console.log(data_reply);
            if(data_reply.status=="error"){
        swal("Oops",data_reply.msg,"error");
@@ -1316,7 +1334,7 @@ function addItem(ProductID,size_name,color){
 
 var size=$("#SizeProduct"+ProductID+":checked").val();
 var color_name=$("#SizeProduct"+ProductID+":checked").data('color');
-
+alert(color_name);
 
     if(size_name!= "" && size == undefined ){
       swal("Oop!","Please Select Size","error");

@@ -126,7 +126,7 @@
                               @if($size->size_name!="")
                            <input type="radio" value="{{$size->size_name}}"  name="colorName" data-color="{{ColorBySize($size->size_name,$size->product_id)}}" id="SizeProduct{{$size->product_id}}"> {{$size->size_name}}  ({{Price($size->product_id,$size->size_name)}} Rs)
                            @else
-                           <input type="radio" hidden value="{{$size->size_name}}" checked="checked" name="colorName" data-color="{{$size->color_name}}" id="SizeProduct{{$size->product_id}}"> 
+                           <input type="radio" style="display:none;"  value="{{$size->size_name}}" checked="checked" name="colorName" data-color="{{$size->color_name}}" id="SizeProduct{{$size->product_id}}"> 
                            {{$size->size_name}}
 
                             {{PriceProduct($productArr->id)}} Rs

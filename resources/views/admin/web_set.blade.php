@@ -125,6 +125,14 @@
                                              
                                             </div>
                                             <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Min Delivery Time</label>
+                                                <input id="cc-pament" 
+                                                required name="min_delivery_time"
+                                                 type="text" class="form-control" 
+                                                 #aria-required="true" aria-invalid="false" value="{{$min_delivery_time}}" required="true">
+                                             
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="cc-payment" class="control-label mb-1">Point Amount</label>
                                                 <input id="cc-pament" 
                                                 required name="point_amount"

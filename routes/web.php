@@ -149,7 +149,7 @@ Route::get('admin/color/status/{id}/{status}',[ColorController::class,'update_st
 /* Route For Customer */
 Route::get('admin/customers',[AdminController::class,'customers']);
 Route::get('admin/customer/update_status/{id}/{status}',[AdminController::class,'customers_update_status']);
-Route::get('admin/customers/customer_pdf',[FrontController::class,'customer_laravel_pdf']);
+Route::get('admin/customers/customer_pdf',[AdminController::class,'customer_laravel_pdf']);
 Route::get('admin/customers/customer_excel',[AdminController::class,'customer_laravel_excel']);
 /* Route For Inventory */
 Route::get('admin/inventory/monthly_inventory_excel',[AdminController::class,'monthly_inventory_laravel_excel']);

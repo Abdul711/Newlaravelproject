@@ -364,6 +364,7 @@
                       </div>
 
                       <button type="submit"  class= "su btn btn-default aa-review-submit">Submit</button>
+                      <div class="wait"></div>
                    </form>
       @endif
             @endif
@@ -393,10 +394,10 @@
               $products_point=floor(($point_amount/100)*$discounted_price);
                     @endphp
                     <li>
-                        <figure>
+                      
                         <a class="aa-product-img" href="{{url('product/'.$productArr->id)}}"><img src="{{asset('storage/media/'.$productArr->image)}}" alt="{{$productArr->name}}"></a>
                       
-                        <figcaption>
+                       
                       <h4 class="aa-product-title"><a href="{{url('product/'.$productArr->id)}}">
                             {{$productArr->name}}</a></h4>
 
@@ -408,15 +409,30 @@
  <del> Rs {{$product_related_attributes[$productArr->id][0]->price}} </del>
   </span>
   @else
+
   <span class="aa-product-price">
   Rs {{$product_related_attributes[$productArr->id][0]->price}} 
   </span>
   @endif
-  <p>  You Will Earn {{$products_point}} Points </p>
-                       <div>{{average_rating($productArr->id)}}  <span class="fa fa-star"> ({{total_rating($productArr->id)}})</span>
-    <p> </div>
-                        </figcaption>
-                        </figure>       
+  <br>
+  You Will Earn {{$products_point}} Points <br>
+                    {{average_rating($productArr->id)}}  <span class="fa fa-star"> ({{total_rating($productArr->id)}})</span><br>
+
+                         
+                        @foreach($product_related_attributes[$productArr->id] as $size)
+                              @if($size->size_name!="")
+                           <input type="radio" value="{{$size->size_name}}"  name="colorName" data-color="{{ColorBySize($size->size_name,$size->product_id)}}" id="SizeProduct{{$size->product_id}}"> {{$size->size_name}}  ({{Price($size->product_id,$size->size_name)}} Rs)
+                           @else
+                           <input type="radio" style="display:none;"  value="{{$size->size_name}}" checked="checked" name="colorName" data-color="{{$size->color_name}}" id="SizeProduct{{$size->product_id}}"> 
+                           {{$size->size_name}}
+
+                            {{PriceProduct($productArr->id)}} Rs
+@endif
+                           @endforeach
+                      </br>
+                          <a href="javascript:void(0)"  class="addProduct"><span class="fa fa-shopping-cart add_cart_icon" onclick="addItem('{{$productArr->id}}','{{$product_related_attributes[$productArr->id][0]->size_name}}','{{$product_related_attributes[$productArr->id][0]->color_name}}')"> Add To Cart </span></a>
+
+
                         @if($productArr->is_discounted==1)
                           @php
 
@@ -445,9 +461,9 @@ data-toggle="modal" data-target="#quick-view-modal-{{$productArr->id}}"><span cl
 
                     @else
                     <li>
-                        <figure>
+
                         No Product  found
-                        <figure>
+                        
                     <li>
                     @endif      
                 

@@ -326,7 +326,7 @@
             <input type="password" id="user_password"  name="user_client_password" placeholder="Password"><i class="fa fa-eye goge"></i><br>
             <button class="aa-browse-btn login_customer" type="submit">Login</button>
             <label class="rememberme" for="rememberme"><input type="checkbox" value="rem" name="rem" id="rememberme" {{$rememberme}}> Remember me </label>
-        
+        <div class="waiting_msg">  </div>
             <p class="aa-lost-password"><a href="{{url('/forget_password')}}">Lost your password?</a></p>
             <div class="aa-register-now">
               Don't have an account?<a href="{{url('/my_account')}}">Register now!</a>

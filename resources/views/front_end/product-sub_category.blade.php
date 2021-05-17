@@ -25,12 +25,12 @@
                       $discount;
 $discount_price=$price_product-$discount;
                      @endphp
-                          <figure>
+                       
                             <a class="aa-product-img" href="{{url('product/'.$product->id)}}">
                             <img src="{{asset('storage/media/'.$product->image)}}" 
                             alt=""></a>
                         
-                            <figcaption>
+                      
                               <h4 class="aa-product-title"><a href="{{url('product/'.$product->id)}}">{{$product->name}}</a></h4>
                      
                               @if($product->is_discounted=="1")
@@ -39,28 +39,31 @@ $discount_price=$price_product-$discount;
                               <del>Rs{{$category_product_attributes[$product->id][0]->price}}</del>
                               </span>   
                               @else
-                            
-                           <span class="aa-product-price">
+                               <span class="aa-product-price">
                            Rs {{$price_product}}
-                            
-   
-    </span>   
-   
-                              @endif
-                              @php
+                            </span>   
+   @endif
+      @php
                               $web=webSetting();
-                        
-                        $point_amount=$web[0]->point_amount;
+                       $point_amount=$web[0]->point_amount;
                         $point_amount=$point_amount/100;
                         @endphp
-                           <p>    You Will Earn {{@floor($point_amount*$discount_price)}} Points </p>
-                       <div>{{average_rating($product->id)}}  <span class="fa fa-star"> ({{total_rating($product->id)}})</span>
-    <p> </div>
+                    <br>    You Will Earn {{@floor($point_amount*$discount_price)}} Points <br>
+                     {{average_rating($product->id)}}  <span class="fa fa-star"> ({{total_rating($product->id)}})</span>
+    <p> 
+    @foreach($category_product_attributes[$product->id] as $size)
+                              @if($size->size_name!="")
+                           <input type="radio" value="{{$size->size_name}}"  name="colorName" data-color="{{ColorBySize($size->size_name,$size->product_id)}}" id="SizeProduct{{$size->product_id}}"> {{$size->size_name}}  ({{Price($size->product_id,$size->size_name)}} Rs)
+                           @else
+                           <input type="radio" style="display:none;"  value="{{$size->size_name}}" checked="checked" name="colorName" data-color="{{$size->color_name}}" id="SizeProduct{{$size->product_id}}"> 
+                           {{$size->size_name}}
 
-                    
-             
-                            </figcaption>
-                          </figure>    
+                            {{PriceProduct($product->id)}} Rs<br>
+@endif
+                           @endforeach
+                      
+
+                          <a href="javascript:void(0)"  class="addProduct"><span class="fa fa-shopping-cart add_cart_icon" onclick="addItem('{{$product->id}}','{{$category_product_attributes[$product->id][0]->size_name}}','{{$category_product_attributes[$product->id][0]->color_name}}')"> Add To Cart </span></a>
                           @if($product->is_discounted=="1")
                           <span class="aa-badge aa-sale" href="#">SALE {{$product->discount_amount}} %</span>   
                    @endif
