@@ -1566,7 +1566,8 @@ $data=DB::table("order_details")->where(['order_id'=>$id])->get();
     }
 
     function cancel_order($id){
-    DB::table('orders')->where('id','=',$id)->update(["orders_status"=>7]);
+        $today=date("Y-m-d H:i:s");
+    DB::table('orders')->where('id','=',$id)->update(["orders_status"=>7,"updated_at"=>$today]);
         return redirect('/pastOrder');
     }
 function login_client(Request $req){

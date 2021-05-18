@@ -577,4 +577,90 @@ return $product_price;
  function SellDetail($id){
 return DB::table('order_details')->where('attr_id','=',$id)->sum('qty');
   }
+
+   function TimeDifference($time1,$time2)  
+   {  
+        $time_ag = strtotime($time1);  
+        $current_time =strtotime($time2) ;  
+        $time_difference = $current_time - $time_ag;  
+        $seconds = $time_difference;  
+        $minutes      = round($seconds / 60 );           // value 60 is seconds  
+        $hours           = round($seconds / 3600);           //value 3600 is 60 minutes * 60 sec  
+        $days          = round($seconds / 86400);          //86400 = 24 * 60 * 60;  
+        $weeks          = round($seconds / 604800);          // 7*24*60*60;  
+        $months          = round($seconds / 2629440);     //((365+365+365+365+366)/5/12)*24*60*60  
+        $years          = round($seconds / 31553280);     //(365+365+365+365+366)/5 * 24 * 60 * 60  
+        if($seconds <= 60)  
+        {  
+       return "1 second";  
+     }  
+        else if($minutes <60)  
+        {  
+       if($minutes==1)  
+             {  
+         return "one minute ";  
+       }  
+       else  
+             {  
+         return "$minutes minutes ";  
+       }  
+     }  
+        else if($hours <24)  
+        {  
+       if($hours==1)  
+             {  
+         return "1 hour ";  
+       }  
+             else  
+             {  
+         return "$hours hrs ";  
+       }  
+     }  
+        else if($days < 7)  
+        {  
+       if($days==1)  
+             {  
+         return "1 day";  
+       }  
+       
+             else  
+             {  
+         return "$days days ";  
+       }  
+     }  
+        else if($weeks < 4) //4.3 == 52/12  
+        {  
+       if($weeks==1)  
+             {  
+         return "a week ";  
+       }  
+             else  
+             {  
+         return "$weeks weeks ";  
+       }  
+     }  
+         else if($months < 12)  
+        {  
+       if($months==1)  
+             {  
+         return "1 month ";  
+       }  
+             else  
+             {  
+         return "$months months ";  
+       }  
+     }  
+        else  
+        {  
+       if($years==1)  
+             {  
+         return "one year ";  
+       }  
+             else  
+             {  
+         return "$years years ";  
+       }  
+     }  
+   }  
+
 ?>

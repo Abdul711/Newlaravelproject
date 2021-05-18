@@ -101,6 +101,9 @@ Route::get('admin/order/status/{id}/{status}',[AdminController::class,'update_or
 Route::get('admin/print_invoice/{id}',[FrontController::class,"invoice"]);
 Route::get('admin/order_cancel/{id}',[AdminController::class,'order_cancel']);
     Route::get('admin/order',[AdminController::class,"orders_detail"]);
+
+Route::get('admin/orders/canelled_order_report',[AdminController::class,'CancelOrderReport']);
+Route::get('admin/orders/complete_order_report',[AdminController::class,'CompleteOrderReport']);
     Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
 
     Route::get('admin/product_review',[AdminController::class,"product_review"]);

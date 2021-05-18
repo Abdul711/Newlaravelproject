@@ -17,7 +17,8 @@
     </button>
 </div>
 @endif 
-      
+<a href="{{url('admin/orders/canelled_order_report')}}" class="btn btn-danger">Cancelled Orders </a>    
+<a href="{{url('admin/orders/complete_order_report')}}" class="btn btn-success">Completed Orders </a>        
             <div class="table-responsive m-b-40">
                 <table class="table table-borderless table-data3">
                     <thead>
@@ -46,8 +47,9 @@
 
              <tr>
 <td>{{$keys+1}}
-<p>
 
+<p>
+Order Id: {{$value->id}}
 <a href="{{url('/print_invoice/'.$value->id)}}" class="btn btn-primary">Print  Invoice </a>
 </p>
 <p>

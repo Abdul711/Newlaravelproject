@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Storage;
 use App\Exports\CustomersExport;
 use App\Exports\Inventory;
 use App\Exports\Monthly;
+use App\Exports\OrderCancelled;
+use App\Exports\OrderComplete;
+use App\Exports\AllOrder;
+
 use Excel;
 use \PDF;
 class AdminController extends Controller
@@ -288,7 +292,7 @@ public function update_order_status($id,$status)
   
 
 
-
+  $order_model=Order::find($id);
    if($status==1){
      $new_status="Under The Process";
      $new_state=2;
@@ -340,9 +344,12 @@ ManageWallet($user_id,$amount_to,$msg,$type_tr);
   if($status==5){
     $new_status="Delivered";
     $new_state=5;
+    $date_today=date("Y-m-d H:i:s");
+    $order_model->updated_at=$date_today;
   }
+  
      $msg="Order is $new_status";
-    $order_model=Order::find($id);
+
     $order_model->orders_status=$new_state;
     $order_model->save();
     session()->flash("message",$msg);
@@ -364,6 +371,7 @@ $type_trans="in";
 if($payment=="Wallet"){
  ManageWallet($customer_id,$final_price,$msg,$type_trans,$date_today);
 }
+$model->updated_at=$date_today;
 $model->orders_status=6;
 $model->save(); 
 $message="Order is Cancelled";
@@ -669,5 +677,19 @@ function customers_update_status($id,$status){
   $model->customer_status=$status;
   $model->save();
   return redirect('admin/customers');
+}
+public function CancelOrderReport()
+{
+return Excel::download(new OrderCancelled,'order_cancelled.xls');
+
+/*
+php artisan make:export CustomersExport --model=Customer*/
+}
+public function CompleteOrderReport()
+{
+return Excel::download(new OrderComplete,'order_complete.xls');
+
+/*
+php artisan make:export CustomersExport --model=Customer*/
 }
 }
