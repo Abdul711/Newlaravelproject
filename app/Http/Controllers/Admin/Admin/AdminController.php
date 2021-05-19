@@ -259,7 +259,7 @@ $result['admin_role']=$admin_data[0]->role;
     }
     
     public function orders_detail (){
- $result["orders"]=DB::table('orders')->orderBy('id','desc')->get();
+ $result["orders"]=DB::table('orders')->leftJoin("orders_status","orders_status.id","=","orders.orders_status")->select('orders.*',"orders_status.status_name","orders_status.id as status_id")->orderBy('id','desc')->get();
      
 
  $result["totals"]=Order::count();
@@ -283,6 +283,7 @@ $result['admin_role']=$admin_data[0]->role;
 
   ->get();
 $result["total_item"]=count($result["cart_details"]);
+$result["statuses"]=DB::table("orders_status")->get();
            return view('admin.order.manage_order',$result);
          }
 
@@ -691,5 +692,10 @@ return Excel::download(new OrderComplete,'order_complete.xls');
 
 /*
 php artisan make:export CustomersExport --model=Customer*/
+}
+public function AllOrderReport(){
+
+  return Excel::download(new AllOrder,"all_order".time().".xls");
+
 }
 }

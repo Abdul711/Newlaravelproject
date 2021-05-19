@@ -166,7 +166,28 @@ Order Status:{{orders_status($order_detail[0]->id)}}
 
 
 
+                                <div class="top-campaign">
+                                
+                                    <div class="table-responsive">
+<form method="POST" action="">
+Change Status
+<select name="orders_status">
+@foreach($statuses as $status)
+@if($status->id!=1)
+<option value="{{$status->id}}">{{$status->status_name}}</option>
+@endif
+@endforeach
+</select>
+Customer Addrees
+<input type="text" name="customer_address" class="form-control" value="{{$order_detail[0]->customer_address}}">
 
+<input type="hidden" name="id" value="{{$order_detail[0]->id}}">
+<button type="submit" name="submit" class="btn btn-success"> Update Order Detail</button>
+</form>
+
+
+                                    </div>
+                               </div>
 
 
 

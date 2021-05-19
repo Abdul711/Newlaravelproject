@@ -104,6 +104,7 @@ Route::get('admin/order_cancel/{id}',[AdminController::class,'order_cancel']);
 
 Route::get('admin/orders/canelled_order_report',[AdminController::class,'CancelOrderReport']);
 Route::get('admin/orders/complete_order_report',[AdminController::class,'CompleteOrderReport']);
+Route::get('admin/orders/all_order_report',[AdminController::class,'AllOrderReport']);
     Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
 
     Route::get('admin/product_review',[AdminController::class,"product_review"]);

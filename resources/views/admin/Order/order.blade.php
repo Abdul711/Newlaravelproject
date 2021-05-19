@@ -18,7 +18,8 @@
 </div>
 @endif 
 <a href="{{url('admin/orders/canelled_order_report')}}" class="btn btn-danger">Cancelled Orders </a>    
-<a href="{{url('admin/orders/complete_order_report')}}" class="btn btn-success">Completed Orders </a>        
+<a href="{{url('admin/orders/complete_order_report')}}" class="btn btn-success">Completed Orders </a>     
+<a href="{{url('admin/orders/all_order_report')}}" class="btn btn-primary">All Orders </a>       
             <div class="table-responsive m-b-40">
                 <table class="table table-borderless table-data3">
                     <thead>
@@ -73,26 +74,22 @@ Order Id: {{$value->id}}
 <p>{{date('d-M-Y',strtotime($value->created_at))}}</p>
 {{date('h:i a',strtotime($value->created_at))}}
 </td>
-@if($value->orders_status==1)
-<td><a class="btn btn-warning" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Pending</a>
+
+
+<td>
+@if($value->status_id!=6 && $value->status_id!=7)
+<a class="btn btn-warning" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->status_id}}">{{$value->status_name}}</a>
+@endif
+@if($value->status_id==1)
 <a class="btn btn-danger" href="{{url('admin/order_cancel/')}}/{{$value->id}}">Cancel</a>
-</td> 
-@elseif($value->orders_status==2)
-<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">
-Under The Process</a></td>
-@elseif($value->orders_status==3) 
-<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">
-Hand Over To Rider</a></td>
-@elseif($value->orders_status==4)
-<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Out For Delivery</a></td>
-@elseif($value->orders_status==5)
-<td><a class="btn btn-success" href="{{url('admin/order/status')}}/{{$value->id}}/{{$value->orders_status}}">Delivered</a></td>
-@elseif($value->orders_status==6)
-<td><a class="btn btn-danger" href="javascript:void(0)">Cancelled</a></td>
-@elseif($value->orders_status==7)
-<td><a class="btn btn-danger" href="javascript:void(0)">Cancelled By Customer</a></td>
 @endif
 
+@if($value->status_id==6)
+<a class="btn btn-danger" href="javascript:void(0)">{{$value->status_name}}</a>
+@elseif($value->status_id==7)
+<a class="btn btn-danger" href="javascript:void(0)">{{$value->status_name}}</a>
+@endif
+</td>
 
                             
                  </tr>
