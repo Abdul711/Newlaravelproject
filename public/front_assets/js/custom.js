@@ -1343,11 +1343,17 @@ alert(color_name);
 if(size_name==""){
   size="no_size";
 }
+    if(color!= "" && color_name == undefined ){
 
+      color_name=color;
+    }
+ 
+
+   
    $("#size_id").val(size);
       $("#color_id").val(color_name);
           $("#product_id").val(ProductID);
-          qty=1;
+          qty=1; 
           $("#pqty").val(qty);
 
    add_to_cart();

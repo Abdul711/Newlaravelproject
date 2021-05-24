@@ -853,7 +853,7 @@ public function checkout()
     $result["USER_ID"]=session('FRONT_USER_ID');
 
 
-if(session()->has("FRONT_USER_ID")){
+
     $user_id=session('FRONT_USER_ID');
     $customer=DB::table("customers")->where(['id'=>$user_id])->get();
   if(isset($customer[0])){
@@ -882,9 +882,7 @@ if($total_item>0){
 }else{
     return redirect('/');
 }
-}else{
-    return view("front_end.account");
-}
+
 
      
 
@@ -990,6 +988,7 @@ if($customer_payment=="Wallet"){
 $points=total_point();
 $point_type="in";
 $date_today=date("Y-m-d H:i:s");
+
 $user_point["user_id"]=$customer_id;
 $user_point["point"]=$points;
 $user_point["type"]=$point_type;
@@ -1005,7 +1004,30 @@ if($customer_payment=="COD"){
     $remaining_amount=0;
    
 }
+   if($customer_id==0){
+    $customer_name;
+    $customer_phone;
+    $customer_email;
+    $customer_password="customer1234";
 
+    $referal_code=Str::random(6);
+ 
+
+    $mr=mt_rand(1000,9999);
+    $mrt=mt_rand(1,9999999);
+    $mrt=bin2hex($mrt);
+    $mrt=md5($mrt);
+    $customer_status=1;
+    $customer_verified=1;
+
+    $customer_data_insert['customer_rand_str']=$mrt;
+    $customer_data_insert["customer_mobile"]=$customer_phone;
+    $customer_data_insert["customer_referral"]=$referal_code;
+    $customer_data_insert["customer_name"]=$customer_name;
+    $customer_data_insert["customer_email"]=$customer_email;
+    $customer_data_insert["customer_password"]=Hash::make($customer_password);
+   $customer_id=DB::table('customers')->insertGetId($customer_data_insert);
+   }
 $data["remaining_amount"]=$remaining_amount;
 $data["payment_status"]=$payment_status;
 $data["delivery_type"]=$delivery_type;
