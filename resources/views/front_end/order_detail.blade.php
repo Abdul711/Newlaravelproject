@@ -17,7 +17,8 @@
            <div class="cart-view-table">
              <form action="">
                <div class="table-responsive">
-            
+         <?php
+echo DNS2D::getBarcodeHTML('$orders[0]-id', 'QRCODE');?>
                <diV>
                <div class="aaa-logo">
                 <!-- Text based logo -->
@@ -94,7 +95,7 @@
                   @endif
                   <b>Category</b> : {{$order_detail->category_name}} <strong></strong>
                         </p>
-                        
+                       <?php echo DNS1D::getBarcodeSVG( "ProductId-".$order_detail->product_id, 'C39');?>
                         </td>
                          <td >Rs {{$order_detail->price}}  </td>  
                          <td>  {{$order_detail->qty}}  </td>

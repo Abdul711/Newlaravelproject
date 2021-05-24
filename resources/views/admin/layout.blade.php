@@ -116,8 +116,8 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <i class="fas fa-tachometer-alt"></i>Coupon </a>
                         </li>
                         <li>
-                            <a href="{{url('admin/vendor')}}">
-                                <i class="fas fa-tachometer-alt"></i>Vendor </a>
+                            <a href="{{url('admin/rider')}}">
+                                <i class="fas fa-tachometer-alt"></i>Rider </a>
                         </li>
                         <li>
                             <a href="{{url('admin/brand')}}">

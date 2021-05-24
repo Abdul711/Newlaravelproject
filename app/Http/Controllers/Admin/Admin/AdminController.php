@@ -287,7 +287,19 @@ $result["statuses"]=DB::table("orders_status")->get();
            return view('admin.order.manage_order',$result);
          }
 
+        function  update_statu(Request $req){
+     
+         $id=$req->post('id');
+         $customer_address=$req->post('customer_address');
+         $status=$req->post('orders_status');
+       $model=Order::find($id);
+       $model->customer_address=$customer_address;
+$model->orders_status=$status;
+$model->save();
+  
 
+              return redirect("admin/view_detail/".$id);
+        }
 public function update_order_status($id,$status)
 {
   
@@ -697,5 +709,20 @@ public function AllOrderReport(){
 
   return Excel::download(new AllOrder,"all_order".time().".xls");
 
+}
+public function contact(){
+  $result["data"]=DB::table("contact_us")->get();
+  return view('admin/contact_us',$result);
+}
+function update_product_review($id){
+$data=DB::table("product_review")->where('id',"=",$id)->get();
+$currentStatus=$data[0]->status;
+    if($currentStatus==0){
+      $newStatus=1;
+    }else{
+      $newStatus=0;
+    }
+    DB::table("product_review")->where('id',"=",$id)->update(["status"=>$newStatus]);
+    return redirect('admin/product_review');
 }
 }

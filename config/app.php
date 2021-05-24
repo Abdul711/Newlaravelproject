@@ -163,7 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
        Barryvdh\DomPDF\ServiceProvider::class,
        Maatwebsite\Excel\ExcelServiceProvider::class,
-
+       Stevebauman\Location\LocationServiceProvider::class,
        Milon\Barcode\BarcodeServiceProvider::class,
       /*Elibyy\TCPDF\ServiceProvider::class,*/
 
@@ -237,10 +237,8 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class, 
   'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
-  
- 
-            'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        
+   'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+   'Location' => 'Stevebauman\Location\Facades\Location',        
     ],
 
 ];

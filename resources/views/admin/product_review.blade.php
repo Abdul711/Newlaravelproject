@@ -19,13 +19,11 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                       <th>Product </th>
-                            <th>Review</th>
-                            <th>User Name</th>
-                            <th>User Email</th>
-                            <th>User Type</th>
-                            <th>Added On</th>
-                            <th>Action</th>
+                       <th>Product Review </th>
+                            <th>User Detail / Product</th>
+                <th> Data</th>
+                <th> Action </th>
+                   
                         </tr>
                     </thead>
                     <tbody>
@@ -35,11 +33,15 @@
                     @if($total_tax>0)
                         @foreach($data as $list)
                         <tr>
-                        <td>{{$list->name}}</td>
+            
                             <td>{{$list->review}}</td>
-                            <td>{{$list->user_name}}</td>
-                            <td>{{$list->user_email}}</td>
-<td>{{$list->user_type}}</td>
+                     
+                            <td>{{$list->user_email}}
+                          <p>  {{$list->user_name}}</p>
+                           <p> {{$list->user_type}}</p>
+                         <p>  {{$list->name}}</p>
+                            </td>
+
 <td>{{date("d-F-Y",strtotime($list->added_on))}}</td>
                             <td>
                                

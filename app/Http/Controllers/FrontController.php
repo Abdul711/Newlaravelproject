@@ -1281,7 +1281,8 @@ $orders=DB::table('orders')->where(["orders.id"=>$id])->
          "products.sub_category_id",
          "products.image",
          "brands.brands",
-         "categories.category_name"
+         "categories.category_name",
+         "order_details.product_id"
          )
          ->where(["order_details.order_id"=>$order->id])->get();
 

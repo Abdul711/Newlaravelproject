@@ -174,14 +174,20 @@ Change Status
 <select name="orders_status">
 @foreach($statuses as $status)
 @if($status->id!=1)
+@if(orders_status_id(($order_detail[0]->id)) == $status->id)
+
+<option value="{{$status->id}}" selected>{{$status->status_name}}</option>
+@else
 <option value="{{$status->id}}">{{$status->status_name}}</option>
 @endif
+@endif
 @endforeach
-</select>
+</select><br>
 Customer Addrees
 <input type="text" name="customer_address" class="form-control" value="{{$order_detail[0]->customer_address}}">
 
 <input type="hidden" name="id" value="{{$order_detail[0]->id}}">
+@csrf
 <button type="submit" name="submit" class="btn btn-success"> Update Order Detail</button>
 </form>
 

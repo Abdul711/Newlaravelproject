@@ -12,12 +12,12 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form action="{{route('vendor.manage_vendor_process')}}" method="post">
+                                        <form action="{{route('rider.manage_rider_process')}}" method="post">
                                             @csrf
                                             <div class="form-group">
-                                                <label for="size" class="control-label mb-1">Vendor Name </label>
-                                                <input id="vendor_name" value="{{$vendor_name}}" name="vendor_name" type="text" class="form-control" aria-required="true" aria-invalid="false" >
-                                                @error('vendor_name')
+                                                <label for="size" class="control-label mb-1">Rider Name </label>
+                                                <input id="rider_name" value="{{$rider_name}}" name="rider_name" type="text" class="form-control" aria-required="true" aria-invalid="false" >
+                                                @error('rider_name')
                         <div class="sufee-alert alert mt-1 with-close alert-danger alert-dismissible fade show">
                                     {{$message}}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -28,10 +28,10 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="size" class="control-label mb-1">Vendor Email </label>
+                                                <label for="size" class="control-label mb-1">Rider Email </label>
                                               
-                                                <input id="tax_desc" value="{{$vendor_email}}" name="vendor_email" type="text" class="form-control" aria-required="true" aria-invalid="false" >
-                                                @error('vendor_email')
+                                                <input id="tax_desc" value="{{$rider_email}}" name="rider_email" type="text" class="form-control" aria-required="true" aria-invalid="false" >
+                                                @error('rider_email')
                         <div class="sufee-alert alert with-close mt-1 alert-danger alert-dismissible fade show">
                                     {{$message}}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -41,9 +41,9 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="size" class="control-label mb-1">Vendor Mobile </label>
-                                                <input id="tax_desc" value="{{$vendor_mobile}}" name="vendor_mobile" type="text" class="form-control" aria-required="true" aria-invalid="false" >
-                                                @error('vendor_mobile')
+                                                <label for="size" class="control-label mb-1">Rider Mobile </label>
+                                                <input id="tax_desc" value="{{$rider_mobile}}" name="rider_mobile" type="text" class="form-control" aria-required="true" aria-invalid="false" >
+                                                @error('rider_mobile')
                         <div class="sufee-alert alert with-close mt-1 alert-danger alert-dismissible fade show">
                                     {{$message}}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -53,11 +53,11 @@
                                                 @enderror
                                             </div>
 
-                                            @if($vendor_id=='')
+                                            @if($rider_id=='')
                                             <div class="form-group">
-                                                <label for="size" class="control-label mb-1">Vendor Password </label>
-                                                <input id="tax_desc" value="" name="vendor_password" type="text" class="form-control" aria-required="true" aria-invalid="false" >
-                                                @error('vendor_password')
+                                                <label for="size" class="control-label mb-1">Rider Password </label>
+                                                <input id="tax_desc" value="" name="rider_password" type="text" class="form-control" aria-required="true" aria-invalid="false" >
+                                                @error('rider_password')
                         <div class="sufee-alert alert with-close mt-1 alert-danger alert-dismissible fade show">
                                     {{$message}}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -72,7 +72,8 @@
                                                     {{$page_title}}
                                                 </button>
                                             </div>
-                                            <input type="hidden" name="id" value="{{$vendor_id}}"/>
+                                            <input type="text" name="id" value="{{$rider_id}}"/>
+                                            <input type="hidden" name="status" value="{{$rider_status}}"/>
                                         </form>
                                     </div>
                                 </div>

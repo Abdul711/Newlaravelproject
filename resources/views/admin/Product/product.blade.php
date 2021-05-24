@@ -25,7 +25,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Slug</th>
+                            <th></th>
                             <th>Image</th>
                             <th>Action</th>
                         </tr>

@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\Coupon\CouponController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Brand\BrandController;
 use App\Http\Controllers\Admin\Tax\TaxController;
-use App\Http\Controllers\Admin\Vendor\VendorController;
+use App\Http\Controllers\Admin\Rider\RiderController;
 use App\Http\Controllers\Admin\Banner\BannerController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\SettingWebsiteController;
@@ -106,10 +106,10 @@ Route::get('admin/orders/canelled_order_report',[AdminController::class,'CancelO
 Route::get('admin/orders/complete_order_report',[AdminController::class,'CompleteOrderReport']);
 Route::get('admin/orders/all_order_report',[AdminController::class,'AllOrderReport']);
     Route::get('admin/view_detail/{id}',[AdminController::class,"orders_view_detail"]);
-
+    Route::post('admin/view_detail/{id}',[AdminController::class,"update_statu"]);
     Route::get('admin/product_review',[AdminController::class,"product_review"]);
     Route::get('admin/email_detail/{id}',[AdminController::class,"email_detail"]);
-
+      Route::get('admin/product_review/{id}',[AdminController::class,"update_product_review"]);
     Route::get('admin/dashboard',[AdminController::class,'dashboard']);
     Route::get('admin/manage',[AdminController::class,'manage_account']);
     Route::post('admin/manage_admin_process',[AdminController::class,'manage_admin_process'])->name('admin.manage_admin_process'); 
@@ -191,12 +191,12 @@ Route::post('admin/banner/manage_banner_process',[BannerController::class,'store
 Route::get('admin/banner/status/{status?}/{id?}',[BannerController::class,'update']);
 Route::get('admin/banner/delete/{id}',[BannerController::class,'delete']);
 /* Crud Operation Route For Vendor */
-Route::get('admin/vendor',[VendorController::class,'index']);
-Route::get('admin/vendor/manage_vendor',[VendorController::class,'manage_vendor']);
-Route::get('admin/vendor/manage_vendor/{id}',[VendorController::class,'manage_vendor']);
-Route::post('admin/vendor/manage_vendor_process',[VendorController::class,'manage_vendor_process'])->name('vendor.manage_vendor_process');
-Route::get('admin/vendor/delete/{id}',[VendorController::class,'delete']);
-Route::get('admin/vendor/status/{status}/{id}',[VendorController::class,'status']);
+Route::get('admin/rider',[RiderController::class,'index']);
+Route::get('admin/rider/manage_rider',[RiderController::class,'manage_rider']);
+Route::get('admin/rider/manage_rider/{id}',[RiderController::class,'manage_rider']);
+Route::post('admin/rider/manage_rider_process',[RiderController::class,'manage_rider_process'])->name('rider.manage_rider_process');
+Route::get('admin/rider/delete/{id}',[RiderController::class,'delete']);
+Route::get('admin/rider/status/{status}/{id}',[RiderController::class,'status']);
 /*Route For website Setting */
 Route::get('admin/setting',[SettingWebsiteController::class,"index"]);  
 Route::post('admin/setting',[SettingWebsiteController::class,'manage_web_process'])->name('settingweb.manage_website_process');

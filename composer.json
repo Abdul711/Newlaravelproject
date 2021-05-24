@@ -19,7 +19,8 @@
         "laravel/vapor-cli": "^1.15",
         "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
-        "milon/barcode": "^8.0"
+        "milon/barcode": "^8.0",
+        "stevebauman/location": "^6.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

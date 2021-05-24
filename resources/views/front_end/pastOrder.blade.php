@@ -88,7 +88,7 @@
                       </td>
                       @elseif($order->orders_status==2)
                       <td >
-                    Under The Process
+        Confirmed
                       </td>
                       @elseif($order->orders_status==3)
                       <td>

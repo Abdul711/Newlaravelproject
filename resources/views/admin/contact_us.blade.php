@@ -1,5 +1,5 @@
 ﻿@extends('admin/layout')
-@section('page_title',$order_date)
+@section('page_title',"Contact Us ")
 @section('tax_select','active')
 @section('container')
     @if(session()->has('message'))
@@ -10,7 +10,7 @@
         </button>
     </div> 
     @endif                           
-    <h1 class="mb10">{{$order_date}}</h1>
+    <h1 class="mb10">Contact Us</h1>
  
     <div class="row m-t-30">
         <div class="col-md-12">
@@ -20,9 +20,9 @@
                     <thead>
                         <tr>
                        <th> S.NO </th>
-                            <th>Order id</th>
-                            <th>Final Price</th>
-                            <th>Order Status</th>
+                            <th>User Detail </th>
+                            <th> Date  </th>
+                            <th>Message</th>
                         
                         </tr>
                     </thead>
@@ -40,18 +40,18 @@
                       
 
                             <td>
-                           <a href=" {{url('admin/view_detail/'.$list->id)}}">Order-{{$list->id}}</a>
-                                                   
-
+                            <p>{{$list->user_name}}</p>
+                       {{$list->email}}
+                          <p>  {{user_type($list->email)}}</p>               
+                        <p>  {{$list->mobile}}</p>
                            
                             </td>
                             <td>
-                            {{$list->final_price}} Rs 
-                                                   
-
+                         
+{{date("d-F-Y",strtotime($list->created_at))}}
                            
                             </td>
-                          <td> {{orders_status($list->id)}}</td>
+                          <td> {{$list->message}} </td>
                         </tr>
                         @endforeach
                         @else

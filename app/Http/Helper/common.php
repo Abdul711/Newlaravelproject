@@ -663,4 +663,9 @@ return DB::table('order_details')->where('attr_id','=',$id)->sum('qty');
      }  
    }  
 
+ function  orders_status_id($id){
+      $data=DB::table('orders')->where('id','=',$id)->get();
+    return  $data[0]->orders_status;
+   }
+
 ?>
