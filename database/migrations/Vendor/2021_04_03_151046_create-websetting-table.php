@@ -24,7 +24,13 @@ class CreateWebsettingTable extends Migration
             $table->integer('referral_amount')->nullable();
             $table->integer('sign_up_reward')->nullable();
             $table->integer('point_reward_per')->nullable();
-           
+            $table->integer('website_email')->nullable();
+            $table->integer('website_mobile')->nullable();
+            $table->string('return_referal_per')->nullable();
+            $table->string('point_amount')->nullable();
+            $table->string('number_of_order_for_referal')->nullable();
+            $table->string('income_tax')->nullable();
+            $table->string('company_address')->nullable();
             $table->timestamps();
             
         });

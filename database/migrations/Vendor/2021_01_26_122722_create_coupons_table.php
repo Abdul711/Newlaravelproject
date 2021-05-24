@@ -20,6 +20,9 @@ class CreateCouponsTable extends Migration
             $table->string('coupon_type');
             $table->string('cart_min_value');
             $table->string('expiry_date');
+            $table->string('cart_min_value');
+            $table->string('max_discount');
+            $table->string('limit_per_user');
             $table->string('status');
             $table->timestamps();
         });
