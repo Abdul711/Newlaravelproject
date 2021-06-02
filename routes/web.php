@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Brand\BrandController;
 use App\Http\Controllers\Admin\Tax\TaxController;
 use App\Http\Controllers\Admin\Rider\RiderController;
+use App\Http\Controllers\Admin\VendorStore\VendorController;
 use App\Http\Controllers\Admin\Banner\BannerController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\SettingWebsiteController;
@@ -197,6 +198,12 @@ Route::get('admin/rider/manage_rider/{id}',[RiderController::class,'manage_rider
 Route::post('admin/rider/manage_rider_process',[RiderController::class,'manage_rider_process'])->name('rider.manage_rider_process');
 Route::get('admin/rider/delete/{id}',[RiderController::class,'delete']);
 Route::get('admin/rider/status/{status}/{id}',[RiderController::class,'status']);
+Route::get('admin/vendor',[VendorController::class,'index']);
+Route::get('admin/vendor/manage_vendor',[VendorController::class,'manage_vendor']);
+Route::get('admin/vendor/manage_vendor/{id}',[VendorController::class,'manage_vendor']);
+Route::post('admin/vendor/manage_vendor_process',[VendorController::class,'manage_vendor_process'])->name('vendor.manage_vendor_process');
+Route::get('admin/vendor/delete/{id}',[VendorController::class,'delete']);
+Route::get('admin/vendor/status/{status}/{id}',[VendorController::class,'status']);
 /*Route For website Setting */
 Route::get('admin/setting',[SettingWebsiteController::class,"index"]);  
 Route::post('admin/setting',[SettingWebsiteController::class,'manage_web_process'])->name('settingweb.manage_website_process');

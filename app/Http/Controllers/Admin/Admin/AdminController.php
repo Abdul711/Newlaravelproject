@@ -185,6 +185,7 @@ class AdminController extends Controller
                     $request->session()->put('ADMIN_ID',$result['0']->id);
                     $request->session()->put('ADMIN_EMAIL',$result['0']->email);
                     $request->session()->put('ADMIN_ROLE',$result['0']->role);
+
                     return redirect('admin/dashboard');
                 }else{
                     $request->session()->flash('error','Wrong Password');
@@ -259,9 +260,22 @@ $result['admin_role']=$admin_data[0]->role;
     }
     
     public function orders_detail (){
- $result["orders"]=DB::table('orders')->leftJoin("orders_status","orders_status.id","=","orders.orders_status")->select('orders.*',"orders_status.status_name","orders_status.id as status_id")->orderBy('id','desc')->get();
-     
-
+   $role=session()->get('ADMIN_ROLE');
+   $admin_id =session()->get('ADMIN_ID');
+         if($role==2){
+ $result["orders"]=DB::table('orders')->
+ leftJoin("orders_status","orders_status.id","=","orders.orders_status")->
+ leftJoin("order_details","order_details.id","=","orders.id")->
+ leftJoin("products","products.id","=","order_details.product_id")->
+ select('orders.*',"orders_status.status_name","orders_status.id as status_id")->orderBy('id','desc')->get();
+         } 
+         if($role==0){
+          $result["orders"]=DB::table('orders')->
+          leftJoin("orders_status","orders_status.id","=","orders.orders_status")->
+          leftJoin("order_details","order_details.id","=","orders.id")->
+          leftJoin("products","products.id","=","order_details.product_id")->
+          select('orders.*',"orders_status.status_name","orders_status.id as status_id")->orderBy('id','desc')->get();
+         }
  $result["totals"]=Order::count();
 
       return view('admin.order.order',$result);

@@ -17,9 +17,11 @@
     </button>
 </div>
 @endif 
+@if(session()->get('ADMIN_ROLE')==0)
 <a href="{{url('admin/orders/canelled_order_report')}}" class="btn btn-danger">Cancelled Orders </a>    
 <a href="{{url('admin/orders/complete_order_report')}}" class="btn btn-success">Completed Orders </a>     
-<a href="{{url('admin/orders/all_order_report')}}" class="btn btn-primary">All Orders </a>       
+<a href="{{url('admin/orders/all_order_report')}}" class="btn btn-primary">All Orders </a>      
+@endif 
             <div class="table-responsive m-b-40">
                 <table class="table table-borderless table-data3">
                     <thead>

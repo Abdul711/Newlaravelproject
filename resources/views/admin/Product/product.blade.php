@@ -16,6 +16,7 @@
             Add Product
         </button>
     </a>
+
     <div class="row m-t-30">
         <div class="col-md-12">
             <!-- DATA TABLE-->
@@ -23,7 +24,7 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>S.No</th>
                             <th>Name</th>
                             <th></th>
                             <th>Image</th>
@@ -31,9 +32,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($data as $list)
+                        @foreach($data as $key =>  $list)
                         <tr>
-                            <td>{{$list->id}}</td>
+                            <td>{{$key+1}}</td>
                             <td>{{$list->name}}</td>
                             <td><a href="{{url('admin/product/'.$list->id)}}">View Detail</a></td>
                             <td>

@@ -1019,15 +1019,22 @@ if($customer_payment=="COD"){
     $mrt=md5($mrt);
     $customer_status=1;
     $customer_verified=1;
-
+      $crd=DB::table("customers")->where('customer_email','=',$customer_email)->where('customer_name','=',$customer_name)->get();
+if(isset($crd[0])){
+    $customer_id=$crd[0]->id;
+}else{
+$customer_status=1;
     $customer_data_insert['customer_rand_str']=$mrt;
     $customer_data_insert["customer_mobile"]=$customer_phone;
     $customer_data_insert["customer_referral"]=$referal_code;
     $customer_data_insert["customer_name"]=$customer_name;
     $customer_data_insert["customer_email"]=$customer_email;
+    $customer_data_insert["customer_status"]=$customer_status;
     $customer_data_insert["customer_password"]=Hash::make($customer_password);
    $customer_id=DB::table('customers')->insertGetId($customer_data_insert);
+}
    }
+   session()->put('CUSTOMER_ID_USER',$customer_id);
 $data["remaining_amount"]=$remaining_amount;
 $data["payment_status"]=$payment_status;
 $data["delivery_type"]=$delivery_type;
@@ -1224,9 +1231,12 @@ public function thanks()
    
     if(session()->has('FRONT_USER_ID')){
 $user_id=session('FRONT_USER_ID');
-
+    }else{
+        $user_id="0";
+    }  
+   $customer= session()->get('CUSTOMER_ID_USER');
    $order_data=DB::table("carts")->where(["user_id"=>$user_id])->delete();
-$orders=DB::table('orders')->where(["orders.customer_id"=>$user_id])->
+$orders=DB::table('orders')->where(["orders.customer_id"=>$customer])->
    orderBy("orders.id","desc")->limit(1)->get();
        foreach($orders as $order){
          $result["order_details"]=DB::table("order_details")->
@@ -1247,7 +1257,7 @@ $orders=DB::table('orders')->where(["orders.customer_id"=>$user_id])->
 
        }
        $result["orders"]=$orders;
-$result["total_item"]=count($result["order_details"]);
+
 $result["cart_total"]=$orders[0]->total_price;
 if($orders[0]->customer_payment=="COD"){
     $result["amount_due"]=$orders[0]->final_price." Rs ";
@@ -1277,9 +1287,7 @@ $result["final_price"]=$orders[0]->final_price;
 
 
 return view("front_end.your_order_detail",$result);
-    }else{
-        return redirect('/');
-    }
+   
 
 }
 public function view_datail($id)

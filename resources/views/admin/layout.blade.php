@@ -83,7 +83,7 @@ ADMIN_PATH="{{url('/admin')}}";
                             <a href="{{url('admin/dashboard')}}"">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
-                       
+                        @if(session()->get('ADMIN_ROLE')==0)
                         <li>
                             <a href="{{url('admin/category')}}"">
                                 <i class="fas fa-tachometer-alt"></i>Category</a>
@@ -93,11 +93,7 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <i class="fas fa-tachometer-alt"></i>Sub Category</a>
 
                         </li>
-                        <li>
-                            <a href="{{url('admin/product')}}"">
-                                <i class="fas fa-tachometer-alt"></i>Product</a>
-
-                        </li>
+                     
                         
                         <li>
                             <a href="{{url('admin/tax')}}">
@@ -120,6 +116,10 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <i class="fas fa-tachometer-alt"></i>Rider </a>
                         </li>
                         <li>
+                            <a href="{{url('admin/vendor')}}">
+                                <i class="fas fa-tachometer-alt"></i>Vendor </a>
+                        </li>
+                        <li>
                             <a href="{{url('admin/brand')}}">
                                 <i class="fas fa-tachometer-alt"></i>Brand Management</a>
                         </li>
@@ -135,10 +135,7 @@ ADMIN_PATH="{{url('/admin')}}";
                             <a href="{{url('admin/reward')}}">
                                 <i class="fas fa-tachometer-alt"></i>Manage Rewards</a>
                         </li>
-                        <li>
-                            <a href="{{url('admin/order')}}">
-                                <i class="fas fa-tachometer-alt"></i>Order Management</a>
-                        </li>
+                 
                         <li>
                             <a href="{{url('admin/customers')}}">
                                 <i class="fas fa-tachometer-alt"></i>Customers</a>
@@ -162,6 +159,19 @@ ADMIN_PATH="{{url('/admin')}}";
                         <li>
                             <a href="{{url('admin/contact_us')}}">
                                 <i class="fas fa-tachometer-alt"></i>Contact Us </a>
+                        </li>
+                        @endif
+                 
+                                          @if(session()->get('ADMIN_ROLE')==2)
+                                          <li>
+                         <a href="{{url('admin/product')}}"">
+                                <i class="fas fa-tachometer-alt"></i>Product</a>
+                                </li>
+                         @endif
+                    
+                        <li>
+                            <a href="{{url('admin/order')}}">
+                                <i class="fas fa-tachometer-alt"></i>Order Management</a>
                         </li>
                      <li>   <a href="{{url('admin/logout')}}">
                                                     <i class="zmdi zmdi-power"></i>Logout</a></li>

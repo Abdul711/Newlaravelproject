@@ -52,7 +52,7 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>S.No</th>
                             <th>Color</th>
                             <th>Size</th>
                         
@@ -61,9 +61,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($product_attributes as $list)
+                        @foreach($product_attributes as $key=> $list)
                         <tr>
-                            <td>{{$list->attr_id}}</td>
+                            <td>{{$key+1}}</td>
                             <td>
                             @if($list->color_name!="")
                             
@@ -78,6 +78,7 @@
                             {{SellDetail($list->attr_id)}}
                               
                             </td>
+                            <td> </td>
                         </tr>
                         @endforeach
                     </tbody>

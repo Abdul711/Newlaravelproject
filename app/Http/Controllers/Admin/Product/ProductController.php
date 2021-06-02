@@ -12,8 +12,16 @@ use Storage;
 class ProductController extends Controller
 {
     public function show()
-    {
+    {    
+       $role=session()->get('ADMIN_ROLE');
+       $admin_id=session()->get('ADMIN_ID');
+         if($role==2){
+   
+        $result['data']=Product::where('admin_id','=',$admin_id)->get();
+         }else{
         $result['data']=Product::all();
+         } 
+    
         return view('admin/product/product',$result);
     }
 
@@ -21,16 +29,30 @@ class ProductController extends Controller
     public function manage_product(Request $request,$id='')
     {
         if($id>0){
-
-            $sub_name=DB::table("products")->leftJoin("categories","categories.id","=","products.sub_category_id")
-             ->where("products.id","=",$id)   ->get();
-           $result["sub_category_name"]=$sub_name['0']->category_name;
+   
            
 
+ 
 
-
+            $role=session()->get('ADMIN_ROLE');
+            $admin_id=session()->get('ADMIN_ID');
+            
+ 
+       
+            if($role===2){
+                $arr=Product::where(['id'=>$id])->where('admin_id','=',$admin_id)->get(); 
+                $sub_name=DB::table("products")->leftJoin("categories","categories.id","=","products.sub_category_id")
+                ->where("products.id","=",$id)-> where('admin_id','=',$admin_id)  ->get();
+            }else{
             $arr=Product::where(['id'=>$id])->get(); 
-    
+            $sub_name=DB::table("products")->leftJoin("categories","categories.id","=","products.sub_category_id")
+            ->where("products.id","=",$id)   ->get();
+            }
+             if(! isset($arr[0])){
+                 return redirect('admin/product');
+             }
+             $result["sub_category_name"]=$sub_name['0']->category_name;
+              
                  $result["sub_category_id"]=$arr['0']->sub_category_id;  
             $result['category_id']=$arr['0']->category_id;
             $result['name']=$arr['0']->name;
@@ -191,7 +213,8 @@ $result["sub_category"]=DB::table("categories")->where('parent_category_id','!='
 
         $model->category_id=$request->post('category_id');;
         $model->name=$request->post('name');
-     
+        $role=session()->get('ADMIN_ROLE');
+        $admin_id=session()->get('ADMIN_ID');
         $model->brand_id=$request->post('brand');
         $model->sub_category_id=$request->post('sub_category');
         $model->short_desc=$request->post('short_desc');
@@ -206,6 +229,7 @@ $result["sub_category"]=DB::table("categories")->where('parent_category_id','!='
         $model->is_featured=$request->post('is_featured');
         $model->is_discounted=$request->post('is_discounted');
         $model->is_tranding=$request->post('is_tranding');
+        $model->admin_id=$admin_id;
         $model->status=1;
         $model->save();
         $pid=$model->id;
@@ -341,7 +365,16 @@ $result["sub_category"]=DB::table("categories")->where('parent_category_id','!='
     }
 public function product_detail ($id)
     {
+        $role=session()->get('ADMIN_ROLE');
+        $admin_id=session()->get('ADMIN_ID');
+        if($role==2){
+        $product_detail_data= DB::table("products")->where('admin_id','=',$admin_id)->where('id','=',$id)->get();
+        }else{
       $product_detail_data= DB::table("products")->where('id','=',$id)->get();
+        } 
+          if(!isset($product_detail_data[0])){
+                        return redirect('admin/product');
+          }
       if($product_detail_data[0]->status==1){
         $result["status"]="Active";
       }else{

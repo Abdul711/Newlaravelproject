@@ -1,10 +1,10 @@
 @extends('admin/layout')
-@section('page_title','Display Rider')
+@section('page_title','Display Vendor')
 @section('container')
-    <h1 class="mb10">Rider Management</h1>
-    <a href="{{url('admin/rider/manage_rider')}}">
+    <h1 class="mb10">Vendor Management</h1>
+    <a href="{{url('admin/vendor/manage_vendor')}}">
         <button type="button" class="btn btn-outline-success m-3">
-            Add Rider
+            Add Vendor
         </button>
     </a>
     <div class="row m-t-30">
@@ -26,6 +26,9 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <tr>
+
+
+                    
                             <th>S.NO</th>
                             <th>Name</th>
                             <th> Email </th>
@@ -35,10 +38,14 @@
                     </thead>
                     <tbody>
                     @php 
-                 $total_record=   count($riders);
+                 $total_record=   count($vendors);
+
+
+
+
                     @endphp 
                     @if($total_record>0)
-                    @foreach($riders as $keys => $brand)
+                    @foreach($vendors as $keys => $brand)
                 
                         <tr>
                         <td>{{$keys+1}}</td>
@@ -46,12 +53,12 @@
                             <td>{{$brand['email']}}</td>
                             <td>{{$brand['mobile']}}</td>
                               @if($brand['status']==0)
-                             <td><a class="btn btn-warning" href="{{url('admin/rider/status')}}/{{$brand['id']}}/1">Deactive</a></td> 
+                             <td><a class="btn btn-warning" href="{{url('admin/vendor/status')}}/{{$brand['id']}}/1">Deactive</a></td> 
                              @elseif($brand['status']==1)
-                             <td><a class="btn btn-success" href="{{url('admin/rider/status')}}/{{$brand['id']}}/0">Active</a></td> 
+                             <td><a class="btn btn-success" href="{{url('admin/vendor/status')}}/{{$brand['id']}}/0">Active</a></td> 
                              @endif                         
-                            <td><a class="btn btn-outline-secondary" href="{{url('admin/rider/manage_rider')}}/{{$brand['id']}}">Edit</a></td> 
-                            <td><a class="btn btn-outline-danger" href="{{url('admin/rider/delete')}}/{{$brand['id']}}">Delete</a></td>
+                            <td><a class="btn btn-outline-secondary" href="{{url('admin/vendor/manage_vendor')}}/{{$brand['id']}}">Edit</a></td> 
+                            <td><a class="btn btn-outline-danger" href="{{url('admin/vendor/delete')}}/{{$brand['id']}}">Delete</a></td>
                         </tr>
                   
                         @endforeach
