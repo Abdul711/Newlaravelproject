@@ -30,3 +30,13 @@ if(category_id>0){
 
 });
 
+                      
+$("#show_pass").click(function(){
+$("#admin_passw").prop("type");
+if($(this).prop("checked")==true){
+   $("#admin_passw").prop("type","text");
+}else{
+     $("#admin_passw").prop("type","password");
+}
+}
+);

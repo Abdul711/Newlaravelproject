@@ -14652,3 +14652,14 @@ section {
 
 .mb10{margin-bottom: 10px;}
 .ml15{margin-left: 15px;}
+#show{
+
+  margin:-20px;
+ 
+
+}
+      .login_pass{
+           border: 1px solid #e5e5e5;
+           width:100%;
+        padding:10px;
+      }                           

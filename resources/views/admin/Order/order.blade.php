@@ -29,7 +29,9 @@
                             <th>S.NO</th>
                             <th> Customer Detail</th>
                              <th> Date/time </th>
+                             @if(session()->get("ADMIN_ROLE")==0 || session()->get("ADMIN_ROLE")==1)
                             <th colspan="3" class="text-center" > Action </th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -49,10 +51,10 @@
 @foreach($orders as $keys => $value)
 
              <tr>
-<td>{{$keys+1}}
-
+<td>
+<P> {{$keys+1}}</p>
 <p>
-Order Id: {{$value->id}}
+Order Id: {{$value->id}}</p>
 <a href="{{url('/print_invoice/'.$value->id)}}" class="btn btn-primary">Print  Invoice </a>
 </p>
 <p>
@@ -76,7 +78,7 @@ Order Id: {{$value->id}}
 <p>{{date('d-M-Y',strtotime($value->created_at))}}</p>
 {{date('h:i a',strtotime($value->created_at))}}
 </td>
-
+@if(session()->get("ADMIN_ROLE")==0 || session()->get("ADMIN_ROLE")==1)
 
 <td>
 @if($value->status_id!=6 && $value->status_id!=7)
@@ -92,7 +94,7 @@ Order Id: {{$value->id}}
 <a class="btn btn-danger" href="javascript:void(0)">{{$value->status_name}}</a>
 @endif
 </td>
-
+@endif
                             
                  </tr>
                  @endforeach

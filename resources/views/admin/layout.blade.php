@@ -162,7 +162,7 @@ ADMIN_PATH="{{url('/admin')}}";
                         </li>
                         @endif
                  
-                                          @if(session()->get('ADMIN_ROLE')==2)
+                                          @if(session()->get('ADMIN_ROLE')==2 || session()->get('ADMIN_ROLE')==0)
                                           <li>
                          <a href="{{url('admin/product')}}"">
                                 <i class="fas fa-tachometer-alt"></i>Product</a>
@@ -195,7 +195,7 @@ ADMIN_PATH="{{url('/admin')}}";
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">john doe</a>
+                                            <a class="js-acc-btn" href="#"></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                            

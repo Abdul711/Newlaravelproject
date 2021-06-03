@@ -40,13 +40,15 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Email Address</label>
-                                    <input class="au-input au-input--full" value="{{old('email')}}" type="text" name="email" placeholder="Email" >
+                                    <input class="login_pass" value="{{old('email')}}" type="text" name="email" placeholder="Email" >
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full"  value="{{old('password')}}" type="password" name="password" placeholder="Password" >
+                                    <input class="login_pass"  value="{{old('password')}}" type="password" name="password"
+                                     placeholder="Password" id="admin_passw" >  
+                                 
                                 </div>
-                                
+                         <input type="checkbox" id="show_pass"> Show
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
                             
                                 <div class=" p-2 text-danger" role="alert">

@@ -164,12 +164,14 @@ Order Status:{{orders_status($order_detail[0]->id)}}
                                     </div>
                                 </div>
 
-
+@if(session()->get('ADMIN_ROLE')==0||session()->get('ADMIN_ROLE')==1)
 
                                 <div class="top-campaign">
                                 
                                     <div class="table-responsive">
 <form method="POST" action="">
+@if (orders_status_id(($order_detail[0]->id))!=5)
+
 Change Status
 <select name="orders_status">
 @foreach($statuses as $status)
@@ -183,12 +185,35 @@ Change Status
 @endif
 @endforeach
 </select><br>
-Customer Addrees
-<input type="text" name="customer_address" class="form-control" value="{{$order_detail[0]->customer_address}}">
+@endif
+@if(session()->get("ADMIN_ROLE")==0)
+ @if (orders_status_id(($order_detail[0]->id))!=5)
 
+Rider 
+<select name="delivery_boy_id">
+@foreach($riders as $rider)
+<option value="{{$rider->id}}"> {{$rider->user_name}} </option>
+@endforeach
+</select></br>
+@else
+Rider Name : {{$riders_detail[0]->user_name}}
+Rider Mobile : {{$riders_detail[0]->mobile}}
+<br>
+@endif
+
+
+@endif
+Customer Addrees
+@if (orders_status_id(($order_detail[0]->id))!=5)
+<input type="text" name="customer_address" class="form-control" value="{{$order_detail[0]->customer_address}}">
+@else
+{{$order_detail[0]->customer_address}}
+@endif
 <input type="hidden" name="id" value="{{$order_detail[0]->id}}">
 @csrf
+@if (orders_status_id(($order_detail[0]->id))!=5)
 <button type="submit" name="submit" class="btn btn-success"> Update Order Detail</button>
+@endif
 </form>
 
 
@@ -197,7 +222,7 @@ Customer Addrees
 
 
 
-
+@endif
 
 
 

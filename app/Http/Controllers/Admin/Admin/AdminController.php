@@ -263,12 +263,16 @@ $result['admin_role']=$admin_data[0]->role;
    $role=session()->get('ADMIN_ROLE');
    $admin_id =session()->get('ADMIN_ID');
          if($role==2){
- $result["orders"]=DB::table('orders')->
- leftJoin("orders_status","orders_status.id","=","orders.orders_status")->
- leftJoin("order_details","order_details.id","=","orders.id")->
- leftJoin("products","products.id","=","order_details.product_id")->
- select('orders.*',"orders_status.status_name","orders_status.id as status_id")->orderBy('id','desc')->get();
-         } 
+ $data=DB::table("order_details")->leftJoin("orders","orders.id","=","order_details.order_id")
+ ->leftJoin("products","products.id","=","order_details.product_id")
+ ->leftJoin("orders_status","orders_status.id","=","orders.orders_status")
+ ->where("products.admin_id","=",$admin_id)
+ ->select('orders.*',"orders_status.status_name","orders_status.id as status_id")
+ ->orderBy('id','desc')
+ ->get();
+          $result["orders"]=$data;
+
+} 
          if($role==0){
           $result["orders"]=DB::table('orders')->
           leftJoin("orders_status","orders_status.id","=","orders.orders_status")->
@@ -276,13 +280,27 @@ $result['admin_role']=$admin_data[0]->role;
           leftJoin("products","products.id","=","order_details.product_id")->
           select('orders.*',"orders_status.status_name","orders_status.id as status_id")->orderBy('id','desc')->get();
          }
- $result["totals"]=Order::count();
+         if($role==1){
+          $result["orders"]=DB::table('orders')->
+          leftJoin("orders_status","orders_status.id","=","orders.orders_status")->
+          leftJoin("order_details","order_details.id","=","orders.id")->
+          leftJoin("products","products.id","=","order_details.product_id")->
+          select('orders.*',"orders_status.status_name","orders_status.id as status_id")
+          ->where('orders.delivery_boy_id','=',$admin_id)
+          ->where('orders.orders_status','=','3')
+         -> orderBy('id','desc')->get();
+         }
+            
+ $result["totals"]=count($result["orders"]);
 
       return view('admin.order.order',$result);
     }
     public function orders_view_detail ($order_id){
+      $role=session()->get('ADMIN_ROLE');
+      $admin_id =session()->get('ADMIN_ID');
   $result["page_title"]="Order Detail ($order_id)";
   $result["order_detail"]=DB::table('orders')->where('orders.id','=',$order_id)->get();
+    if($role!=2){
   $result["cart_details"]=DB::table('order_details')
 ->leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")
 ->leftJoin("products","products.id","=","order_details.product_id")
@@ -296,9 +314,28 @@ $result['admin_role']=$admin_data[0]->role;
   ->where('order_details.order_id','=',$order_id)
 
   ->get();
+    }else{
+  $result["cart_details"]=DB::table('order_details')
+  ->leftJoin("product_attributes","product_attributes.id","=","order_details.attr_id")
+  ->leftJoin("products","products.id","=","order_details.product_id")
+ 
+  ->leftJoin("brands","brands.id","=","products.brand_id")
+  ->leftJoin("colors","colors.id","=","product_attributes.color_id")
+  ->leftJoin("sizes","sizes.id","=","product_attributes.size_id")
+  ->select("order_details.price","order_details.qty",
+  "products.name","products.image",
+  "colors.color_name"
+  ,"sizes.size_name","brands.brands")
+    ->where('order_details.order_id','=',$order_id)
+  ->where('products.admin_id','=',$admin_id)
+    ->get();
+    }
 $result["total_item"]=count($result["cart_details"]);
 $result["statuses"]=DB::table("orders_status")->get();
-           return view('admin.order.manage_order',$result);
+$result["riders"]=DB::table('admins')->where('role',"=",1)->get();
+$result["riders_detail"]=DB::table('admins')->leftJoin('orders','orders.delivery_boy_id','=','admins.id')->where('orders.id','=',$order_id)->get();
+   
+return view('admin.order.manage_order',$result);
          }
 
         function  update_statu(Request $req){
@@ -306,9 +343,14 @@ $result["statuses"]=DB::table("orders_status")->get();
          $id=$req->post('id');
          $customer_address=$req->post('customer_address');
          $status=$req->post('orders_status');
+         $delivery_boy_id=$req->post('delivery_boy_id');
        $model=Order::find($id);
+           if($delivery_boy_id==""){
+             $delivery_boy_id=$model->delivery_boy_id;
+           }
        $model->customer_address=$customer_address;
 $model->orders_status=$status;
+$model->delivery_boy_id=$delivery_boy_id;
 $model->save();
   
 

@@ -25,7 +25,7 @@ class VendorController extends Controller
         $result["vendor_id"]="";
         $result["vendor_status"]=1;
      }else{
-         $data=DB::table("admins")->where('role','=',1)->where('id','=',$id)->get();
+         $data=DB::table("admins")->where('role','=',2)->where('id','=',$id)->get();
         $result["vendor_name"]=  $data[0]->user_name;
         $result["vendor_email"]= $data[0]->email;
         $result["vendor_mobile"]= $data[0]->mobile;

@@ -1025,6 +1025,7 @@ if(isset($crd[0])){
 }else{
 $customer_status=1;
     $customer_data_insert['customer_rand_str']=$mrt;
+    $customer_data_insert['customer_verified']=1;
     $customer_data_insert["customer_mobile"]=$customer_phone;
     $customer_data_insert["customer_referral"]=$referal_code;
     $customer_data_insert["customer_name"]=$customer_name;
